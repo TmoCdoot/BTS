@@ -1,4 +1,4 @@
-# oui
+# CryptoFutur
 
 ## Project setup
 ```
