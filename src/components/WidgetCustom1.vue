@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { auth, onAuthStateChanged, } from "../plug-in/firebase.js";
+
 export default {
   name: "Widget",
   props: {
@@ -19,6 +21,11 @@ export default {
     ammout: String,
     signe: String,
     color1: String,
+  },
+  created() {
+    onAuthStateChanged(auth, user => { 
+        console.log(user);
+    });
   },
 }
 </script>

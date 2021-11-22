@@ -8,6 +8,8 @@
         <WidgetCustom1 title="Gain / Lost" ammout="124" signe="+" color1="#e67429" color2="#f3422b"/>
         <!-- composent 2 pour gain/perte -->
         <button @click="dz">fe</button>
+        {{ $store.state.user }} <br>
+        {{ $store.state.uid }}
     </div>
 </template>
 

@@ -1,14 +1,17 @@
 import { createStore } from "vuex";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setDoc, db, doc, onAuthStateChanged, } from "../plug-in/firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setDoc, db, doc, } from "../plug-in/firebase.js";
 import createPersistedState from "vuex-persistedstate";
 
-onAuthStateChanged(auth, user => { console.log(user); });
 
 export default createStore({
   plugins: [createPersistedState()],
   state: {
     error: '',
-    user: null,
+    user: {
+      email: '',
+      uid: '',
+    },
+    uid: '',
   },
   getters:{
     getUser: state => {
@@ -20,7 +23,11 @@ export default createStore({
       state.error = error;
     },
     setUser: function (state, user) {
-      state.email = user;
+      state.user = user.email;
+      state.user = user.uid;
+    },
+    setUid: function (state, uid) {
+      state.uid = uid;
     }
   },
   actions: {
@@ -70,6 +77,7 @@ export default createStore({
             const user = userCredential.user;
             //console.log(user);
             commit('setUser', user);
+            commit('setUid', user.uid);
             errorCode(user)
           })
           .catch((error) => {
