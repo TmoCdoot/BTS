@@ -49,7 +49,7 @@ export default {
         this.$store.dispatch("signIn", {
             email: this.email,
             password: this.password,
-        }).then(function () {
+        }).then(() => {
           self.$router.push('/home')
         })
       }

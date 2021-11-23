@@ -1,13 +1,27 @@
 <template>
     <div class="box1">
-        <img alt="Logo" src="../assets/logo.png" />
+      <div class="logo">
+        <img alt="Logo" src="../assets/logo.png"/>
+      </div>
+      <div class="div">
+        <div class="nav">
+          <div class="sousnav">
+            <div>Home</div>
+            <div>Trade</div>
+            <div>Swap</div>
+          </div>
+        </div>
+      </div>
+      <div class="div2">
+        <button @click="dz">fe</button>
+      </div>
+        
     </div>
     <div class="widget">
         <!-- composent 1 pour depot -->
         <WidgetCustom1 title="Deposit" ammout="200"/>
-        <WidgetCustom1 title="Gain / Lost" ammout="124" signe="+" color1="#e67429" color2="#f3422b"/>
+
         <!-- composent 2 pour gain/perte -->
-        <button @click="dz">fe</button>
         <div style="color: aliceblue;">{{ email }}</div><br>
         <div style="color: aliceblue;">{{ uid }}</div>
     </div>
@@ -58,13 +72,46 @@ export default {
 
 <style lang="scss">
 .box1 {
-    border: 1px solid green;
+  border: 1px solid green;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.logo {
+  border: 1px solid red;
+  width: 20%;
+}
+.div {
+  border: 1px solid green;
+  width: 60%;
 }
 
 .widget {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 10px;
+}
+.div2 {
+  width: 20%;
+}
+img {
+  width: 100%;
+}
+
+.nav {
+  background-color: #272525;
+  color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40%;
+  height: 40px;
+  border-radius: 20px;
+}
+.sousnav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 </style>

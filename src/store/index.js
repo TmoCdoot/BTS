@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setDoc, db, doc,  } from "../plug-in/firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,   } from "../plug-in/firebase.js";
 //import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -23,42 +23,31 @@ export default createStore({
     signOut: ({commit}) => {
       commit('resetUser')
     },
-    createAccount: ({commit}, userInfo) => {
-      function creatUser() {
-        return new Promise(resolve => {
-          var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
-          var depositReg = new RegExp(/-+/);
-          if (emailReg.test(userInfo["email"])) {
-            if (userInfo["password"] == userInfo["confirm_pass"]) {
-              if (!depositReg.test(userInfo["deposit"])) {
-                createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userCredential) => {
-                  const user = userCredential.user.uid;
-                  //console.log(userCredential.user);
-                  resolve(user);
-                }).catch((error) => {
-                  commit('setError', error.code)
-                  console.log(error.code)
-                })
-              } else {
-                commit('setError', 'err_depo');
-              }
+    createAuth: ({commit}, userInfo) => {
+      return new Promise(userUidReturn => {
+        var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
+        var depositReg = new RegExp(/-+/);
+        if (emailReg.test(userInfo["email"])) {
+          if (userInfo["password"] == userInfo["confirm_pass"]) {
+            if (!depositReg.test(userInfo["deposit"])) {
+              createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userCredential) => {
+                const userUid = userCredential.user.uid;
+                //console.log(userCredential.user);
+                userUidReturn(userUid);
+              }).catch((error) => {
+                commit('setError', error.code)
+                console.log(error.code)
+              })
             } else {
-              commit('setError', 'err_pass');
+              commit('setError', 'err_depo');
             }
           } else {
-            commit('setError', 'err_mail');
+            commit('setError', 'err_pass');
           }
-        })
-      }
-      
-      async function creatDoc() {
-        const userUiud = await creatUser()
-        setDoc(doc(db, "User", userUiud), {
-          deposit: userInfo["deposit"],
-        });
-        //console.log(userInfo);
-      }
-      creatDoc()     
+        } else {
+          commit('setError', 'err_mail');
+        }
+      })
     },
 
     signIn: ({commit}, userInfo) => {
