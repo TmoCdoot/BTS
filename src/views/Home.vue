@@ -54,9 +54,9 @@ export default {
       this.$store.dispatch('signOut')
       this.$router.push('/')
     },
-    test: function() {
+    loadUser: function() {
       onAuthStateChanged(auth, user => { 
-        console.log(user)
+        //console.log(user)
         if (user) {
           this.email = user.email
           this.uid = user.uid
@@ -65,7 +65,7 @@ export default {
     }
   },
   beforeMount() {
-    this.test()
+    this.loadUser()
   }
 };
 </script>
@@ -94,9 +94,6 @@ export default {
 }
 .div2 {
   width: 20%;
-}
-img {
-  width: 100%;
 }
 
 .nav {
