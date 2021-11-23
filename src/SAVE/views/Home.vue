@@ -8,16 +8,15 @@
         <WidgetCustom1 title="Gain / Lost" ammout="124" signe="+" color1="#e67429" color2="#f3422b"/>
         <!-- composent 2 pour gain/perte -->
         <button @click="dz">fe</button>
-        <div style="color: aliceblue;">{{ email }}</div><br>
-        <div style="color: aliceblue;">{{ uid }}</div>
+        {{ $store.state.user }} <br>
     </div>
 </template>
 
 <script>
     // @ is an alias to /src
 import WidgetCustom1 from "@/components/WidgetCustom1.vue";
-import { mapState } from 'vuex'
-import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
+//import { mapState } from 'vuex'
+import { auth, signOut } from '../plug-in/firebase.js';
 
 
 export default {
@@ -25,33 +24,12 @@ export default {
   components: {
     WidgetCustom1,
   },
-  data: function () {
-    return {
-      email: '',
-      uid: '',
-    }
-  },
-  computed: {
-    ...mapState(['user']),
-  },
   methods: {
     dz: function () {
       signOut(auth);
-      this.$store.dispatch('signOut')
+      this.$store.dispatch("signOutUser")
       this.$router.push('/')
-    },
-    test: function() {
-      onAuthStateChanged(auth, user => { 
-        console.log(user)
-        if (user) {
-          this.email = user.email
-          this.uid = user.uid
-        }
-      });
     }
-  },
-  beforeMount() {
-    this.test()
   }
 };
 </script>

@@ -94,7 +94,7 @@ export default {
   font-size: 18px;
 }
 .buttonLink {
-  color: #e67429;
+  color: #e8af95;
 }
 p {
   font-style: oblique;
@@ -104,7 +104,7 @@ p {
   font-style: italic;
 }
 .unactive {
-  background-image: linear-gradient(95deg, #444444, #1c1c1c) !important;
+  background-image: linear-gradient(95deg, #484848, #242424) !important;
   color: #707070 !important;
   transition: 0.5s;
 }
