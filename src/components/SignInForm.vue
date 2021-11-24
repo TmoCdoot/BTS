@@ -76,7 +76,7 @@ export default {
 .email, .password {
   padding: 12px 130px 12px 40px;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
   padding-left: 10px;
   font-weight: bold;
   background-color: rgb(233, 233, 233);
@@ -88,7 +88,7 @@ export default {
   padding: 12px 130px 12px 130px;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
   background: linear-gradient(95deg, #e67429, #f3422b);
   color: aliceblue;
   font-size: 18px;

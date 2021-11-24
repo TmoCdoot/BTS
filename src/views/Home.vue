@@ -4,16 +4,20 @@
         <img alt="Logo" src="../assets/logo.png"/>
       </div>
       <div class="div">
-        <div class="nav">
-          <div class="sousnav">
-            <div>Home</div>
-            <div>Trade</div>
-            <div>Swap</div>
+        <div class="hori">
+          <div class="nav">
+            <div class="sousnav">
+              <div class="active">Home</div>
+              <div class="noactive middleNav">Trade</div>
+              <div class="noactive">Swap</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="div2">
-        <button @click="dz">fe</button>
+        <div>
+          <button @click="dz" class="button">Disconnect</button>
+        </div>
       </div>
         
     </div>
@@ -78,12 +82,15 @@ export default {
   justify-content: space-around;
 }
 .logo {
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   width: 20%;
 }
 .div {
-  border: 1px solid green;
+  /*border: 1px solid green;*/
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .widget {
@@ -94,6 +101,9 @@ export default {
 }
 .div2 {
   width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .nav {
@@ -102,13 +112,35 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 40%;
-  height: 40px;
+  width: 240px;
+  height: 42px;
   border-radius: 20px;
 }
 .sousnav {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+.hori {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.active {
+  background: linear-gradient(95deg, #e67429, #f3422b);
+  border-radius: 20px;
+  padding: 7px 14px 7px 14px;
+}
+.noactive {
+  padding: 7px 13px 7px 13px;
+}
+.button {
+  padding: 10px 35px 10px 35px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(95deg, #e67429, #f3422b);
+  color: aliceblue;
+  font-size: 18px;
 }
 </style>
