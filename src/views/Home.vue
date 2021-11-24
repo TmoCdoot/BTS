@@ -1,39 +1,55 @@
 <template>
-    <div class="box1">
-      <div class="logo">
-        <img alt="Logo" src="../assets/logo.png"/>
+    <div class="topContener">
+      <div class="logoContener">
+        <img alt="Logo" src="../assets/logo.png" class="logoBox"/>
       </div>
-      <div class="div">
-        <div class="hori">
-          <div class="nav">
-            <div class="sousnav">
-              <div class="active">Home</div>
-              <div class="noactive middleNav">Trade</div>
-              <div class="noactive">Swap</div>
+      <div class="navContener">
+        <div class="navContener-align">
+          <ul class="navList">
+            <li><button class="butttonBox" @click="changePage('home')" :class="{'activeButton' : activeButtonHome}">Home</button></li>
+            <li><button class="butttonBox" @click="changePage('trade')" :class="{'activeButton' : activeButtonTrade}">Trade</button></li>
+            <li><button class="butttonBox" @click="changePage('swap')" :class="{'activeButton' : activeButtonSwap}">Swap</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="disconnectContener">
+        <div>
+          <button @click="logOutUser" class="disconnectButton">Disconnect</button>
+        </div>
+      </div>
+    </div>
+    <div class="mainContener">
+        <div v-if="page == 'home'"> 
+          <div class="mainBigContener">
+            <div class="leftHomeContener">
+
+            </div>
+            <div class="rightHomeContener">
+              <div class="depoWinWidgetContener">
+                <WidgetDeposit/>
+                <WidgetWinLoss/>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="div2">
-        <div>
-          <button @click="dz" class="button">Disconnect</button>
+        <div v-if="page == 'trade'"> 
+          <WidgetStat title="trade"/>
         </div>
-      </div>
+        <div v-if="page == 'swap'"> 
+          <WidgetSwap title="swap"/>
+        </div>
         
     </div>
-    <div class="widget">
-        <!-- composent 1 pour depot -->
-        <WidgetCustom1 title="Deposit" ammout="200"/>
-
-        <!-- composent 2 pour gain/perte -->
-        <div style="color: aliceblue;">{{ email }}</div><br>
-        <div style="color: aliceblue;">{{ uid }}</div>
-    </div>
+    <div style="color: aliceblue;">{{ email }}</div><br>
+    <div style="color: aliceblue;">{{ uid }}</div>
 </template>
 
 <script>
     // @ is an alias to /src
-import WidgetCustom1 from "@/components/WidgetCustom1.vue";
+import WidgetDeposit from "@/components/WidgetDeposit.vue";
+import WidgetStat from "@/components/WidgetStat.vue";
+import WidgetSwap from "@/components/WidgetSwap.vue";
+import WidgetWinLoss from "@/components/WidgetWinLoss.vue";
 import { mapState } from 'vuex'
 import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
 
@@ -41,21 +57,45 @@ import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
 export default {
   name: "Home",
   components: {
-    WidgetCustom1,
+    WidgetDeposit,
+    WidgetStat,
+    WidgetSwap,
+    WidgetWinLoss,
   },
   data: function () {
     return {
+      page: 'home',
       email: '',
       uid: '',
     }
   },
   computed: {
     ...mapState(['user']),
+    activeButtonHome: function () {
+      if (this.page == 'home') {
+        return true
+      } else {
+        return false
+      }
+    },
+    activeButtonTrade: function () {
+      if (this.page == 'trade') {
+        return true
+      } else {
+        return false
+      }
+    },
+    activeButtonSwap: function () {
+      if (this.page == 'swap') {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
-    dz: function () {
+    logOutUser: function () {
       signOut(auth);
-      this.$store.dispatch('signOut')
       this.$router.push('/')
     },
     loadUser: function() {
@@ -66,6 +106,12 @@ export default {
           this.uid = user.uid
         }
       });
+    },
+    changePage: function (pageLoad) {
+      if (this.page != pageLoad) {
+        this.page = pageLoad
+      }
+      //console.log(this.page)
     }
   },
   beforeMount() {
@@ -75,67 +121,60 @@ export default {
 </script>
 
 <style lang="scss">
-.box1 {
-  border: 1px solid green;
+.topContener {
+  /*border: 1px solid green;*/
+  height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
-.logo {
+  background: linear-gradient(180deg, #080808, #0e0909);
+}.logoContener {
   /*border: 1px solid red;*/
   width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}.logoBox  {
+  /*border: 1px solid yellow;*/
+  margin-top: 5px;
+  width: 120px;
 }
-.div {
+
+.navContener {
   /*border: 1px solid green;*/
   width: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-}
-
-.widget {
+}.navContener-align {
+  /*border: 1px solid yellow;*/
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  margin: 10px;
+  justify-content: space-around;
+}.navList {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*border: 1px solid yellow;*/
+  padding: 4px 5px;
+  border-radius: 15px;
+  background-color: #272525;
+}.butttonBox {
+  /*border: 1px solid red;*/
+  border-radius: 13px;
+  padding: 7px 14px 7px 14px;
+}.activeButton {
+  background: linear-gradient(95deg, #e67429, #f3422b);
 }
-.div2 {
+
+.disconnectContener {
   width: 20%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-}
-
-.nav {
-  background-color: #272525;
-  color: whitesmoke;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 240px;
-  height: 42px;
-  border-radius: 20px;
-}
-.sousnav {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.hori {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.active {
-  background: linear-gradient(95deg, #e67429, #f3422b);
-  border-radius: 20px;
-  padding: 7px 14px 7px 14px;
-}
-.noactive {
-  padding: 7px 13px 7px 13px;
-}
-.button {
-  padding: 10px 35px 10px 35px;
+}.disconnectButton {
+  padding: 8px 30px 8px 30px;
   font-weight: bold;
   border: none;
   border-radius: 20px;
@@ -143,4 +182,35 @@ export default {
   color: aliceblue;
   font-size: 18px;
 }
+
+
+.mainContener {
+  /*border: 1px solid blue;*/
+  margin-top: 50px;
+}
+
+.mainBigContener {
+  display: flex;
+  flex-direction: row;
+}.leftHomeContener {
+  /*border: 1px solid green;*/
+  width: 50%;
+}
+
+.rightHomeContener {
+  /*border: 1px solid red;*/
+  width: 50%;
+}.depoWinWidgetContener {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+button {
+  text-decoration: none;  
+  border: none;
+  background: none;
+  color: whitesmoke;
+}
+
 </style>

@@ -15,7 +15,7 @@
 html {
   height: 100%;
   width: 100%;
-  background: linear-gradient(340deg, #2c2727, #0e0909);
+  background: linear-gradient(0deg, #100a0a, #0e0909);
   margin: 0;
 }
 body {

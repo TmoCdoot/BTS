@@ -10,19 +10,9 @@ export default createStore({
   mutations: {
     setError: function (state, error) {
       state.error = error;
-    },
-    setUser: function (state, user) {
-      state.user.email = user.email;
-      state.user.uid = user.uid;
-    },
-    resetUser: function (state) {
-      state.user = ''
     }
   },
   actions: {
-    signOut: ({commit}) => {
-      commit('resetUser')
-    },
     createAuth: ({commit}, userInfo) => {
       return new Promise(userUidReturn => {
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
@@ -49,7 +39,6 @@ export default createStore({
         }
       })
     },
-
     signIn: ({commit}, userInfo) => {
       return new Promise(validated => {
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
