@@ -22,12 +22,17 @@
         <div v-if="page == 'home'"> 
           <div class="mainBigContener">
             <div class="leftHomeContener">
-
+              <div class="leftStatContener">
+                <WidgetStat/>
+              </div>
             </div>
             <div class="rightHomeContener">
               <div class="depoWinWidgetContener">
-                <WidgetDeposit/>
+                <WidgetDeposit/> <!-- un widget en fonction de chaque element-->
                 <WidgetWinLoss/>
+              </div>
+              <div class="cryptoListContener">
+                <WidgetCryptoList/>
               </div>
             </div>
           </div>
@@ -50,6 +55,7 @@ import WidgetDeposit from "@/components/WidgetDeposit.vue";
 import WidgetStat from "@/components/WidgetStat.vue";
 import WidgetSwap from "@/components/WidgetSwap.vue";
 import WidgetWinLoss from "@/components/WidgetWinLoss.vue";
+import WidgetCryptoList from "@/components/WidgetCryptoList.vue";
 import { mapState } from 'vuex'
 import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
 
@@ -61,12 +67,14 @@ export default {
     WidgetStat,
     WidgetSwap,
     WidgetWinLoss,
+    WidgetCryptoList,
   },
   data: function () {
     return {
       page: 'home',
       email: '',
       uid: '',
+      graph: 'wky',
     }
   },
   computed: {
@@ -91,7 +99,7 @@ export default {
       } else {
         return false
       }
-    }
+    },
   },
   methods: {
     logOutUser: function () {
@@ -195,12 +203,23 @@ export default {
 }.leftHomeContener {
   /*border: 1px solid green;*/
   width: 50%;
+}.leftStatContener {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .rightHomeContener {
   /*border: 1px solid red;*/
   width: 50%;
 }.depoWinWidgetContener {
+  /*border: 1px solid blue;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}.cryptoListContener {
+  /*border: 1px solid pink;*/
+  margin-top: 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
