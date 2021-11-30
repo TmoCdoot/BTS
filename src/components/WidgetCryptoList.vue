@@ -10,52 +10,58 @@
         </div>
       </div>
       <div class="listContener">
-        list crypto
+        <StatChart/>
       </div>
     </div>
 </template>
 
+
 <script>
-    export default {
-        name: "WidgetStat",
-        data: function () {
-            return {
-                graph: 'wky'
-            }
-        },
-        computed: {
-            activeButtonMty: function () {
-                if (this.graph == "mty") {
-                    return true
-                } else {
-                    return false
-                }
-            },
-            activeButtonDly: function () {
-                if (this.graph == "dly") {
-                    return true
-                } else {
-                    return false
-                }
-            },
-            activeButtonWky: function () {
-                if (this.graph == "wky") {
-                    return true
-                } else {
-                    return false
-                }
-            },
-        },
-        methods: {
-            changeButton: function (graphLoad) {
-                if (this.graph != graphLoad) {
-                    this.graph = graphLoad
-                }
-            }
+import StatChart from '@/components/StatChart.vue'
+
+  export default {
+    name: "WidgetStat",
+    components: {
+      StatChart,
+    },
+    data: function () {
+      return {
+        graph: 'wky'
+      }
+    },
+    computed: {
+      activeButtonMty: function () {
+        if (this.graph == "mty") {
+          return true
+        } else {
+          return false
         }
-    }
+      },
+      activeButtonDly: function () {
+        if (this.graph == "dly") {
+          return true
+        } else {
+          return false
+        }
+      },
+      activeButtonWky: function () {
+        if (this.graph == "wky") {
+          return true
+        } else {
+          return false
+        }
+      },
+    },
+    methods: {
+      changeButton: function (graphLoad) {
+        if (this.graph != graphLoad) {
+          this.graph = graphLoad
+        }
+      }
+    },
+  }
 </script>
-    
+
 <style scoped lang="scss">
     .statContener {
       color: aliceblue;
