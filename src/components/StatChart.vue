@@ -1,25 +1,24 @@
 <template>
     <div>
-        <canvas id="planet-chart"></canvas>
+        <column-chart :data="chartData"></column-chart>
     </div>
 </template>
 
 <script>
-    import { Chart, LineController } from 'chart.js'
-    import statChart from '@/plug-in/statChart.js'
-
-    Chart.register(LineController)
-
     export default {
         name: 'StatChart',
         data() {
             return {
-                statChart: statChart
+                chartData: {
+                    'Mon': 1,
+                    'Tue': 4,
+                    'Wen': 3,
+                    'Thu': 4,
+                    'Fri': 3,
+                    'Sat': 4,
+                    'Sun': -3,
+                }
             }
         },
-        mounted() {
-            const ctx = document.getElementById('planet-chart');
-            new Chart(ctx, statChart);
-        }
     }
 </script>

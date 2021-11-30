@@ -10,19 +10,17 @@
         </div>
       </div>
       <div class="listContener">
-        <StatChart/>
+        liste de crypto
       </div>
     </div>
 </template>
 
 
 <script>
-import StatChart from '@/components/StatChart.vue'
-
   export default {
     name: "WidgetStat",
     components: {
-      StatChart,
+      
     },
     data: function () {
       return {

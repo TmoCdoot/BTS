@@ -10,14 +10,19 @@
         </div>
       </div>
       <div class="grahContener">
-        graphique
+        <StatChart/>
       </div>
     </div>
 </template>
 
 <script>
+import StatChart from '@/components/StatChart.vue'
+
 export default {
   name: "WidgetStat",
+  components: {
+    StatChart,
+  },
   data: function () {
     return {
       graph: 'wky'
