@@ -1,12 +1,23 @@
 <template>
     <div>
-        <column-chart :data="chartDataDly" :colors="['#EF4E2A']" class="graph" height="240px"></column-chart>
+        <div v-if="graph == 'wky'">
+            <column-chart :data="chartDataDly" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+        </div>
+        <div v-if="graph == 'dly'">
+            <column-chart :data="chartDataWky" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+        </div>
+        <div v-if="graph == 'mty'"> 
+            <column-chart :data="chartDatatMty" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
         name: 'StatChart',
+        props: {
+            graph: String,
+        },
         data() {
             return {
                 chartDataDly: {
@@ -19,7 +30,13 @@
                     'Sun': -3,
                 },
                 chartDataWky: {
-
+                    '29/05': 14,
+                    '22/28': 10,
+                    '15/21': -1,
+                    '8/14': -5,
+                    '1/7': 1,
+                    '25/31': 4,
+                    '18/24 ': 3,
                 },
                 chartDatatMty: {
                     'Dec': 3,
@@ -27,8 +44,8 @@
                     'Oct': 8,
                     'Sep': 4,
                     'Aug': 3,
-                    'Jui': 2,
-                    'Jun': 8,
+                    'Jui': -1,
+                    'Jun': -4,
                 }
             }
         },
@@ -37,6 +54,6 @@
 
 <style scoped lang="scss">
     .graph {
-        border: 1px solid blue;
+        /* border: 1px solid blue; */
     }
 </style>

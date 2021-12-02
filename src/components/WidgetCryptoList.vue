@@ -10,7 +10,44 @@
         </div>
       </div>
       <div class="listContener">
-        liste de crypto
+        <table class="tabList">
+          <tr>
+            <td>Crypto</td>
+            <td>Buy Price</td>
+            <td>Price</td>
+            <td>QTT</td>
+            <td>Q/L</td>
+          </tr>
+          <tr>
+            <td class="bottomBorder" colspan="5"></td>
+          </tr>
+          <tr>
+            <td>BTC</td>
+            <td>61 347</td>
+            <td>58 241</td>
+            <td>0.156</td>
+            <td>-2.14%</td>
+          </tr>
+          <tr>
+            <td>BTC</td>
+            <td>61 347</td>
+            <td>58 241</td>
+            <td>0.156</td>
+            <td>-2.14%</td>
+          </tr>
+          <tr>
+            <td>BTC</td>
+            <td>61 347</td>
+            <td>58 241</td>
+            <td>0.156</td>
+            <td>-2.14%</td>
+          </tr>
+        </table>
+      </div>
+      <div class="buttonContener">
+        <div>
+          <button @click="AddCrypto" class="addButton">Add new Crypto</button>
+        </div>
       </div>
     </div>
 </template>
@@ -20,11 +57,11 @@
   export default {
     name: "WidgetStat",
     components: {
-      
     },
     data: function () {
       return {
-        graph: 'wky'
+        graph: 'wky',
+        addCrypto: false,
       }
     },
     computed: {
@@ -55,6 +92,13 @@
         if (this.graph != graphLoad) {
           this.graph = graphLoad
         }
+      },
+      AddCrypto: function () {
+        if (this.addCrypto == false) {
+          this.$emit('ChangeValueAddCrypto', true);
+        } else {
+          this.$emit('ChangeValueAddCrypto', false);
+        }
       }
     },
   }
@@ -65,7 +109,7 @@
       color: aliceblue;
       background-color: #272525;
       width: 500px;
-      height: 300px;
+      padding-bottom: 10px;
       border-radius: 15px;
       /*border: 1px solid green;*/
     }.navStatContener {
@@ -103,6 +147,26 @@
     
     .listContener {
       border: 1px solid red;
-      height: 82%;
-    }  
+      margin-bottom: 15px;
+    }.tabList {
+      width: 100%;
+    }.bottomBorder {
+      border-bottom: 1px solid white;
+    }.tr {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+    }
+
+    .addButton {
+      padding: 8px 30px 8px 30px;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(95deg, #e67429, #f3422b);
+      color: aliceblue;
+      font-size: 18px;
+      cursor: pointer;
+    }
 </style>

@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="grahContener">
-        <StatChart/>
+        <StatChart :graph="graph"/>
       </div>
     </div>
 </template>
@@ -103,7 +103,7 @@ export default {
 }
 
 .grahContener {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   height: 82%;
 }
 </style>

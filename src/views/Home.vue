@@ -1,4 +1,8 @@
 <template>
+  {{ addCrypto }}
+    <div v-if="addCrypto == true">
+      <WidgetAddCrypto/>
+    </div>
     <div class="topContener">
       <div class="logoContener">
         <img alt="Logo" src="../assets/logo.png" class="logoBox"/>
@@ -32,7 +36,7 @@
                 <WidgetWinLoss/>
               </div>
               <div class="cryptoListContener">
-                <WidgetCryptoList/>
+                <WidgetCryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
               </div>
             </div>
           </div>
@@ -56,6 +60,7 @@ import WidgetStat from "@/components/WidgetStat.vue";
 import WidgetSwap from "@/components/WidgetSwap.vue";
 import WidgetWinLoss from "@/components/WidgetWinLoss.vue";
 import WidgetCryptoList from "@/components/WidgetCryptoList.vue";
+import WidgetAddCrypto from '@/components/WidgetAddCrypto.vue'
 import { mapState } from 'vuex'
 import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
 
@@ -67,6 +72,7 @@ export default {
     WidgetStat,
     WidgetSwap,
     WidgetWinLoss,
+    WidgetAddCrypto,
     WidgetCryptoList,
   },
   data: function () {
@@ -75,6 +81,7 @@ export default {
       email: '',
       uid: '',
       graph: 'wky',
+      addCrypto: false,
     }
   },
   computed: {
@@ -120,6 +127,9 @@ export default {
         this.page = pageLoad
       }
       //console.log(this.page)
+    },
+    ChangeValueAddCrypto: function ( data ) {
+      this.addCrypto = data;
     }
   },
   beforeMount() {
@@ -172,6 +182,7 @@ export default {
   /*border: 1px solid red;*/
   border-radius: 13px;
   padding: 7px 14px 7px 14px;
+  cursor: pointer;
 }.activeButton {
   background: linear-gradient(95deg, #e67429, #f3422b);
 }
@@ -189,6 +200,7 @@ export default {
   background: linear-gradient(95deg, #e67429, #f3422b);
   color: aliceblue;
   font-size: 18px;
+  cursor: pointer;
 }
 
 
