@@ -1,6 +1,7 @@
 <template>
-    <div id="addCryptoContener" @click="test">
-        <div class="alignHozi">
+    <div id="addCryptoContener">
+        <img src="../assets/close.png" alt="" class="imgClose" @click="AddCrypto">
+        <div id="alignHozi">
             <div id="mainAddCrypotContener">
                 <div id="titre">
                     Ajouter une nouvelle cryptomonnaie au porte-feuille
@@ -30,15 +31,9 @@
     export default {
         name: "WidgetAddCrypto",
         methods: {
-            test: function () {
-                document.getElementById('addCryptoContener').onclick = function(e) {
-                    if(e.target != document.getElementById('mainAddCrypotContener')) {
-                        console.log('You clicked outside');
-                    } else {
-                        console.log('You clicked inside');
-                    }
-                    }
-            }
+            AddCrypto: function () {
+                this.$emit('ChangeValueAddCrypto', true);
+            },
         }
     }
 </script>
@@ -53,7 +48,8 @@
         display: flex;
         justify-content: space-around;
         flex-direction: row;
-    }.alignHozi {
+        z-index: 900;
+    }#alignHozi {
         display: flex;
         justify-content: space-around;
         flex-direction: column;
@@ -68,7 +64,7 @@
         font-weight: bold;
         font-size: 20px;
         height: 70px;
-        border: 1px solid blue;
+        /* border: 1px solid blue; */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -107,6 +103,13 @@
         padding-left: 10px;
         font-weight: bold;
         background-color: rgb(233, 233, 233);
+    }
+    .imgClose {
+        width: 20px;
+        position: absolute;
+        /* border: 1px solid blue; */
+        margin-top: 10px;
+        cursor: pointer;
     }
 
 </style>

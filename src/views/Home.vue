@@ -1,7 +1,6 @@
 <template>
-  {{ addCrypto }}
     <div v-if="addCrypto == true">
-      <WidgetAddCrypto/>
+      <WidgetAddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
     </div>
     <div class="topContener">
       <div class="logoContener">
@@ -129,7 +128,14 @@ export default {
       //console.log(this.page)
     },
     ChangeValueAddCrypto: function ( data ) {
-      this.addCrypto = data;
+      if (data == true) {
+        if (this.addCrypto == true) {
+          this.addCrypto = false
+        } else {
+          console.log("fdzde")
+          this.addCrypto = true
+        }
+      }
     }
   },
   beforeMount() {

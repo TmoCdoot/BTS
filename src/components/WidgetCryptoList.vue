@@ -61,7 +61,6 @@
     data: function () {
       return {
         graph: 'wky',
-        addCrypto: false,
       }
     },
     computed: {
@@ -94,11 +93,7 @@
         }
       },
       AddCrypto: function () {
-        if (this.addCrypto == false) {
-          this.$emit('ChangeValueAddCrypto', true);
-        } else {
-          this.$emit('ChangeValueAddCrypto', false);
-        }
+        this.$emit('ChangeValueAddCrypto', true);
       }
     },
   }
