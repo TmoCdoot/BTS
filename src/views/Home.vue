@@ -48,8 +48,8 @@
         </div>
         
     </div>
-    <div style="color: aliceblue;">{{ email }}</div><br>
-    <div style="color: aliceblue;">{{ uid }}</div>
+    <div style="color: aliceblue;">{{ userData.email }}</div><br>
+    <div style="color: aliceblue;">{{ userData.uid }}</div>
 </template>
 
 <script>
@@ -77,14 +77,12 @@ export default {
   data: function () {
     return {
       page: 'home',
-      email: '',
-      uid: '',
       graph: 'wky',
       addCrypto: false,
     }
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState(['userData']),
     activeButtonHome: function () {
       if (this.page == 'home') {
         return true
@@ -139,7 +137,9 @@ export default {
     }
   },
   beforeMount() {
-    this.loadUser()
+    /* this.loadUser() */
+    this.$store.dispatch("loadDataUser")
+    this.$store.dispatch("loadDataCrypto")
   }
 };
 </script>

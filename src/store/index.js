@@ -1,6 +1,6 @@
 import { arrayUnion } from "@firebase/firestore";
 import { createStore } from "vuex";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc } from "../plug-in/firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc, onAuthStateChanged, getDoc } from "../plug-in/firebase.js";
 //import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -8,11 +8,26 @@ export default createStore({
   state: {
     error: '',
     valuesList: ['BTC', 'EGLD', 'ADA', 'ETH'],
+    userData: {
+      email: '',
+      uid: '',
+      dataCrypto: null,
+    },
   },
   mutations: {
     setError: function (state, error) {
       state.error = error;
-    }
+    },
+    setUserDataEmail: function (state, email) {
+      state.userData.email = email;
+    },
+    setUserDataUid: function (state, uid) {
+      state.userData.uid = uid;
+    },
+    setUserDataCrypto: function (state, dataCrypto) {
+      state.userData.dataCrypto = dataCrypto;
+      console.log(state.userData.dataCrypto)
+    },
   },
   actions: {
     createAuth: ({commit}, userInfo) => {
@@ -73,6 +88,29 @@ export default createStore({
           })
           validated(true)
         }      
+      })
+    },
+
+
+    
+
+    loadDataUser: ({commit}) => {
+      return new Promise(Validated => {
+        onAuthStateChanged(auth, user => { 
+          //console.log(user)
+          if (user) {
+            commit('setUserDataEmail', user.email)
+            commit('setUserDataUid', user.uid)
+          }
+          Validated()
+        });
+      })
+    },
+    loadDataCrypto: ({commit}) => {
+      return new Promise(Validated => {
+        const dataDoc = getDoc(doc(db, 'User', this.userData.uid))
+        commit('setUserDataCrypto', dataDoc)
+        Validated()
       })
     }
   },
