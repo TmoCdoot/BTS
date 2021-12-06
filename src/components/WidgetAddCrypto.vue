@@ -46,7 +46,7 @@
             ...mapState(['valuesList']),
             noEmptyField: function () {
                 if (this.quantity != '') {
-                    console.log("fe")
+                    /* console.log("fe") */
                     return true
                 } else {
                     return false
@@ -58,14 +58,17 @@
                 this.$emit('ChangeValueAddCrypto', true);
             },
             AddOnWallet: function () {
-                /* const self = this; */
+                const self = this;
                 this.$store.dispatch("addOnWallet", {
                     crypto: this.crypto,
                     buyprice: this.buyprice,
                     quantity: this.quantity,
                 }).then((e) => {
                 /* self.$router.push('/home') */
-                console.log(e)
+                    if (e) {
+                        self.$emit('ChangeValueAddCrypto', true);
+                    }
+                console.log(this.uid)
                 })
             }
         }

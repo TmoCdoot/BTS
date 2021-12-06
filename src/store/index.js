@@ -1,3 +1,4 @@
+import { arrayUnion } from "@firebase/firestore";
 import { createStore } from "vuex";
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc } from "../plug-in/firebase.js";
 //import createPersistedState from "vuex-persistedstate";
@@ -59,45 +60,19 @@ export default createStore({
     },
     addOnWallet: ({commit}, cryptoInfo) => {
       return new Promise(validated => {
-        if (cryptoInfo['crypto'] == "BTC") {
+        if (cryptoInfo['crypto']) {
           updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
-            "crypto.BTC": {
-              buyPrice: cryptoInfo['buyprice'],
-              quantity: cryptoInfo['quantity']
-            } 
+              cryptoList: arrayUnion({
+                crypto: cryptoInfo['crypto'],
+                buyPrice: cryptoInfo['buyprice'],
+                quantity: cryptoInfo['quantity']
+              })
           }).catch((/*error*/) => {
             //console.log(error)
             commit('setError', 'err_addCrypto')
           })
           validated(true)
-        }
-
-        if (cryptoInfo['crypto'] == "EGLD") {
-          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
-            "crypto.EGLD": {
-              buyPrice: cryptoInfo['buyprice'],
-              quantity: cryptoInfo['quantity']
-            } 
-          }).catch((/*error*/) => {
-            //console.log(error)
-            commit('setError', 'err_addCrypto')
-          })
-          validated(true)
-        }
-
-        if (cryptoInfo['crypto'] == "ADA") {
-          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
-            "crypto.ADA": {
-              buyPrice: cryptoInfo['buyprice'],
-              quantity: cryptoInfo['quantity']
-            } 
-          }).catch((/*error*/) => {
-            //console.log(error)
-            commit('setError', 'err_addCrypto')
-          })
-          validated(true)
-        }
-        
+        }      
       })
     }
   },
@@ -147,4 +122,14 @@ export default createStore({
     buyprice: 54 000,
     quantity: 2,
   },
+} */
+
+
+
+/* function bite (namecrypto) {
+  let namecrypto = namecrypto['crypto']
+  let toAdd : {
+    buyprice: namecrypto['buyprice'],
+    quantity: namecrypto['quantity'],
+  }
 } */
