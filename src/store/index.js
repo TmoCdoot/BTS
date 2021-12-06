@@ -1,11 +1,12 @@
 import { createStore } from "vuex";
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,   } from "../plug-in/firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc } from "../plug-in/firebase.js";
 //import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   //plugins: [createPersistedState()],
   state: {
     error: '',
+    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH'],
   },
   mutations: {
     setError: function (state, error) {
@@ -44,7 +45,7 @@ export default createStore({
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
         if (emailReg.test(userInfo["email"])) {
           signInWithEmailAndPassword(auth, userInfo['email'], userInfo['password']).then(() => {
-            //console.log(user);
+            //console.log(userInfo['email']);
             validated(true)
           })
           .catch((/*error*/) => {
@@ -54,6 +55,49 @@ export default createStore({
         } else {
           commit('setError', 'err_mail');
         }
+      })
+    },
+    addOnWallet: ({commit}, cryptoInfo) => {
+      return new Promise(validated => {
+        if (cryptoInfo['crypto'] == "BTC") {
+          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
+            "crypto.BTC": {
+              buyPrice: cryptoInfo['buyprice'],
+              quantity: cryptoInfo['quantity']
+            } 
+          }).catch((/*error*/) => {
+            //console.log(error)
+            commit('setError', 'err_addCrypto')
+          })
+          validated(true)
+        }
+
+        if (cryptoInfo['crypto'] == "EGLD") {
+          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
+            "crypto.EGLD": {
+              buyPrice: cryptoInfo['buyprice'],
+              quantity: cryptoInfo['quantity']
+            } 
+          }).catch((/*error*/) => {
+            //console.log(error)
+            commit('setError', 'err_addCrypto')
+          })
+          validated(true)
+        }
+
+        if (cryptoInfo['crypto'] == "ADA") {
+          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
+            "crypto.ADA": {
+              buyPrice: cryptoInfo['buyprice'],
+              quantity: cryptoInfo['quantity']
+            } 
+          }).catch((/*error*/) => {
+            //console.log(error)
+            commit('setError', 'err_addCrypto')
+          })
+          validated(true)
+        }
+        
       })
     }
   },
@@ -93,3 +137,14 @@ export default createStore({
       concurrentPromise()
     }
 */
+
+/* crypto : {
+  btc: {
+    buyprice: 54 000,
+    quantity: 2,
+  },
+  egld: {
+    buyprice: 54 000,
+    quantity: 2,
+  },
+} */

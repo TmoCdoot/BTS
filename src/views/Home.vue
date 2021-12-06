@@ -132,7 +132,7 @@ export default {
         if (this.addCrypto == true) {
           this.addCrypto = false
         } else {
-          console.log("fdzde")
+          /* console.log("fdzde") */
           this.addCrypto = true
         }
       }

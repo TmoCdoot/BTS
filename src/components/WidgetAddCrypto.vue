@@ -8,18 +8,20 @@
                 </div>
                 <div id="mainCryptoChoose">
                     <div>
-                        <input type="email" placeholder="Crypto" class="input" v-model="email">
+                        <select class="input" v-model="crypto">
+                            <option v-for="listValue in valuesList" :key="listValue">{{ listValue }}</option>
+                        </select>
                     </div><br>
                     <div>
-                        <input type="text" placeholder="Buy price" class="input" v-model="password">
+                        <input type="number" placeholder="Buy price" class="input" v-model="buyprice">
                     </div><br>
                     <div>
-                        <input type="text" placeholder="Quantity" class="input" v-model="password">
+                        <input type="number" placeholder="Quantity" class="input" v-model="quantity" required>
                     </div>
                 </div>
                 <div id="addCryptoButton">
                     <div>
-                        <button @click="AddCrypto" class="CryptoButton">Add new Crypto</button>
+                        <button @click="AddOnWallet" id="CryptoButton" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Add new Crypto</button>
                     </div>
                 </div>
             </div>
@@ -28,12 +30,44 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
         name: "WidgetAddCrypto",
+        data: function () {
+            return {
+                crypto: 'BTC',
+                buyprice: '',
+                quantity: '',
+            }
+        },
+        computed: {
+            ...mapState(['error']),
+            ...mapState(['valuesList']),
+            noEmptyField: function () {
+                if (this.quantity != '') {
+                    console.log("fe")
+                    return true
+                } else {
+                    return false
+                }
+            }
+        },
         methods: {
             AddCrypto: function () {
                 this.$emit('ChangeValueAddCrypto', true);
             },
+            AddOnWallet: function () {
+                /* const self = this; */
+                this.$store.dispatch("addOnWallet", {
+                    crypto: this.crypto,
+                    buyprice: this.buyprice,
+                    quantity: this.quantity,
+                }).then((e) => {
+                /* self.$router.push('/home') */
+                console.log(e)
+                })
+            }
         }
     }
 </script>
@@ -43,7 +77,7 @@
         /* border: 1px solid red; */
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.678);
+        background-color: rgba(0, 0, 0, 0.863);
         position: absolute;
         display: flex;
         justify-content: space-around;
@@ -85,7 +119,7 @@
         justify-content: center;
     }
 
-    .CryptoButton {
+    #CryptoButton {
         padding: 8px 30px 8px 30px;
         font-weight: bold;
         border: none;
@@ -108,8 +142,15 @@
         width: 20px;
         position: absolute;
         /* border: 1px solid blue; */
-        margin-top: 10px;
+        margin-top: 5px;
         cursor: pointer;
+    }
+
+    .unactive {
+        background-image: linear-gradient(95deg, #444444, #1c1c1c) !important;
+        color: #707070 !important;
+        transition: 0.5s;
+        cursor: initial !important;
     }
 
 </style>
