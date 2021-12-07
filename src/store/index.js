@@ -13,6 +13,7 @@ export default createStore({
       uid: '',
       dataCrypto: null,
     },
+    actualPrice: 400,
   },
   mutations: {
     setError: function (state, error) {
@@ -25,8 +26,19 @@ export default createStore({
       state.userData.uid = uid;
     },
     setUserDataCrypto: function (state, dataCrypto) {
-      state.userData.dataCrypto = dataCrypto;
+      state.userData.dataCrypto = dataCrypto.cryptoList;
       console.log(state.userData.dataCrypto)
+    },
+  },
+  getters: {
+    getUserDataEmail: state => {
+      return state.userData.email
+    },
+    getUserDataUid: state => {
+      return state.userData.uid
+    },
+    getUserDataCrypto: state => {
+      return state.userData.dataCrypto
     },
   },
   actions: {
@@ -106,10 +118,13 @@ export default createStore({
         });
       })
     },
-    loadDataCrypto: ({commit}) => {
+    loadDataCrypto: ({commit}, data) => {
+      console.log(data)
       return new Promise(Validated => {
-        const dataDoc = getDoc(doc(db, 'User', this.userData.uid))
-        commit('setUserDataCrypto', dataDoc)
+        getDoc(doc(db, 'User', data)).then((snapshot ) => {
+          /* console.log(snapshot.data()) */
+          commit('setUserDataCrypto', snapshot.data())
+        })
         Validated()
       })
     }

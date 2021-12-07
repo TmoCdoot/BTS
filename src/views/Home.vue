@@ -1,4 +1,4 @@
-<template>
+<template>  
     <div v-if="addCrypto == true">
       <WidgetAddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
     </div>
@@ -61,7 +61,7 @@ import WidgetWinLoss from "@/components/WidgetWinLoss.vue";
 import WidgetCryptoList from "@/components/WidgetCryptoList.vue";
 import WidgetAddCrypto from '@/components/WidgetAddCrypto.vue'
 import { mapState } from 'vuex'
-import { auth, signOut, onAuthStateChanged } from '../plug-in/firebase.js';
+import { auth, signOut } from '../plug-in/firebase.js';
 
 
 export default {
@@ -110,15 +110,6 @@ export default {
       signOut(auth);
       this.$router.push('/')
     },
-    loadUser: function() {
-      onAuthStateChanged(auth, user => { 
-        //console.log(user)
-        if (user) {
-          this.email = user.email
-          this.uid = user.uid
-        }
-      });
-    },
     changePage: function (pageLoad) {
       if (this.page != pageLoad) {
         this.page = pageLoad
@@ -130,17 +121,18 @@ export default {
         if (this.addCrypto == true) {
           this.addCrypto = false
         } else {
-          /* console.log("fdzde") */
+          console.log("fdzde")
           this.addCrypto = true
         }
       }
     }
   },
   beforeMount() {
-    /* this.loadUser() */
-    this.$store.dispatch("loadDataUser")
-    this.$store.dispatch("loadDataCrypto")
-  }
+      const self = this;
+      this.$store.dispatch('loadDataUser').then(() => {
+        self.$store.dispatch('loadDataCrypto', this.$store.state.userData.uid)
+      })
+    }
 };
 </script>
 

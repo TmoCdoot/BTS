@@ -21,28 +21,16 @@
           <tr>
             <td class="bottomBorder" colspan="5"></td>
           </tr>
-          <tr>
-            <td>BTC</td>
-            <td>61 347</td>
-            <td>58 241</td>
-            <td>0.156</td>
-            <td>-2.14%</td>
-          </tr>
-          <tr>
-            <td>BTC</td>
-            <td>61 347</td>
-            <td>58 241</td>
-            <td>0.156</td>
-            <td>-2.14%</td>
-          </tr>
-          <tr>
-            <td>BTC</td>
-            <td>61 347</td>
-            <td>58 241</td>
-            <td>0.156</td>
-            <td>-2.14%</td>
-          </tr>
-        </table>
+        <!-- <div v-for="data in userData.dataCrypto" :key="data"> -->
+            <tr v-for="value in userData.dataCrypto" :key="value">
+              <td>{{ value.crypto }}</td>
+              <td>{{ value.buyPrice }}</td>
+              <td>{{ actualPrice }}</td>
+              <td>{{ value.quantity }}</td>
+            </tr>           
+          </table>
+          <!-- {{ userData.dataCrypto.cryptoList.crypto }} -->
+<!--         </div> -->
       </div>
       <div class="buttonContener">
         <div>
@@ -54,6 +42,8 @@
 
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: "WidgetStat",
     components: {
@@ -64,6 +54,7 @@
       }
     },
     computed: {
+      ...mapState(['userData', 'actualPrice']),
       activeButtonMty: function () {
         if (this.graph == "mty") {
           return true
