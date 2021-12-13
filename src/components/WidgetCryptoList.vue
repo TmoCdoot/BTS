@@ -47,8 +47,6 @@
 
   export default {
     name: "WidgetStat",
-    components: {
-    },
     data: function () {
       return {
         graph: 'wky',
