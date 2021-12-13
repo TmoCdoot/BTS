@@ -4,15 +4,15 @@
         <div class="widgetBoxConterner">
             <div class="widgetText widgetText-align">
                 <div class="topBox">
-                    5 460 $
+                    {{ winLostValue-deposit }}$
                 </div>
                 <div class="bottomBox">
-                    4 474 €
+                    {{ (winLostValue-deposit)*0.89 }}€
                 </div>
             </div>
             <div class="widgetText">
                 <div class="topBox">
-                    +57 %
+                    {{ (((winLostValue/deposit)-1)*100).toFixed(2) }}%
                 </div>
             </div>  
         </div>
@@ -20,11 +20,16 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
 export default {
   name: "WidgetDeposit",
   props: {
-    
+    deposit: Number,
   },
+  computed: {
+    ...mapState(['winLostValue']),
+  }
 }
 </script>
 

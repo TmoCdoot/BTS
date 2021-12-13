@@ -12,11 +12,12 @@ export default createStore({
     userData: {
       email: '',
       uid: '',
-      deposit: '',
+      deposit: 0,
       dataCrypto: null,
       listCryptoUser: [],
     },
     actualPrice: [ ],
+    winLostValue: 0,
   },
   mutations: {
     setError: function (state, error) {
@@ -35,16 +36,18 @@ export default createStore({
       }
     },
     setUserDataDeposit: function (state, dataCrypto) {
-      state.userData.deposit = dataCrypto.deposit;
+      state.userData.deposit = parseInt(dataCrypto.deposit);
     },
 
     setActuelPrice: function (state, returnApi ) {
       for (var i=0; i<Object.keys(returnApi['param']).length; i++) {
         state.userData.dataCrypto[i].priceNow = (returnApi['test'][returnApi['param'][i]].quote.USD.price).toFixed(2)
-        /* console.log(state.userData.dataCrypto[i].priceNow) */
       }
-      
+       /* console.log(state.userData.dataCrypto) */
     },
+    setWinLostValue: function (state, value) {
+      state.winLostValue = value;
+    }
 
   },
   getters: {
@@ -166,6 +169,18 @@ export default createStore({
           }
         )
       })
+    },
+
+    loadWinLostValue: ({commit}, dataUser) => {
+      let tab = []
+      let result = 0
+      for (var i=0; i<Object.keys(dataUser).length; i++) {
+        tab[i] = parseInt((dataUser[i].quantity*dataUser[i].priceNow).toFixed(2))
+      }
+      for (var b=0; b<tab.length; b++) {
+        result = (result+tab[b])
+      }
+      commit('setWinLostValue', result)
     }
   },
   modules: {},

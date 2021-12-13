@@ -32,7 +32,7 @@
             <div class="rightHomeContener">
               <div class="depoWinWidgetContener">
                 <WidgetDeposit v-bind:deposit="userData.deposit"/> <!-- un widget en fonction de chaque element-->
-                <WidgetWinLoss/>
+                <WidgetWinLoss v-bind:deposit="userData.deposit"/>
               </div>
               <div class="cryptoListContener">
                 <WidgetCryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userData']),
+    ...mapState(['userData', 'actualPrice']),
     activeButtonHome: function () {
       if (this.page == 'home') {
         return true
@@ -130,7 +130,9 @@ export default {
       const self = this;
       this.$store.dispatch('loadDataUser').then(() => {
         self.$store.dispatch('loadDataCrypto', this.$store.state.userData.uid).then(() => {
-          self.$store.dispatch('loadCryptoPrice', this.$store.state.userData.listCryptoUser)
+          self.$store.dispatch('loadCryptoPrice', this.$store.state.userData.listCryptoUser).then(() => {
+            self.$store.dispatch('loadWinLostValue', this.$store.state.userData.dataCrypto)
+          })
         })
       })
     }

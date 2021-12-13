@@ -22,7 +22,7 @@
     export default {
     name: "WidgetDeposit",
     props: {
-        deposit: String
+        deposit: Number,
     },
     data: function () {
         return {
