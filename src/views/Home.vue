@@ -31,7 +31,7 @@
             </div>
             <div class="rightHomeContener">
               <div class="depoWinWidgetContener">
-                <WidgetDeposit/> <!-- un widget en fonction de chaque element-->
+                <WidgetDeposit v-bind:deposit="userData.deposit"/> <!-- un widget en fonction de chaque element-->
                 <WidgetWinLoss/>
               </div>
               <div class="cryptoListContener">
@@ -121,16 +121,17 @@ export default {
         if (this.addCrypto == true) {
           this.addCrypto = false
         } else {
-          console.log("fdzde")
           this.addCrypto = true
         }
       }
-    }
+    }, 
   },
   beforeMount() {
       const self = this;
       this.$store.dispatch('loadDataUser').then(() => {
-        self.$store.dispatch('loadDataCrypto', this.$store.state.userData.uid)
+        self.$store.dispatch('loadDataCrypto', this.$store.state.userData.uid).then(() => {
+          self.$store.dispatch('loadCryptoPrice', this.$store.state.userData.listCryptoUser)
+        })
       })
     }
 };

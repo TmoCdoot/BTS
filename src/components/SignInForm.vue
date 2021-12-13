@@ -36,7 +36,7 @@ export default {
   computed: {
     ...mapState(['error']),
     noEmptyField: function () {
-      if (this.email != '' && this.password != '' && this.confirm_pass != '' && this.deposit != '') {
+      if (this.email != '' && this.password != '') {
         return true
       } else {
         return false

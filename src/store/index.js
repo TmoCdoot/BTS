@@ -1,5 +1,6 @@
 import { arrayUnion } from "@firebase/firestore";
 import { createStore } from "vuex";
+import axios from 'axios' 
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc, onAuthStateChanged, getDoc } from "../plug-in/firebase.js";
 //import createPersistedState from "vuex-persistedstate";
 
@@ -7,13 +8,15 @@ export default createStore({
   //plugins: [createPersistedState()],
   state: {
     error: '',
-    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH'],
+    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB'],
     userData: {
       email: '',
       uid: '',
+      deposit: '',
       dataCrypto: null,
+      listCryptoUser: [],
     },
-    actualPrice: 400,
+    actualPrice: [ ],
   },
   mutations: {
     setError: function (state, error) {
@@ -27,8 +30,22 @@ export default createStore({
     },
     setUserDataCrypto: function (state, dataCrypto) {
       state.userData.dataCrypto = dataCrypto.cryptoList;
-      console.log(state.userData.dataCrypto)
+      for (var i=0; i<Object.keys(dataCrypto.cryptoList).length; i++) {
+        state.userData.listCryptoUser[i] = dataCrypto.cryptoList[i].crypto
+      }
     },
+    setUserDataDeposit: function (state, dataCrypto) {
+      state.userData.deposit = dataCrypto.deposit;
+    },
+
+    setActuelPrice: function (state, returnApi ) {
+      for (var i=0; i<Object.keys(returnApi['param']).length; i++) {
+        state.userData.dataCrypto[i].priceNow = (returnApi['test'][returnApi['param'][i]].quote.USD.price).toFixed(2)
+        /* console.log(state.userData.dataCrypto[i].priceNow) */
+      }
+      
+    },
+
   },
   getters: {
     getUserDataEmail: state => {
@@ -88,7 +105,7 @@ export default createStore({
     addOnWallet: ({commit}, cryptoInfo) => {
       return new Promise(validated => {
         if (cryptoInfo['crypto']) {
-          updateDoc(doc(db, "User", "Ex14xbkDTvUH1YzHPeSje59cB0z1"), {
+          updateDoc(doc(db, "User", cryptoInfo['uid']), {
               cryptoList: arrayUnion({
                 crypto: cryptoInfo['crypto'],
                 buyPrice: cryptoInfo['buyprice'],
@@ -119,13 +136,35 @@ export default createStore({
       })
     },
     loadDataCrypto: ({commit}, data) => {
-      console.log(data)
+/*       console.log(data) */
       return new Promise(Validated => {
         getDoc(doc(db, 'User', data)).then((snapshot ) => {
           /* console.log(snapshot.data()) */
           commit('setUserDataCrypto', snapshot.data())
+          commit('setUserDataDeposit', snapshot.data())
+        }).then(() => {
+          Validated(true)
         })
-        Validated()
+      })
+    },
+
+    loadCryptoPrice: ({commit}, params) => {
+      return new Promise(validated => {
+        let list = params.toString()
+        axios({
+          method: 'GET',
+          url: 'http://localhost:8080/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
+        }).then(result => {
+          commit('setActuelPrice', { 
+            test: result.data.data,
+            param: params, 
+          })
+          validated(true)
+          },
+          error => {
+            validated(error)
+          }
+        )
       })
     }
   },

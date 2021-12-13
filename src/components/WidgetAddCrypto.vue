@@ -63,12 +63,21 @@
                     crypto: this.crypto,
                     buyprice: this.buyprice,
                     quantity: this.quantity,
+                    uid: this.$store.state.userData.uid
                 }).then((e) => {
                 /* self.$router.push('/home') */
                     if (e) {
-                        self.$emit('ChangeValueAddCrypto', true);
+                        self.$store.dispatch("loadDataCrypto", this.$store.state.userData.uid).then((e) => {
+                            if (e) {
+                                self.$store.dispatch("loadCryptoPrice", this.$store.state.userData.listCryptoUser).then((e) => {
+                                    if (e) {
+                                        self.$emit('ChangeValueAddCrypto', true);
+                                    }    
+                                })
+                            }
+                        })
                     }
-                console.log(this.uid)
+                /* console.log(this.uid) */
                 })
             }
         }

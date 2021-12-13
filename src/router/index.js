@@ -20,7 +20,7 @@ const routes = [
     name: "Home",
     component: Home,
     beforeEnter: loginRequired
-  }
+  },
 ];
 
 //probleme avec la fonction revoir celle-ci pour plus propre probleme callback

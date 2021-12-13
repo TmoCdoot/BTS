@@ -7,10 +7,10 @@
             </div>
             <div class="widgetImg widgetImg-align">
                 <div class="topBox">
-                    5 460 $
+                    {{ deposit }}$
                 </div>
                 <div class="bottomBox">
-                    4 474 €
+                    {{ Math.round(deposit*0.89) }}€
                 </div>
             </div>  
         </div>
@@ -18,12 +18,18 @@
 </template>
 
 <script>
-export default {
-  name: "WidgetDeposit",
-  props: {
-    
-  },
-}
+
+    export default {
+    name: "WidgetDeposit",
+    props: {
+        deposit: String
+    },
+    data: function () {
+        return {
+            depositEur: (this.deposit) / 0.89, 
+        }
+    },
+    }
 </script>
 
 <style scoped lang="scss">

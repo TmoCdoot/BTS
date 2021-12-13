@@ -24,9 +24,10 @@
         <!-- <div v-for="data in userData.dataCrypto" :key="data"> -->
             <tr v-for="value in userData.dataCrypto" :key="value">
               <td>{{ value.crypto }}</td>
-              <td>{{ value.buyPrice }}</td>
-              <td>{{ actualPrice }}</td>
+              <td>{{ value.buyPrice }}$</td>
+              <td>{{ value.priceNow }}$</td>
               <td>{{ value.quantity }}</td>
+              <td>{{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}%</td>
             </tr>           
           </table>
           <!-- {{ userData.dataCrypto.cryptoList.crypto }} -->
@@ -132,7 +133,7 @@
     }
     
     .listContener {
-      border: 1px solid red;
+      /* border: 1px solid red; */
       margin-bottom: 15px;
     }.tabList {
       width: 100%;
