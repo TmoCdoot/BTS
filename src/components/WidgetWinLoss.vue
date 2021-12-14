@@ -7,7 +7,7 @@
                     {{ winLostValue-deposit }}$
                 </div>
                 <div class="bottomBox">
-                    {{ (winLostValue-deposit)*0.89 }}€
+                    {{ ((winLostValue-deposit)*0.89).toFixed(2) }}€
                 </div>
             </div>
             <div class="widgetText">

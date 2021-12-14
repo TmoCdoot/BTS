@@ -2,13 +2,11 @@ import { arrayUnion } from "@firebase/firestore";
 import { createStore } from "vuex";
 import axios from 'axios' 
 import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc, onAuthStateChanged, getDoc } from "../plug-in/firebase.js";
-//import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
-  //plugins: [createPersistedState()],
   state: {
     error: '',
-    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB'],
+    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB', 'FTM', 'LUNA', 'SOL', 'VET', 'DENT', 'AXS', 'DUCK', 'SOLR', 'BCOIN', 'USDC', 'USDT'], /* A CHANGER METTRE LES TOKEN SUR LA BASE DE DONNER CAR RISQUE DE CHANGEMENT OU HACK */
     userData: {
       email: '',
       uid: '',
@@ -23,59 +21,57 @@ export default createStore({
     setError: function (state, error) {
       state.error = error;
     },
-    setUserDataEmail: function (state, email) {
+    setUserEmail: function (state, email) {
       state.userData.email = email;
     },
-    setUserDataUid: function (state, uid) {
+    setUserUid: function (state, uid) {
       state.userData.uid = uid;
     },
-    setUserDataCrypto: function (state, dataCrypto) {
-      state.userData.dataCrypto = dataCrypto.cryptoList;
-      for (var i=0; i<Object.keys(dataCrypto.cryptoList).length; i++) {
-        state.userData.listCryptoUser[i] = dataCrypto.cryptoList[i].crypto
+    setUserDataCrypto: function (state, snapshotResult) {
+      state.userData.dataCrypto = snapshotResult.cryptoList;
+      for (var i=0; i<Object.keys(snapshotResult.cryptoList).length; i++) {
+        state.userData.listCryptoUser[i] = snapshotResult.cryptoList[i].crypto
       }
     },
-    setUserDataDeposit: function (state, dataCrypto) {
-      state.userData.deposit = parseInt(dataCrypto.deposit);
+    setUserDeposit: function (state, snapshotResult) {
+      state.userData.deposit = parseInt(snapshotResult.deposit);
     },
-
     setActuelPrice: function (state, returnApi ) {
-      for (var i=0; i<Object.keys(returnApi['param']).length; i++) {
-        state.userData.dataCrypto[i].priceNow = (returnApi['test'][returnApi['param'][i]].quote.USD.price).toFixed(2)
+      for (var i=0; i<Object.keys(returnApi['userCryptoList']).length; i++) {
+        state.userData.dataCrypto[i].priceNow = (returnApi['resultRequest'][returnApi['userCryptoList'][i]].quote.USD.price).toFixed(3)
       }
-       /* console.log(state.userData.dataCrypto) */
     },
-    setWinLostValue: function (state, value) {
-      state.winLostValue = value;
+    setWinLostValue: function (state, resultSum) {
+      state.winLostValue = resultSum;
     }
-
   },
   getters: {
-    getUserDataEmail: state => {
+    getUserEmail: state => {
       return state.userData.email
     },
-    getUserDataUid: state => {
+    getUserUid: state => {
       return state.userData.uid
     },
     getUserDataCrypto: state => {
       return state.userData.dataCrypto
     },
+    getUserListCrypto: state =>{
+      return state.userData.listCryptoUser
+    }
   },
   actions: {
-    createAuth: ({commit}, userInfo) => {
-      return new Promise(userUidReturn => {
+    signUp: ({commit}, userInfo) => {
+      return new Promise(Validated => {
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
         var depositReg = new RegExp(/-+/);
         if (emailReg.test(userInfo["email"])) {
           if (userInfo["password"] == userInfo["confirm_pass"]) {
             if (!depositReg.test(userInfo["deposit"])) {
-              createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userCredential) => {
-                const userUid = userCredential.user.uid;
-                //console.log(userCredential.user);
-                userUidReturn(userUid);
+              createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userData) => {
+                const userUid = userData.user.uid;
+                Validated(userUid);
               }).catch((error) => {
                 commit('setError', error.code)
-                console.log(error.code)
               })
             } else {
               commit('setError', 'err_depo');
@@ -89,15 +85,12 @@ export default createStore({
       })
     },
     signIn: ({commit}, userInfo) => {
-      return new Promise(validated => {
+      return new Promise(Validated => {
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
         if (emailReg.test(userInfo["email"])) {
           signInWithEmailAndPassword(auth, userInfo['email'], userInfo['password']).then(() => {
-            //console.log(userInfo['email']);
-            validated(true)
-          })
-          .catch((/*error*/) => {
-            //console.log(error)
+            Validated(true)
+          }).catch(() => {
             commit('setError', 'err_mail')
           })
         } else {
@@ -106,7 +99,7 @@ export default createStore({
       })
     },
     addOnWallet: ({commit}, cryptoInfo) => {
-      return new Promise(validated => {
+      return new Promise(Validated => {
         if (cryptoInfo['crypto']) {
           updateDoc(doc(db, "User", cryptoInfo['uid']), {
               cryptoList: arrayUnion({
@@ -114,73 +107,63 @@ export default createStore({
                 buyPrice: cryptoInfo['buyprice'],
                 quantity: cryptoInfo['quantity']
               })
-          }).catch((/*error*/) => {
-            //console.log(error)
+          }).catch(() => {
             commit('setError', 'err_addCrypto')
           })
-          validated(true)
+          Validated(true)
         }      
       })
     },
-
-
-    
-
-    loadDataUser: ({commit}) => {
+    loadUserData: ({commit}) => {
       return new Promise(Validated => {
         onAuthStateChanged(auth, user => { 
-          //console.log(user)
           if (user) {
-            commit('setUserDataEmail', user.email)
-            commit('setUserDataUid', user.uid)
+            commit('setUserEmail', user.email)
+            commit('setUserUid', user.uid)
           }
           Validated()
         });
       })
     },
-    loadDataCrypto: ({commit}, data) => {
-/*       console.log(data) */
+    loadDataCrypto: ({commit}, userUid) => {
       return new Promise(Validated => {
-        getDoc(doc(db, 'User', data)).then((snapshot ) => {
-          /* console.log(snapshot.data()) */
+        getDoc(doc(db, 'User', userUid)).then((snapshot ) => {
           commit('setUserDataCrypto', snapshot.data())
-          commit('setUserDataDeposit', snapshot.data())
+          commit('setUserDeposit', snapshot.data())
         }).then(() => {
           Validated(true)
         })
       })
     },
-
-    loadCryptoPrice: ({commit}, params) => {
-      return new Promise(validated => {
-        let list = params.toString()
+    loadCryptoPrice: ({commit}, userCryptoList) => {
+      return new Promise(Validated => {
+        let list = userCryptoList.toString()
         axios({
           method: 'GET',
           url: 'http://localhost:8080/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
         }).then(result => {
           commit('setActuelPrice', { 
-            test: result.data.data,
-            param: params, 
+            resultRequest: result.data.data,
+            userCryptoList: userCryptoList, 
           })
-          validated(true)
+          Validated(true)
           },
           error => {
-            validated(error)
+            Validated(error)
           }
         )
       })
     },
-
-    loadWinLostValue: ({commit}, dataUser) => {
+    loadWinLostValue: ({commit}, dataCrypto) => {
       let tab = []
-      let result = 0
-      for (var i=0; i<Object.keys(dataUser).length; i++) {
-        tab[i] = parseInt((dataUser[i].quantity*dataUser[i].priceNow).toFixed(2))
+      let resultSum = 0
+      for (var i=0; i<Object.keys(dataCrypto).length; i++) {
+        tab[i] = parseInt((dataCrypto[i].quantity*dataCrypto[i].priceNow).toFixed(2))
       }
       for (var b=0; b<tab.length; b++) {
-        result = (result+tab[b])
+        resultSum = (resultSum+tab[b])
       }
-      commit('setWinLostValue', result)
+      commit('setWinLostValue', resultSum)
     }
   },
   modules: {},

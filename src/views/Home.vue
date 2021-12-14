@@ -128,10 +128,10 @@ export default {
   },
   beforeMount() {
       const self = this;
-      this.$store.dispatch('loadDataUser').then(() => {
-        self.$store.dispatch('loadDataCrypto', this.$store.state.userData.uid).then(() => {
-          self.$store.dispatch('loadCryptoPrice', this.$store.state.userData.listCryptoUser).then(() => {
-            self.$store.dispatch('loadWinLostValue', this.$store.state.userData.dataCrypto)
+      this.$store.dispatch('loadUserData').then(() => {
+        self.$store.dispatch('loadDataCrypto', this.$store.getters.getUserUid).then(() => {
+          self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+            self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
           })
         })
       })

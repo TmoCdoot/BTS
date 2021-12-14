@@ -63,13 +63,12 @@
                     crypto: this.crypto,
                     buyprice: this.buyprice,
                     quantity: this.quantity,
-                    uid: this.$store.state.userData.uid
+                    uid: this.$store.getters.getUserUid
                 }).then((e) => {
-                /* self.$router.push('/home') */
                     if (e) {
-                        self.$store.dispatch("loadDataCrypto", this.$store.state.userData.uid).then((e) => {
+                        self.$store.dispatch("loadDataCrypto", this.$store.getters.getUserUid).then((e) => {
                             if (e) {
-                                self.$store.dispatch("loadCryptoPrice", this.$store.state.userData.listCryptoUser).then((e) => {
+                                self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                                     if (e) {
                                         self.$emit('ChangeValueAddCrypto', true);
                                     }    

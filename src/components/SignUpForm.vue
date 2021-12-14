@@ -28,7 +28,7 @@
               Your password must have 6 character minimum
             </div>
             <div>
-              <button @click="createAccount" id="buttonSignIn" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Sign Up</button>
+              <button @click="signUp" id="buttonSignIn" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Sign Up</button>
             </div><br>
           
         </div>
@@ -63,19 +63,21 @@ export default {
     }
   },
   methods: {
-      createAccount: function () {
+    signUp: function () {
         const deposit = this.deposit
         const self = this
-        this.$store.dispatch("createAuth", {
+        this.$store.dispatch("signUp", {
             email: this.email,
             password: this.password,
             confirm_pass: this.confirm_pass,
             deposit: this.deposit,
-        }).then((userUidReturn) => {
-          setDoc(doc(db, "User", userUidReturn), { 
+        }).then((userUid) => {
+          setDoc(doc(db, "User", userUid), { 
             deposit: deposit,
             crypto: {},
-          }).then(() => {self.$router.push('/')})
+          }).then(() => {
+            self.$router.push('/')
+          })
       })
     }
   }
