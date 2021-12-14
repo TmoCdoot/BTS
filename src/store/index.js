@@ -6,7 +6,7 @@ import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 export default createStore({
   state: {
     error: '',
-    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB', 'FTM', 'LUNA', 'SOL', 'VET', 'DENT', 'AXS', 'DUCK', 'SOLR', 'BCOIN', 'USDC', 'USDT'], /* A CHANGER METTRE LES TOKEN SUR LA BASE DE DONNER CAR RISQUE DE CHANGEMENT OU HACK */
+    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB', 'FTM', 'LUNA', 'SOL', 'VET', 'DENT', 'AXS', 'DUCK', 'SOLR', 'BCOIN', 'USDC', 'USDT', 'CSPR'], /* A CHANGER METTRE LES TOKEN SUR LA BASE DE DONNER CAR RISQUE DE CHANGEMENT OU HACK */
     userData: {
       email: '',
       uid: '',
