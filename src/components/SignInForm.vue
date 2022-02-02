@@ -71,7 +71,7 @@ export default {
   color: whitesmoke;
 }
 .contener {
-  background-color: rgb(39, 37, 37);
+  background-color: #29353E;
   width: 400px;
   border-radius: 10px;
 }
@@ -81,22 +81,22 @@ export default {
   border-radius: 15px;
   padding-left: 10px;
   font-weight: bold;
-  background-color: rgb(233, 233, 233);
+  background-color: #1E2124;
 }
 ::placeholder {
-  color: #9c9c9c;
+  color: #919191;
 }
 #buttonSignIn {
-  padding: 12px 130px 12px 130px;
+  padding: 12px 115px 12px 115px;
   font-weight: bold;
   border: none;
   border-radius: 15px;
-  background: linear-gradient(95deg, #e67429, #f3422b);
+  background: #65AEE3;
   color: aliceblue;
   font-size: 18px;
 }
 .buttonLink {
-  color: #e67429;
+  color: #6C9FC4;
 }
 p {
   font-style: oblique;

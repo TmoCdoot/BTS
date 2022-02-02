@@ -95,7 +95,7 @@ export default {
   color: whitesmoke;
 }
 .contener {
-  background-color: rgb(39, 37, 37);
+  background-color: #29353E;
   width: 400px;
   border-radius: 15px;
 }
@@ -105,23 +105,23 @@ export default {
   border-radius: 15px;
   padding-left: 10px;
   font-weight: bold;
-  background-color: rgb(233, 233, 233);
+  background-color: #1E2124;
 }
 ::placeholder {
-  color: #9c9c9c;
+  color: #919191;
 }
 #buttonSignIn {
-  padding: 12px 125px 12px 125px;
+  padding: 12px 115px 12px 115px;
   font-weight: bold;
   border: none;
   border-radius: 15px;
-  background-image: linear-gradient(95deg, #e67429, #f3422b);
+  background: #65AEE3;
   color: aliceblue;
   font-size: 18px;
   transition: 0.5s;
 }
 .buttonLink {
-  color: #e67429;
+  color: #6C9FC4;
 }
 p {
   font-style: oblique;

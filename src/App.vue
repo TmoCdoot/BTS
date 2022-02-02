@@ -4,24 +4,34 @@
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family:  Helvetica Neue;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #252525;
+  color: #ffffff;
   height: 100%;
 }
 
 html {
   height: 100%;
   width: 100%;
-  background: linear-gradient(0deg, #100a0a, #0e0909);
+  background: #1E2124;
   margin: 0;
 }
 body {
   height: 100%;
   width: 100%;
   margin: 0;
+}
+
+input {
+  color: white;
+}
+
+@font-face {
+ font-family: "Helvetica";
+ src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
+        url("/fonts/OpenSans-Regular-webfont.woff") format("woff");
 }
 
 </style>

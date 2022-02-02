@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     <div>
-      <img alt="Logo" src="../assets/logo.png" />
+      <img alt="Logo" src="../assets/logov1.png" />
       <SignInForm msg="Sign in"/>
     </div>
   </div>
