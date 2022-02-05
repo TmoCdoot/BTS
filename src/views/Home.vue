@@ -1,6 +1,6 @@
 <template>  
     <div v-if="addCrypto == true">
-      <WidgetAddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
+      <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
     </div>
     <div class="topContener">
       <div class="logoContener">
@@ -11,10 +11,10 @@
     <div class="mainContener">
             <div class="leftHomeContener">
               <div class="assetsList">
-                <WidgetCryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
+                <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
               </div>
               <div class="walletsList">
-                zefzeezf
+                <ListWallet v-bind:deposit="userData.deposit"/>
               </div>
               <!-- <div class="leftStatContener">
                 <WidgetStat/>
@@ -22,11 +22,22 @@
             </div>
             <div class="rightHomeContener">
               <div class="chartsLine">
-                <WidgetStat/>
+                <ChartStat/>
               </div>
               <div class="statisticList">
-                <WidgetDeposit v-bind:deposit="userData.deposit"/> un widget en fonction de chaque element
-                <WidgetWinLoss v-bind:deposit="userData.deposit"/>
+                <div class="userblock">
+                  <div class="titleuser">
+                    <h1>Statistic</h1>
+                  </div>
+                  <div class="conternsuer">
+                    <Deposit v-bind:deposit="userData.deposit"/>
+                    <WinLost v-bind:deposit="userData.deposit"/>
+                  </div>
+                  <div class="disconnectContener">
+                      <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
+                  </div>
+                </div>
+                
               </div>
                
               
@@ -45,12 +56,12 @@
 
 <script>
     // @ is an alias to /src
-import WidgetDeposit from "@/components/WidgetDeposit.vue";
-import WidgetStat from "@/components/WidgetStat.vue";
-
-import WidgetWinLoss from "@/components/WidgetWinLoss.vue";
-import WidgetCryptoList from "@/components/WidgetCryptoList.vue";
-import WidgetAddCrypto from '@/components/WidgetAddCrypto.vue'
+import Deposit from "@/components/Deposit.widget.vue";
+import ChartStat from "@/components/ChartStat.widget.vue";
+import ListWallet from "@/components/ListWallet.widget.vue";
+import WinLost from "@/components/WinLost.widget.vue";
+import CryptoList from "@/components/CryptoList.widget.vue";
+import AddCrypto from '@/components/AddCrypto.widget.vue'
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -58,11 +69,12 @@ import { auth, signOut } from '../plug-in/firebase.js';
 export default {
   name: "Home",
   components: {
-    WidgetDeposit,
-    WidgetStat,
-    WidgetWinLoss,
-    WidgetAddCrypto,
-    WidgetCryptoList,
+    Deposit,
+    ChartStat,
+    WinLost,
+    AddCrypto,
+    CryptoList,
+    ListWallet,
   },
   data: function () {
     return {
@@ -132,9 +144,9 @@ export default {
 <style lang="scss">
 .topContener {
   /* background-color: yellowgreen; */
-  height: 100px;
+  height: 10%;
     width: 100%;
-    position: absolute;
+/*     position: absolute; */
   display: flex;
 }.logoContener {
   /* border: 1px solid red; */
@@ -151,16 +163,16 @@ export default {
 
 
 .disconnectContener {
-  width: 20%;
+  /* width: 20%; */
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
+    justify-content: center;
 }.disconnectButton {
-  padding: 8px 30px 8px 30px;
+  padding: 15px 50px 15px 50px;
   font-weight: bold;
   border: none;
   border-radius: 20px;
-  background: linear-gradient(95deg, #e67429, #f3422b);
+  background: #E04F5F;
   color: aliceblue;
   font-size: 18px;
   cursor: pointer;
@@ -169,7 +181,7 @@ export default {
 
 .mainContener {
   /* border: 1px solid blue; */
-    height: 100%;
+    height: 90%;
     width: 100%;
     display: flex;
 }
@@ -180,7 +192,7 @@ export default {
 }.leftHomeContener {
   /* border: 1px solid green; */
   width: 65%;
-  margin-top: 100px;
+  /* margin-top: 100px; */
 }.leftStatContener {
   display: flex;
   flex-direction: row;
@@ -201,17 +213,20 @@ export default {
   border: 1px solid white;
     height: 40%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .chartsLine {
-  border: 1px solid red;
+  /* border: 1px solid red; */
     height: 60%;
-    width: 100%;
+    margin-right: 60px;
 }
 
 .rightHomeContener {
   border: 1px solid red;
   width: 35%;
-  margin-top: 100px;
+  /* margin-top: 100px; */
 }.depoWinWidgetContener {
   /*border: 1px solid blue;*/
   display: flex;
@@ -232,4 +247,28 @@ button {
   color: whitesmoke;
 }
 
+.userblock {
+  background-color: #29353E;
+  width: 70%;
+    height: 80%;
+    border-radius: 20px;
+}
+.titleuser {
+  height: 50px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.conternsuer {
+  display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+h3 {
+  margin: 0px;
+}
 </style>

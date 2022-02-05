@@ -9,7 +9,7 @@
 
 <script>
 // @ is an alias to /src
-import SignInForm from "@/components/SignInForm.vue";
+import SignInForm from "@/components/SignInForm.widget.vue";
 
 export default {
   name: "SignIn",

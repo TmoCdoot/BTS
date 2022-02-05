@@ -1,10 +1,8 @@
 <template>
     <div class="depositContener">
-        <div class="titleContener">DEPOSIT PRICE</div>
+        <div class="titleContener">Deposit</div>
         <div class="widgetBoxConterner">
-            <div class="widgetImg">
-                <img src="../assets/plus.png" alt="add deposit" class="imgAdd"/>
-            </div>
+            
             <div class="widgetImg widgetImg-align">
                 <div class="topBox">
                     {{ deposit }}$
@@ -13,6 +11,9 @@
                     {{ Math.round(deposit*0.89) }}€
                 </div>
             </div>  
+            <div class="widgetImg">
+                <img src="../assets/plus.png" alt="add deposit" class="imgAdd"/>
+            </div>
         </div>
     </div>
 </template>
@@ -20,7 +21,7 @@
 <script>
 
     export default {
-    name: "WidgetDeposit",
+    name: "Deposit",
     props: {
         deposit: Number,
     },
@@ -45,7 +46,9 @@
     font-weight: bold;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
+    padding-left: 10px;
+    padding-top: 2px;
 }.widgetBoxConterner {
     /*border: 1px solid pink;*/
     height: 70%;
@@ -54,9 +57,10 @@
 }.widgetImg {
     /*border: 1px solid yellow;*/
     width: 50%;
-    display: flex;
+    margin-top: 5px;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
 }.imgAdd {
     width:40px;
 }.widgetImg-align {
@@ -65,10 +69,12 @@
 }.topBox {
     font-weight: bold;
     font-size: 20px;
+    padding-left: 10px;
 }.bottomBox {
     font-style: italic;
     font-size: 13px;
     color: #5c5c5c;
+    padding-left: 10px;
 }
 
 </style>

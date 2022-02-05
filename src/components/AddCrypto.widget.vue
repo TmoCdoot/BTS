@@ -4,11 +4,12 @@
         <div id="alignHozi">
             <div id="mainAddCrypotContener">
                 <div id="titre">
-                    Ajouter une nouvelle cryptomonnaie au porte-feuille
+                    <h2>Add new assets</h2>
                 </div>
                 <div id="mainCryptoChoose">
                     <div>
                         <select class="input" v-model="crypto">
+                            <option value="" selected disabled>Crypto</option>
                             <option v-for="listValue in valuesList" :key="listValue">{{ listValue }}</option>
                         </select>
                     </div><br>
@@ -20,9 +21,9 @@
                     </div>
                 </div>
                 <div id="addCryptoButton">
-                    <div>
+                    
                         <button @click="AddOnWallet" id="CryptoButton" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Add new Crypto</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -33,7 +34,7 @@
     import { mapState } from 'vuex'
 
     export default {
-        name: "WidgetAddCrypto",
+        name: "AddCrypto",
         data: function () {
             return {
                 crypto: 'BTC',
@@ -100,10 +101,10 @@
         flex-direction: column;
     }#mainAddCrypotContener {
         border: 1px solid red;
-        width: 600px;
-        height: 400px;
+        width: 400px;
+        height: 320px;
         border-radius: 15px;
-        background-color: #252525;
+        background-color: #29353E;
         color: white;
     }#titre {
         font-weight: bold;
@@ -114,13 +115,13 @@
         flex-direction: column;
         justify-content: center;
     }#mainCryptoChoose {
-        border: 1px solid green;
-        height: 200px;
+        /* border: 1px solid green; */
+        margin-bottom: 10px;
     }#addCryptoButton {
-        border: 1px solid yellow;
+        /* border: 1px solid yellow; */
         height: 70px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: center;
     }
 
@@ -131,29 +132,31 @@
     }
 
     #CryptoButton {
-        padding: 8px 30px 8px 30px;
+        padding: 10px 30px 10px 30px;
         font-weight: bold;
         border: none;
+        width: 200px;
         border-radius: 20px;
-        background: linear-gradient(95deg, #e67429, #f3422b);
+        background: #6C9FC4;
         color: aliceblue;
         font-size: 18px;
         cursor: pointer;
     }
 
     .input {
-        padding: 12px 130px 12px 40px;
+        padding: 12px 0px 12px 10px;
         border: none;
         border-radius: 15px;
-        padding-left: 10px;
+        /* padding-left: 10px; */
         font-weight: bold;
-        background-color: rgb(233, 233, 233);
+        background-color: #1E2124;
+        width: 250px;
     }
     .imgClose {
         width: 20px;
         position: absolute;
         /* border: 1px solid blue; */
-        margin-top: 5px;
+        margin-top: 20px;
         cursor: pointer;
     }
 
@@ -162,6 +165,11 @@
         color: #707070 !important;
         transition: 0.5s;
         cursor: initial !important;
+    }
+
+    select {
+        color: white;
+        width: 250px;
     }
 
 </style>

@@ -5,8 +5,8 @@
         <div class="buttonContener">
           <div>
             <button @click="AddCrypto" class="addButton">Add assets</button>
+          </div>
         </div>
-      </div>
       </div>
      <!--  <div class="listContener">
         <table class="tabList">
@@ -90,7 +90,7 @@
   import { mapState } from 'vuex'
 
   export default {
-    name: "WidgetStat",
+    name: "CryptoList",
     data: function () {
       return {
         graph: 'wky',

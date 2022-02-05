@@ -23,7 +23,7 @@
     import { mapState } from 'vuex'
 
 export default {
-  name: "WidgetDeposit",
+  name: "WinLost",
   props: {
     deposit: Number,
   },

@@ -1,27 +1,29 @@
 <template>
     <div class="statContener">
-      <div class="navStatContener">
-        <div class="navStatContener-align">
-          <ul class="navList">
-            <li class="liAlign"><button class="butttonBox" @click="changeButton('wky')" :class="{'activeButtonStat' : activeButtonWky}">WKY</button></li>
-            <li class="liAlign"><button class="butttonBox" @click="changeButton('dly')" :class="{'activeButtonStat' : activeButtonDly}">DLY</button></li>
-            <li class="liAlign"><button class="butttonBox" @click="changeButton('mty')" :class="{'activeButtonStat' : activeButtonMty}">MTY</button></li>
-          </ul>
-        </div>
+      <div class="titlestat title">
+        <h1 class="h1title">Line Chart</h1>
       </div>
       <div class="grahContener">
-        <StatChart :graph="graph"/>
+        <GraphBlock :graph="graph"/>
+      </div>
+      <div class="navStatContener">
+        <ul class="navList">
+          <li class="liAlign"><button class="butttonBox" @click="changeButton('wky')" :class="{'activeButtonStat' : activeButtonWky}">24H</button></li>
+          <li class="liAlign"><button class="butttonBox" @click="changeButton('dly')" :class="{'activeButtonStat' : activeButtonDly}">1D</button></li>
+          <li class="liAlign"><button class="butttonBox" @click="changeButton('mty')" :class="{'activeButtonStat' : activeButtonMty}">1W</button></li>
+          <li class="liAlign"><button class="butttonBox" @click="changeButton('mty')" :class="{'activeButtonStat' : activeButtonMty}">1M</button></li>
+        </ul>
       </div>
     </div>
 </template>
 
 <script>
-import StatChart from '@/components/StatChart.vue'
+import GraphBlock from '@/components/GraphBlock.widget.vue'
 
 export default {
-  name: "WidgetStat",
+  name: "ChartStat",
   components: {
-    StatChart,
+    GraphBlock,
   },
   data: function () {
     return {
@@ -64,17 +66,18 @@ export default {
 <style scoped lang="scss">
 .statContener {
   color: aliceblue;
-  background-color: #272525;
-  width: 500px;
-  height: 300px;
+  background-color: #29353E;
+  /* width: 500px; */
+  /* height: 100%; */
   border-radius: 15px;
+  padding-bottom: 10px;
   /*border: 1px solid green;*/
 }.navStatContener {
   /*border: 1px solid blue;*/
   width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
 }.navStatContener-align {
   /*border: 1px solid yellow;*/
   width: 200px;
@@ -90,20 +93,27 @@ export default {
   /*border: 1px solid yellow;*/
   padding: 4px 5px;
   border-radius: 15px;
-  background-color: #272525;
+  /* background-color: #272525; */
 }.liAlign {
   display: flex;
 }.butttonBox {
   /*border: 1px solid red;*/
   border-radius: 13px;
   padding: 7px 14px 7px 14px;
+  font-weight: bold;
 }.activeButtonStat {
-  border: 2px solid #EF4E2A;
-  color: #EF4E2A;
+  background-color: #49667C;
 }
 
 .grahContener {
   /* border: 1px solid red; */
-  height: 82%;
+  /* height: 70%; */
+}
+
+.h1title {
+  padding-left: 20px;
+}
+.titlestat {
+  height: 15%;
 }
 </style>

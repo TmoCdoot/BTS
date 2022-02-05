@@ -1,20 +1,20 @@
 <template>
     <div>
         <div v-if="graph == 'wky'">
-            <column-chart :data="chartDataDly" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+            <area-chart :data="chartDataDly" :colors="['#479EDD']" class="graph" label="PNL réaliser"></area-chart>
         </div>
         <div v-if="graph == 'dly'">
-            <column-chart :data="chartDataWky" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+            <area-chart :data="chartDataWky" :colors="['#479EDD']" class="graph" label="PNL réaliser"></area-chart>
         </div>
         <div v-if="graph == 'mty'"> 
-            <column-chart :data="chartDatatMty" :colors="['#EF4E2A']" class="graph" height="240px" label="PNL réaliser"></column-chart>
+            <area-chart :data="chartDatatMty" :colors="['#479EDD']" class="graph" label="PNL réaliser"></area-chart>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'StatChart',
+        name: 'GraphBlock',
         props: {
             graph: String,
         },
