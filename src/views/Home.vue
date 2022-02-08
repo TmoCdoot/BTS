@@ -2,7 +2,13 @@
     <div v-if="addCrypto == true">
       <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
     </div>
+    <div v-if="navWallet == true">
+      <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav"/>
+    </div>
     <div class="topContener">
+      <div class="burgerNav">
+        <img src="../assets/burger.png" alt="Burger" class="burger" @click="closeNav">
+      </div>
       <div class="logoContener">
         <img alt="Logo" src="../assets/logov1.png" class="logoBox"/>
       </div>
@@ -62,6 +68,7 @@ import ListWallet from "@/components/ListWallet.widget.vue";
 import WinLost from "@/components/WinLost.widget.vue";
 import CryptoList from "@/components/CryptoList.widget.vue";
 import AddCrypto from '@/components/AddCrypto.widget.vue'
+import NavWallet from '@/components/NavWallet.widget.vue'
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -75,12 +82,14 @@ export default {
     AddCrypto,
     CryptoList,
     ListWallet,
+    NavWallet
   },
   data: function () {
     return {
       page: 'home',
       graph: 'wky',
       addCrypto: false,
+      navWallet: false,
     }
   },
   computed: {
@@ -122,11 +131,28 @@ export default {
       if (data == true) {
         if (this.addCrypto == true) {
           this.addCrypto = false
+          document.getElementById('app').style.overflow = "initial";
         } else {
           this.addCrypto = true
+          document.getElementById('app').style.overflow = "hidden";
         }
       }
     }, 
+    ChangeValueWalletNav: function ( data ) {
+      if (data == true) {
+        if (this.navWallet == true) {
+          this.navWallet = false
+          document.getElementById('app').style.overflow = "initial";
+        } else {
+          this.navWallet = true
+          document.getElementById('app').style.overflow = "hidden";
+        }
+      }
+    },
+    closeNav: function () {
+      this.navWallet = true;  
+      document.getElementById('app').style.overflow = "hidden";
+    }
   },
   beforeMount() {
       const self = this;
@@ -167,6 +193,7 @@ export default {
   display: flex;
   align-items: center;
     justify-content: center;
+    margin-bottom: 15px;
 }.disconnectButton {
   padding: 15px 50px 15px 50px;
   font-weight: bold;
@@ -249,8 +276,8 @@ button {
 
 .userblock {
   background-color: #29353E;
-  width: 70%;
-    height: 80%;
+  /* width: 70%;
+    height: 80%; */
     border-radius: 20px;
 }
 .titleuser {
@@ -267,8 +294,72 @@ button {
     align-items: center;
     justify-content: space-around;
     margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 h3 {
   margin: 0px;
+}
+.burgerNav {
+  display: none;
+}
+
+@media screen and (max-width: 1360px) {
+  .mainContener {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .leftHomeContener {
+    width: 100%;
+    height: 80%;
+  }
+  .assetsList {
+    height: 100%;
+  }
+  .walletsList {
+    display: none;
+  }
+  .rightHomeContener {
+    width: 100%;
+  }
+  .chartsLine {
+    height: 80%;
+    margin-right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .statisticList {
+    padding-bottom: 10px;
+  }
+  .userblock {
+    width: auto;
+    height: auto;
+  }
+  .conternsuer {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .disconnectContener {
+    padding-bottom: 15px;
+  }
+
+  .burgerNav {
+    display: initial;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .burger {
+    width: 30px;
+  }
+}
+
+@media (max-width: 400px) and (max-height: 850px) {
+    .disconnectContener {
+        margin-bottom: 0px;
+    }
 }
 </style>

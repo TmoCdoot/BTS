@@ -34,4 +34,10 @@ input {
         url("/fonts/OpenSans-Regular-webfont.woff") format("woff");
 }
 
+@media screen and (max-height: 815px) {
+  #app {
+    height: 815px;
+  }
+}
+
 </style>

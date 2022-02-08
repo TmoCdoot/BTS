@@ -58,7 +58,7 @@
               {{ value.priceNow }}$
             </div>  
           </div>
-          <div class="sousBox text">
+          <div class="sousBox text mobile">
             <div class="font">
               Quantity
             </div>
@@ -66,7 +66,7 @@
               {{ value.quantity }}
             </div>  
           </div>
-          <div class="sousBox text">
+          <div class="sousBox text mobile">
             <div class="font">
               Win / Loss
             </div>
@@ -267,5 +267,19 @@
     ::-webkit-scrollbar-track {
       background: #28333B;
       border-radius: 10px;
+    }
+
+    @media (max-width: 400px) and (max-height: 850px) {
+      .mobile {
+        display: none;
+      }
+      .statContener {
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+      .img {
+        width: 30px;
+        height: 30px;
+      }
     }
 </style>

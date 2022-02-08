@@ -5,14 +5,14 @@
             
             <div class="widgetImg widgetImg-align">
                 <div class="topBox">
-                    {{ deposit }}$
+                    {{ deposit }} $
                 </div>
                 <div class="bottomBox">
-                    {{ Math.round(deposit*0.89) }}€
+                    {{ Math.round(deposit*0.89) }} €
                 </div>
             </div>  
-            <div class="widgetImg">
-                <img src="../assets/plus.png" alt="add deposit" class="imgAdd"/>
+            <div class="widgetImg img">
+                <img src="../assets/pencil.png" alt="add deposit" class="imgAdd"/>
             </div>
         </div>
     </div>
@@ -41,6 +41,7 @@
     width: 180px;
     height: 100px;
     border-radius: 15px;
+    margin-right: 10px;
 }.titleContener {
     height: 30%;
     font-weight: bold;
@@ -54,10 +55,12 @@
     height: 70%;
     display: flex;
     flex-direction: row;
+    
 }.widgetImg {
     /*border: 1px solid yellow;*/
     width: 50%;
     margin-top: 5px;
+    text-align: initial;
     /* display: flex;
     align-items: center;
     justify-content: center; */
@@ -75,6 +78,20 @@
     font-size: 13px;
     color: #5c5c5c;
     padding-left: 10px;
+}
+.img {
+    text-align: center;
+}
+
+@media screen and (max-width: 1360px) {
+    .depositContener {
+        margin-right: 10px;
+    }
+}
+@media (max-width: 400px) and (max-height: 850px) {
+    .depositContener {
+        width: 150px;
+    }
 }
 
 </style>

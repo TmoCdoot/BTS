@@ -116,4 +116,14 @@ export default {
 .titlestat {
   height: 15%;
 }
+
+@media screen and (max-width: 1360px) {
+  .statContener {
+    margin-left: 60px;
+    margin-right: 60px;
+    width: 100%;
+  }
+
+}
+
 </style>
