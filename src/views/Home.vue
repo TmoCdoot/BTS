@@ -7,57 +7,41 @@
     </div>
     <div class="topContener">
       <div class="burgerNav">
-        <img src="../assets/burger.png" alt="Burger" class="burger" @click="closeNav">
+        <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
       </div>
       <div class="logoContener">
         <img alt="Logo" src="../assets/logov1.png" class="logoBox"/>
       </div>
-      
     </div>
     <div class="mainContener">
-            <div class="leftHomeContener">
-              <div class="assetsList">
-                <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
-              </div>
-              <div class="walletsList">
-                <ListWallet v-bind:deposit="userData.deposit"/>
-              </div>
-              <!-- <div class="leftStatContener">
-                <WidgetStat/>
-              </div> -->
-            </div>
-            <div class="rightHomeContener">
-              <div class="chartsLine">
-                <ChartStat/>
-              </div>
-              <div class="statisticList">
-                <div class="userblock">
-                  <div class="titleuser">
-                    <h1>Statistic</h1>
-                  </div>
-                  <div class="conternsuer">
-                    <Deposit v-bind:deposit="userData.deposit"/>
-                    <WinLost v-bind:deposit="userData.deposit"/>
-                  </div>
-                  <div class="disconnectContener">
-                      <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
-                  </div>
-                </div>
-                
-              </div>
-               
-              
-            </div>
-      
-        
-    </div>
-   <!--  <div style="color: aliceblue;">{{ userData.email }}</div><br>
-    <div style="color: aliceblue;">{{ userData.uid }}</div>
-    <div class="disconnectContener">
-      <div>
-        <button @click="logOutUser" class="disconnectButton">Disconnect</button>
+      <div class="leftHomeContener">
+        <div class="assetsList">
+          <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
+        </div>
+        <div class="walletsList">
+          <ListWallet v-bind:deposit="userData.deposit"/>
+        </div>
       </div>
-    </div> -->
+      <div class="rightHomeContener">
+        <div class="chartsLine">
+          <ChartStat/>
+        </div>
+        <div class="statisticList">
+          <div class="userblock">
+            <div class="titleuser">
+              <h1 class="titleStat">Statistic</h1>
+            </div>
+            <div class="conternsuer">
+              <Deposit v-bind:deposit="userData.deposit"/>
+              <WinLost v-bind:deposit="userData.deposit"/>
+            </div>
+            <div class="disconnectContener">
+              <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -168,198 +152,196 @@ export default {
 </script>
 
 <style lang="scss">
-.topContener {
-  /* background-color: yellowgreen; */
-  height: 10%;
+  .topContener {
+    height: 10%;
     width: 100%;
-/*     position: absolute; */
-  display: flex;
-}.logoContener {
-  /* border: 1px solid red; */
-  width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 50px;
-}.logoBox  {
-  /* border: 1px solid yellow; */
-  margin-top: 5px;
-  width: 120px;
-}
-
-
-.disconnectContener {
-  /* width: 20%; */
-  display: flex;
-  align-items: center;
+    display: flex;
+  }
+  .disconnectContener {
+    display: flex;
+    align-items: center;
     justify-content: center;
     margin-bottom: 15px;
-}.disconnectButton {
-  padding: 15px 50px 15px 50px;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  background: #E04F5F;
-  color: aliceblue;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-
-.mainContener {
-  /* border: 1px solid blue; */
+  }
+  .disconnectButton {
+    padding: 15px 50px 15px 50px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    background: #E04F5F;
+    color: aliceblue;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .logoContener {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 50px;
+  }
+  .logoBox  {
+    margin-top: 5px;
+    width: 120px;
+  }
+  .mainContener {
     height: 90%;
     width: 100%;
     display: flex;
-}
-
-.mainBigContener {
-  display: flex;
-  flex-direction: row;
-}.leftHomeContener {
-  /* border: 1px solid green; */
-  width: 65%;
-  /* margin-top: 100px; */
-}.leftStatContener {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.assetsList {
-  border: 1px solid red;
-  height: 70%;
-  width: 100%;
-}
-.walletsList {
-  border: 1px solid yellow;
+  }
+  .mainBigContener {
+    display: flex;
+    flex-direction: row;
+  }
+  .leftHomeContener {
+    width: 65%;
+  }
+  .leftStatContener {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .assetsList {
+    height: 70%;
+    width: 100%;
+  }
+  .walletsList {
     height: 30%;
     width: 100%;
-}
-.statisticList {
-  border: 1px solid white;
+  }
+  .statisticList {
     height: 40%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.chartsLine {
-  /* border: 1px solid red; */
+  }
+  .chartsLine {
     height: 60%;
     margin-right: 60px;
-}
-
-.rightHomeContener {
-  border: 1px solid red;
-  width: 35%;
-  /* margin-top: 100px; */
-}.depoWinWidgetContener {
-  /*border: 1px solid blue;*/
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}.cryptoListContener {
-  /*border: 1px solid pink;*/
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-button {
-  text-decoration: none;  
-  border: none;
-  background: none;
-  color: whitesmoke;
-}
-
-.userblock {
-  background-color: #29353E;
-  /* width: 70%;
-    height: 80%; */
-    border-radius: 20px;
-}
-.titleuser {
-  height: 50px;
+  }
+  .rightHomeContener {
+    width: 35%;
+  }
+  .depoWinWidgetContener {
     display: flex;
-    /* justify-content: center; */
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  button {
+    text-decoration: none;  
+    border: none;
+    background: none;
+    color: whitesmoke;
+  }
+  .userblock {
+    background-color: #29353E;
+    border-radius: 20px;
+  }
+  .titleuser {
+    height: 50px;
+    display: flex;
     align-items: center;
     padding-left: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
-}
-.conternsuer {
-  display: flex;
+  }
+  .conternsuer {
+    display: flex;
     align-items: center;
     justify-content: space-around;
     margin-bottom: 20px;
     margin-left: 10px;
     margin-right: 10px;
-}
-h3 {
-  margin: 0px;
-}
-.burgerNav {
-  display: none;
-}
-
-@media screen and (max-width: 1360px) {
-  .mainContener {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
-  .leftHomeContener {
-    width: 100%;
-    height: 80%;
+  h3 {
+    margin: 0px;
   }
-  .assetsList {
-    height: 100%;
-  }
-  .walletsList {
+  .burgerNav {
     display: none;
   }
-  .rightHomeContener {
-    width: 100%;
-  }
-  .chartsLine {
-    height: 80%;
-    margin-right: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .statisticList {
-    padding-bottom: 10px;
-  }
-  .userblock {
-    width: auto;
-    height: auto;
-  }
-  .conternsuer {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  .disconnectContener {
-    padding-bottom: 15px;
-  }
 
-  .burgerNav {
-    display: initial;
-    width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .burger {
-    width: 30px;
-  }
-}
-
-@media (max-width: 400px) and (max-height: 850px) {
-    .disconnectContener {
-        margin-bottom: 0px;
+  @media screen and (max-width: 1361px) {
+    .mainContener {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-}
+    .logoContener {
+      padding-right: 15px;
+      justify-content: flex-end;
+      width: 100%;
+    }
+    .leftHomeContener {
+      width: 100%;
+      height: 80%;
+    }
+    .assetsList {
+      height: 100%;
+    }
+    .walletsList {
+      display: none;
+    }
+    .rightHomeContener {
+      width: 100%;
+    }
+    .chartsLine {
+      height: 80%;
+      margin-right: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .statisticList {
+      padding-bottom: 10px;
+    }
+    .userblock {
+      width: auto;
+      height: auto;
+    }
+    .conternsuer {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .disconnectContener {
+      padding-bottom: 15px;
+    }
+    .burgerNav {
+      display: initial;
+      width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .burger {
+      width: 30px;
+    }
+    .img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  @media (max-width: 400px) and (max-height: 850px) {
+      .disconnectContener {
+          margin-bottom: 0px;
+      }
+  }
+  @media (max-width: 686px) and (max-height: 850px) {
+    .titleStat {
+      font-size: 25px;
+    }
+    h2 {
+      font-size: 25px;
+    }
+  }
+  @media (min-width: 0px) and (max-width: 1060px) {
+        .navWalletContener {
+            width: 315px;
+        }
+  }
+  @media screen and (max-height: 815px) {
+      .navWalletContener {
+          height: 815px;
+      }
+  }
 </style>

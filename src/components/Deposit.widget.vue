@@ -1,9 +1,8 @@
 <template>
     <div class="depositContener">
-        <div class="titleContener">Deposit</div>
-        <div class="widgetBoxConterner">
-            
-            <div class="widgetImg widgetImg-align">
+        <div class="titleStatisticContener">Deposit</div>
+        <div class="DataConterner">
+            <div class="dataTextDeposit dataTextDeposit-align">
                 <div class="topBox">
                     {{ deposit }} $
                 </div>
@@ -11,8 +10,8 @@
                     {{ Math.round(deposit*0.89) }} €
                 </div>
             </div>  
-            <div class="widgetImg img">
-                <img src="../assets/pencil.png" alt="add deposit" class="imgAdd"/>
+            <div class="dataTextDeposit dataTextDepositAlign">
+                <img src="../assets/pencil.png" alt="add deposit" class="img"/>
             </div>
         </div>
     </div>
@@ -34,64 +33,40 @@
 </script>
 
 <style scoped lang="scss">
-.depositContener {
-    /*border: 1px solid red;*/
-    color: aliceblue;
-    background-color: #272525;
-    width: 180px;
-    height: 100px;
-    border-radius: 15px;
-    margin-right: 10px;
-}.titleContener {
-    height: 30%;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    /* justify-content: center; */
-    padding-left: 10px;
-    padding-top: 2px;
-}.widgetBoxConterner {
-    /*border: 1px solid pink;*/
-    height: 70%;
-    display: flex;
-    flex-direction: row;
-    
-}.widgetImg {
-    /*border: 1px solid yellow;*/
-    width: 50%;
-    margin-top: 5px;
-    text-align: initial;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
-}.imgAdd {
-    width:40px;
-}.widgetImg-align {
-    display: flex;
-    flex-direction: column;
-}.topBox {
-    font-weight: bold;
-    font-size: 20px;
-    padding-left: 10px;
-}.bottomBox {
-    font-style: italic;
-    font-size: 13px;
-    color: #5c5c5c;
-    padding-left: 10px;
-}
-.img {
-    text-align: center;
-}
-
-@media screen and (max-width: 1360px) {
     .depositContener {
+        color: aliceblue;
+        background-color: #272525;
+        width: 180px;
+        height: 100px;
+        border-radius: 15px;
         margin-right: 10px;
     }
-}
-@media (max-width: 400px) and (max-height: 850px) {
-    .depositContener {
-        width: 150px;
+    .dataTextDeposit {
+        width: 50%;
+        margin-top: 5px;
+        text-align: initial;
     }
-}
+    .dataTextDeposit-align {
+        display: flex;
+        flex-direction: column;
+    }
+    .dataTextDepositAlign {
+        text-align: center;
+    }
+
+    @media screen and (max-width: 1360px) {
+        .depositContener {
+            margin-right: 10px;
+        }
+    }
+    @media (max-width: 686px) and (max-height: 850px) {
+        .img {
+            width: 30px;
+            height: 30px;
+        }
+        .depositContener {
+            width: 150px;
+        }
+    }
 
 </style>

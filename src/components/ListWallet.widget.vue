@@ -1,47 +1,45 @@
 <template>
-    <div class="walletContener">
-        <div class="wallet">
+    <div class="walletListContener">
+        <div>
             <div class="title">
                 <h1>Your wallets</h1>
-                <div class="buttonContener">
-                    <div>
-                      <button class="addButton">Add new wallet</button>
-                    </div>    
+                <div>
+                    <button class="addButton">Add new wallet</button> 
                 </div>
             </div>
-            <div class="listwallet">
-                <div class="boxwallet">
-                    <div class="sousBox">
-                        <img src="../assets/wallet.png" alt="Wallet1" class="img">
+            <div>
+                <div class="rowWallet">
+                    <div class="column">
+                        <img src="../assets/wallet.png" alt="Binance Wallet" class="img">
                     </div>
-                    <div class="sousBox">
-                      <div class="">
+                    <div class="column">
+                      <div>
                         <h2>Binance Wallet</h2>
                       </div>      
                     </div>
-                    <div class="sousBox text">
-                        <div class="font">
+                    <div class="column titleAlign">
+                        <div class="titleData">
                             Deposit
                         </div>
-                        <div class="data">
+                        <div class="styleBold">
                             {{ deposit }} $
                         </div>       
                     </div>
-                    <div class="sousBox text">
-                        <div class="font">
+                    <div class="column titleAlign">
+                        <div class="titleData">
                             Win / Loss
                         </div>
-                        <div class="data">
+                        <div class="styleBold">
                             {{ winLostValue-deposit }} $
                         </div>           
                     </div>
-                    <div class="sousBox text">
-                        <div class="data">
+                    <div class="column titleAlign">
+                        <div class="styleBold">
                             {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
                         </div>           
                     </div>
-                    <div class="sousBox">
-                        <img src="../assets/poubelle.png" alt="Bitcoin" class="img">
+                    <div class="column">
+                        <img src="../assets/poubelle.png" alt="Delete" class="img">
                     </div>
                 </div>
             </div>
@@ -72,66 +70,19 @@ export default {
 </script>
 
 <style>
-    .walletContener {
-    /*     border: 1px solid blue; */
+    .walletListContener {
         padding-left: 60px;
         padding-right: 60px;
     }
-    .wallet {
-        border: 1px solid yellow;
-    }
-    .title {
+    .rowWallet {
+        height: 60px;
+        width: 80%;
+        background-color: #29353E;
+        border-radius: 20px;
         display: flex;
-    justify-content: space-between;
-    align-items: center;
-    }
-    .boxwallet {
-      /* border: 1px solid yellowgreen; */
-      height: 60px;
-      width: 80%;
-      background-color: #29353E;
-      border-radius: 20px;
-      display: flex;
         justify-content: space-around;
-      flex-direction: row;
-      margin-bottom: 20px;
-      margin-right: 15px;
-    }
-    .img {
-        /* border: 1px solid blue; */
-      height: 40px;
-      width: 40px;
-    }
-    .sousBox {
-      /* border: 1px solid yellow; */
-      height: 100%;
-      display: flex;
-      align-content: center;
-      align-items: center;
-    }
-    .font {
-      font-weight: normal;
-      font-style: italic;
-      color: #919191;
-    }
-
-    .text {
-      flex-direction: column;
-      justify-content: space-evenly;
-    }
-
-    .data {
-      font-weight: bold;
-    }
-
-    .addButton {
-      padding: 8px 30px 8px 30px;
-      font-weight: bold;
-      border: none;
-      border-radius: 20px;
-      background: #6C9FC4;
-      color: aliceblue;
-      font-size: 18px;
-      cursor: pointer;
+        flex-direction: row;
+        margin-bottom: 20px;
+        margin-right: 15px;
     }
 </style>

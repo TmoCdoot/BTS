@@ -138,9 +138,10 @@ export default createStore({
     loadCryptoPrice: ({commit}, userCryptoList) => {
       return new Promise(Validated => {
         let list = userCryptoList.toString()
+        var urlcourante = document.location.host; 
         axios({
           method: 'GET',
-          url: 'http://localhost:8080/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
+          url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
         }).then(result => {
           commit('setActuelPrice', { 
             resultRequest: result.data.data,

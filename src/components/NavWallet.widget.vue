@@ -1,24 +1,24 @@
 <template>
-    <div class="navWalletContener">
-        <div class="contenerNav">
-            <div class="jsp">
-                <div class="button">
+    <div class="mobileWalletContener">
+        <div class="navWalletContener">
+            <div>
+                <div class="buttonClose">
                     <img src="../assets/close.png" alt="Close" class="imgWallet" @click="closeNav">
                 </div>
                 <div class="title">
-                    <h1>Your Wallets</h1>
+                    <h2>Your Wallets</h2>
                 </div>
-                <div class="walletList">
-                    <div class="boxwallet tablette">
-                        <div class="sousBox">
+                <div class="walletMobileContener">
+                    <div class="rowWallet tablette">
+                        <div class="column">
                             <img src="../assets/wallet.png" alt="Wallet1" class="img">
                         </div>
-                        <div class="sousBox">
-                          <div class="">
-                            <h2>Binance Wallet</h2>
-                          </div>      
+                        <div class="column">
+                            <div class="">
+                                <h3>Binance Wallet</h3>
+                            </div>
                         </div>
-                        <div class="sousBox">
+                        <div class="column">
                             <img src="../assets/poubelle.png" alt="Bitcoin" class="img">
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                 <div class="buttonAddWallet">
                     <div>
                         <button class="addButton">Add new wallet</button>
-                      </div>   
+                    </div>
                 </div>
             </div>
 
@@ -40,55 +40,38 @@
         name: "NavWallet",
         methods: {
             closeNav: function () {
-               this.$emit('ChangeValueWalletNav', true);  
+                this.$emit('ChangeValueWalletNav', true);
             }
         }
     }
 </script>
 
 <style>
- .navWalletContener {
-     width: 100%;
-     height: 100%;
-     position: absolute;
-     background-color: rgba(0, 0, 0, 0.863);
- }
-    .contenerNav {
+    .mobileWalletContener {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.863);
+    }
+    .navWalletContener {
         width: 30%;
         height: 100%;
         background-color: #1E2124;
+        padding-top: 50px;
     }
     .imgWallet {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
     }
-    .jsp {
-        padding-top: 50px;
-    border: 1px solid red;
-    }
-    .button {
+    .buttonClose {
         text-align: left;
-    padding-left: 30px;
+        padding-left: 30px;
     }
-    .title {
-        padding-left: 20px;
-    }
-    .walletList {
+    .walletMobileContener {
         padding-left: 20px;
     }
     .tablette {
         margin-right: 20px;
         width: auto;
-    }
-
-    @media (min-width: 0px) and (max-width: 1060px) {
-        .contenerNav {
-            width: 315px;
-        }
-    }
-    @media screen and (max-height: 815px) {
-        .navWalletContener {
-            height: 815px;
-        }
     }
 </style>

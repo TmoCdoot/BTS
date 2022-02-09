@@ -1,84 +1,63 @@
 <template>
-    <div class="statContener">
-      <div class="navStatContener">
-        <h1>Your Assets</h1>
+    <div class="cryptoListContener">
+      <div class="titleCryptoList">
+        <h1 class="title">Your Assets</h1>
         <div class="buttonContener">
-          <div>
+          <div class="buttonbox">
             <button @click="AddCrypto" class="addButton">Add assets</button>
           </div>
         </div>
       </div>
-     <!--  <div class="listContener">
-        <table class="tabList">
-          <tr>
-            <td>Crypto</td>
-            <td>Buy Price</td>
-            <td>Price</td>
-            <td>QTT</td>
-            <td>Q/L</td>
-          </tr>
-          <tr>
-            <td class="bottomBorder" colspan="5"></td>
-          </tr>
-            <tr v-for="value in userData.dataCrypto" :key="value">
-              <td>{{ value.crypto }}</td>
-              <td>{{ value.buyPrice }}$</td>
-              <td>{{ value.priceNow }}$</td>
-              <td>{{ value.quantity }}</td>
-              <td>{{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}%</td>
-            </tr>           
-          </table>
-      </div> -->
-      <div class="listContener">
-        <div class="box" v-for="value in userData.dataCrypto" :key="value">
-          <div class="sousBox">
+      <div class="cryptoContener">
+        <div class="rowCrypto" v-for="value in userData.dataCrypto" :key="value">
+          <div class="column">
             <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto" class="img">
           </div>
-          <div class="sousBox text">
-            <div class="font">
+          <div class="column titleAlign">
+            <div class="titleData">
               Crypto
             </div>
-            <div class="data">
+            <div class="styleBold">
               {{ value.crypto }}
             </div>           
           </div>
-          <div class="sousBox text">
-            <div class="font">
+          <div class="column titleAlign mobileDisplay">
+            <div class="titleData">
               Buy price
             </div>
-            <div class="data">
+            <div class="styleBold">
               {{ value.buyPrice }}$
             </div>  
           </div>
-          <div class="sousBox text">  
-            <div class="font">
+          <div class="column titleAlign">  
+            <div class="titleData">
               Actual price
             </div>
-            <div class="data">
+            <div class="styleBold">
               {{ value.priceNow }}$
             </div>  
           </div>
-          <div class="sousBox text mobile">
-            <div class="font">
+          <div class="column titleAlign ">
+            <div class="titleData">
               Quantity
             </div>
-            <div class="">
+            <div class="styleBold">
               {{ value.quantity }}
             </div>  
           </div>
-          <div class="sousBox text mobile">
-            <div class="font">
+          <div class="column titleAlign mobileDisplay">
+            <div class="titleData">
               Win / Loss
             </div>
-            <div class="data">
+            <div class="styleBold">
               {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}%
             </div>  
           </div>
-          <div class="sousBox">
-            <img src="../assets/pencil.png" alt="Bitcoin" class="img">
+          <div class="column">
+            <img src="../assets/pencil.png" alt="Edit" class="img">
           </div>
-          <div class="sousBox">
-            <img src="../assets/poubelle.png" alt="Bitcoin" class="img">
+          <div class="column">
+            <img src="../assets/poubelle.png" alt="Delete" class="img">
           </div>
         </div>
       </div>
@@ -140,83 +119,33 @@
 </script>
 
 <style scoped lang="scss">
-    .statContener {
+    .cryptoListContener {
       color: aliceblue;
-    /* background-color: #272525; */
-    /* width: 100%; */
-    height: 100%;
-    margin-left: 60px;
-    margin-right: 60px;
-/*     padding-bottom: 10px; */
-    border-radius: 15px;
-    border: 1px solid green;
-    }.navStatContener {
-     /*  border: 1px solid blue; */
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    }.navStatContener-align {
-      /*border: 1px solid yellow;*/
-      width: 200px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-    }.navList {
-      list-style: none;
-      margin: 5px 0px 5px 5px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      /*border: 1px solid yellow;*/
-      padding: 4px 5px;
+      height: 100%;
+      margin-left: 60px;
+      margin-right: 60px;
       border-radius: 15px;
-      background-color: #272525;
-    }.liAlign {
-      display: flex;
-    }.butttonBox {
-      /*border: 1px solid red;*/
-      border-radius: 13px;
-      padding: 7px 14px 7px 14px;
-    }.activeButtonStat {
-      border: 2px solid #EF4E2A;
-      color: #EF4E2A;
     }
-    
-    .listContener {
-      /* border: 1px solid red; */
+    .titleCryptoList {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+    }
+    .cryptoContener {
       margin-bottom: 15px;
       scroll-behavior: auto;
       height: 85%;
       overflow-y: scroll;
-    }.tabList {
-      width: 100%;
-    }.bottomBorder {
-      border-bottom: 1px solid white;
-    }.tr {
       display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 100%;
+      flex-direction: column;
+      align-items: center;
     }
-
-    .addButton {
-      padding: 8px 30px 8px 30px;
-      font-weight: bold;
-      border: none;
-      border-radius: 20px;
-      background: #6C9FC4;
-      color: aliceblue;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .box {
-      /* border: 1px solid yellowgreen; */
-      height: 80px;
+    .rowCrypto {
+      width: 80%;
       background-color: #29353E;
       border-radius: 20px;
       display: flex;
@@ -224,62 +153,60 @@
       justify-content: space-around;
       margin-bottom: 20px;
       margin-right: 15px;
+      margin-left: 15px;
+      padding-top: 15px;
+      padding-bottom: 15px;
     }
-
-    .sousBox {
-      /* border: 1px solid yellow; */
-      height: 100%;
-      display: flex;
-      align-content: center;
-      align-items: center;
-    }
-
-    .img {
-      /* border: 1px solid blue; */
-      height: 40px;
-      width: 40px;
-    }
-
-    .font {
-      font-weight: normal;
-      font-style: italic;
-      color: #919191;
-    }
-
-    .text {
-      flex-direction: column;
-      justify-content: space-evenly;
-    }
-
-    .data {
-      font-weight: bold;
-    }
-
     ::-webkit-scrollbar {
       width: 7px;
     }
-
     ::-webkit-scrollbar-thumb {
       background: #D1D1D1; 
       border-radius: 10px;
     }
-
     ::-webkit-scrollbar-track {
       background: #28333B;
       border-radius: 10px;
     }
 
-    @media (max-width: 400px) and (max-height: 850px) {
-      .mobile {
+    @media (max-width: 686px) and (max-height: 850px) {
+      .mobileDisplay {
         display: none;
       }
-      .statContener {
+      .cryptoListContener {
         margin-left: 0px;
         margin-right: 0px;
       }
-      .img {
-        width: 30px;
-        height: 30px;
+      .title {
+        padding-left: 15px;
+        font-size: 25px;
+      }
+      .buttonbox {
+        padding-right: 15px;
+      }
+      .rowCrypto {
+        background-color: #29353E;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        margin-right: 15px;
+        margin-left: 15px;
+        width: auto;
+      }
+      .cryptoContener {
+        margin-bottom: 15px;
+        scroll-behavior: auto;
+        height: 85%;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: normal;
+      }
+      .addButton {
+        padding: 5px 20px 5px 20px;
+        font-size: 16px;
       }
     }
 </style>

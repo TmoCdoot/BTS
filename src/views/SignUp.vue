@@ -1,7 +1,7 @@
 <template>
   <div class="signup">
     <div>
-      <img alt="Logo" src="../assets/logov1.png" />
+      <img alt="Logo" src="../assets/logov1.png" class="logo"/>
       <SignUpForm msg="Sign up"/>
     </div>
   </div>
@@ -31,6 +31,10 @@ export default {
 
 img {
   width: 200px;
+}
+
+.logo {
+  margin-left: 40px;
 }
 
 </style>

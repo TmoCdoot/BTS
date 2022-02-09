@@ -96,7 +96,8 @@ export default {
 }
 .contener {
   background-color: #29353E;
-  width: 400px;
+  padding-left: 15px;
+    padding-right: 15px;
   border-radius: 15px;
 }
 .email, .password, .deposit {

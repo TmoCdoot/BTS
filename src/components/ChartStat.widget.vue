@@ -121,9 +121,14 @@ export default {
   .statContener {
     margin-left: 60px;
     margin-right: 60px;
-    width: 100%;
+    width: 80%;
   }
 
+}
+@media (max-width: 686px) and (max-height: 850px) {
+  .h1title {
+    font-size: 25px;
+  }
 }
 
 </style>
