@@ -2,7 +2,7 @@
     <div class="hello">
         <div class="contener">
           <h2>{{ msg }}</h2>
-          <p>If you have a account, <router-link to="/" class="buttonLink">Sign In</router-link></p>
+          <p>If you have a account,<button class="buttonLink" @click="ChangeState">Sign In</button></p>
             <div>
               <input type="email" placeholder="Email" class="email" v-model="email">
             </div><br>
@@ -30,7 +30,6 @@
             <div>
               <button @click="signUp" id="buttonSignIn" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Sign Up</button>
             </div><br>
-          
         </div>
       </div>
 </template>
@@ -79,7 +78,10 @@ export default {
             self.$router.push('/')
           })
       })
-    }
+    },
+    ChangeState: function () {
+        this.$emit('ChangeState', true);
+      },
   }
 };
 </script>
@@ -123,6 +125,7 @@ export default {
 }
 .buttonLink {
   color: #6C9FC4;
+  font-size: 17px;
 }
 p {
   font-style: oblique;

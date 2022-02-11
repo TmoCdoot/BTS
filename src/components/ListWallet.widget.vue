@@ -29,14 +29,20 @@
                         <div class="titleData">
                             Win / Loss
                         </div>
-                        <div class="styleBold">
+                        <div class="styleBold" v-if="winLostValue-deposit <= 0">
                             {{ winLostValue-deposit }} $
-                        </div>           
+                        </div>    
+                        <div v-else>
+                            +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                        </div>       
                     </div>
                     <div class="column titleAlign">
-                        <div class="styleBold">
+                        <div class="styleBold inferior" v-if="(((winLostValue/deposit)-1)*100).toFixed(2) <= 0">
                             {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
-                        </div>           
+                        </div>        
+                        <div class="superior" v-else>
+                            +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                        </div>   
                     </div>
                     <div class="column">
                         <img src="../assets/poubelle.png" alt="Delete" class="img">

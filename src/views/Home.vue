@@ -141,9 +141,11 @@ export default {
   beforeMount() {
       const self = this;
       this.$store.dispatch('loadUserData').then(() => {
-        self.$store.dispatch('loadDataCrypto', this.$store.getters.getUserUid).then(() => {
-          self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-            self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+        self.$store.dispatch('loadCryptoList').then(() => {
+          self.$store.dispatch('loadDataCrypto', this.$store.getters.getUserUid).then(() => {
+            self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+              self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+            })
           })
         })
       })
@@ -259,6 +261,12 @@ export default {
   }
   .burgerNav {
     display: none;
+  }
+  .inferior {
+    color: #fd1717;
+  }
+  .superior {
+    color: green;
   }
 
   @media screen and (max-width: 1361px) {

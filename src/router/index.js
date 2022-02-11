@@ -1,19 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import SignIn from "../views/SignIn.vue";
-import SignUp from "../views/SignUp.vue";
+import Auth from "../views/Auth.vue";
 import Home from "../views/Home.vue";
 import { auth, onAuthStateChanged } from '../plug-in/firebase.js';
 
 const routes = [
   {
     path: "/",
-    name: "SignIn",
-    component: SignIn,
-  },
-  {
-    path: "/signup",
-    name: "SignUp",
-    component: SignUp,
+    name: "Auth",
+    component: Auth,
   },
   {
     path: "/home",

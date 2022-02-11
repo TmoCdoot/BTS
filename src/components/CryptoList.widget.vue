@@ -25,16 +25,19 @@
             <div class="titleData">
               Buy price
             </div>
-            <div class="styleBold">
-              {{ value.buyPrice }}$
+            <div class="styleBold" v-if="value.buyPrice != ''">
+              {{ value.buyPrice }} $
             </div>  
+            <div class="styleBold" v-else>
+              Not specified
+            </div>
           </div>
           <div class="column titleAlign">  
             <div class="titleData">
               Actual price
             </div>
             <div class="styleBold">
-              {{ value.priceNow }}$
+              {{ value.priceNow }} $
             </div>  
           </div>
           <div class="column titleAlign ">
@@ -49,9 +52,18 @@
             <div class="titleData">
               Win / Loss
             </div>
-            <div class="styleBold">
-              {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}%
-            </div>  
+            <div class="styleBold" v-if="value.buyPrice != ''">
+              <div v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0" class="inferior">
+                {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
+              </div>
+              <div v-else class="superior">
+                +{{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
+              </div>
+              
+            </div>
+            <div class="styleBold" v-else>
+              Not specified
+            </div>
           </div>
           <div class="column">
             <img src="../assets/pencil.png" alt="Edit" class="img">
@@ -109,11 +121,6 @@
       AddCrypto: function () {
         this.$emit('ChangeValueAddCrypto', true);
       },
-      /* getImgUrl(val) {
-        console.log(val)
-        var images = require.context('../assets/', false, /\.png$/)
-        return images('./' + val + '.png')
-      } */
     },
   }
 </script>
@@ -207,6 +214,12 @@
       .addButton {
         padding: 5px 20px 5px 20px;
         font-size: 16px;
+      }
+    }
+
+    @media screen and (max-width: 920px) {
+      .mobileDisplay {
+        display: none;
       }
     }
 </style>

@@ -3,16 +3,25 @@
         <div class="titleStatisticContener">Profit / Gain</div>
         <div class="DataConterner">
             <div class="dataTextWinLos dataTextWinLos-align">
-                <div class="topBox">
+                <div class="topBox" v-if="winLostValue-deposit <= 0">
                     {{ winLostValue-deposit }} $
                 </div>
-                <div class="bottomBox">
+                <div v-else>
+                    +{{ winLostValue-deposit }} $
+                </div>
+                <div class="bottomBox" v-if="((winLostValue-deposit)*0.89).toFixed(2) <= 0">
                     {{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
+                </div>
+                <div v-else>
+                    +{{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
                 </div>
             </div>
             <div class="dataText dataText-pnl">
-                <div class="topBox textPnl">
+                <div class="topBox textPnl inferior" v-if="(((winLostValue/deposit)-1)*100).toFixed(2) <= 0">
                     {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                </div>
+                <div class="superior" v-else>
+                    +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
                 </div>
             </div>  
         </div>

@@ -6,7 +6,7 @@ import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 export default createStore({
   state: {
     error: '',
-    valuesList: ['BTC', 'EGLD', 'ADA', 'ETH', 'BNB', 'FTM', 'LUNA', 'SOL', 'VET', 'DENT', 'AXS', 'DUCK', 'SOLR', 'BCOIN', 'USDC', 'USDT', 'CSPR'], /* A CHANGER METTRE LES TOKEN SUR LA BASE DE DONNER CAR RISQUE DE CHANGEMENT OU HACK */
+    valuesList: '',
     userData: {
       email: '',
       uid: '',
@@ -43,6 +43,9 @@ export default createStore({
     },
     setWinLostValue: function (state, resultSum) {
       state.winLostValue = resultSum;
+    },
+    setCryptoList: function (state, snapshotResult) {
+      state.valuesList = snapshotResult
     }
   },
   getters: {
@@ -165,6 +168,16 @@ export default createStore({
         resultSum = (resultSum+tab[b])
       }
       commit('setWinLostValue', resultSum)
+    },
+    loadCryptoList: ({commit}) => {
+      return new Promise(Validated => {
+        getDoc(doc(db, 'CryptoList', 'wpcNLNN9xWlI2bi6VvP9')).then((snapshot ) => {
+          /* console.log(snapshot.data().Crypto) */
+          commit('setCryptoList', snapshot.data().Crypto)
+        }).then(() => {
+          Validated(true)
+        })
+      })
     }
   },
   modules: {},
