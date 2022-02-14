@@ -8,18 +8,17 @@
           </div>
         </div>
       </div>
-      <div class="cryptoContener">
-        {{userData}}
-        <div class="rowCrypto" v-for="(value, name) in userData.dataCrypto" :key="value">
+      <div class="cryptoContener" v-if="userData.dataCrypto.length > 0">
+        <div class="rowCrypto" v-for="value in userData.dataCrypto" :key="value">
           <div class="column">
-            <img :src="'/img/' + name + '.png'" :alt="name" class="img">
+            <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto" class="img">
           </div>
           <div class="column titleAlign">
             <div class="titleData">
               Crypto
             </div>
             <div class="styleBold">
-              {{ name }}
+              {{ value.crypto }}
             </div>           
           </div>
           <div class="column titleAlign mobileDisplay">
@@ -60,7 +59,6 @@
               <div v-else class="superior">
                 +{{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
               </div>
-              
             </div>
             <div class="styleBold" v-else>
               Not specified
@@ -73,6 +71,9 @@
             <img src="../assets/poubelle.png" alt="Delete" class="img">
           </div>
         </div>
+      </div>
+      <div v-else>
+        <h3>You don't have assets</h3>
       </div>
     </div>
 </template>

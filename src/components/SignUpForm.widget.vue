@@ -71,7 +71,7 @@ export default {
             confirm_pass: this.confirm_pass,
             deposit: this.deposit,
         }).then((userUid) => {
-          setDoc(doc(db, "User", userUid), { 
+          setDoc(doc(db, "UserCrypto", userUid), { 
             deposit: deposit,
           }).then(() => {
             self.$router.push('/')

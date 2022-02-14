@@ -143,10 +143,12 @@ export default {
       this.$store.dispatch('loadUserData').then(() => {
         self.$store.dispatch('loadCryptoList').then(() => {
           self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => {
-            self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then(() => {
-              self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
-              })
+            self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
+              if (e != false) {
+                self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                  self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                })
+              }             
             })
           })
         })

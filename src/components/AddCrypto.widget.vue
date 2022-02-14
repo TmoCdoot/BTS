@@ -65,11 +65,15 @@
                     uid: this.$store.getters.getUserUid
                 }).then((e) => {
                     if (e) {
-                        self.$store.dispatch("loadDataCrypto", this.$store.getters.getUserUid).then((e) => {
+                        self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
                             if (e) {
                                 self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                                     if (e) {
-                                        self.$emit('ChangeValueAddCrypto', true);
+                                        self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                                            if (e) {
+                                                self.$emit('ChangeValueAddCrypto', true);
+                                            }
+                                        })
                                     }    
                                 })
                             }

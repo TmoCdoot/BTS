@@ -11,7 +11,7 @@ export default createStore({
       email: '',
       uid: '',
       deposit: 0,
-      dataCrypto: null,
+      dataCrypto: [],
       listCryptoUser: [],
     },
     actualPrice: [ ],
@@ -28,20 +28,24 @@ export default createStore({
       state.userData.uid = uid;
     },
     setUserDataCrypto: function (state, snapshotResult) {
-      
+      state.userData.listCryptoUser = []
+      state.userData.dataCrypto = []
 
       /* for (var i=0; i<Object.keys(snapshotResult).length; i++) {
         console.log(snapshotResult);
       } */
-      state.userData.dataCrypto = snapshotResult
+      /* console.log(snapshotResult) */
+      /* state.userData.dataCrypto = snapshotResult */
       for (const name in snapshotResult) {
+      snapshotResult[name]['crypto'] = name
         /* console.log(`${name}`); */
         state.userData.listCryptoUser.push(name)
+        state.userData.dataCrypto.push(snapshotResult[name])
         /* for (const data in snapshotResult[name]) {
           console.log(`${data}: ${snapshotResult[name][data]}`);
         } */
       }
-      console.log(state.userData.dataCrypto) 
+      
 
       /* state.userData.dataCrypto = snapshotResult.cryptoList;
       for (var i=0; i<Object.keys(snapshotResult.cryptoList).length; i++) {
@@ -59,18 +63,21 @@ export default createStore({
 
       for (const result in returnApi['resultRequest']) {
         for (const name in state.userData.dataCrypto) {
-          if (result == name) {
+          
+          if (result == state.userData.dataCrypto[name].crypto) {
+            /* console.log(state.userData.dataCrypto[name].crypto) */
             /* console.log('resquette : ' + result + ' && liste : ' + name)
             console.log((returnApi['resultRequest'][result].quote.USD.price).toFixed(3)) */
-            state.userData.dataCrypto[result].priceNow = (returnApi['resultRequest'][result].quote.USD.price).toFixed(3)
+            state.userData.dataCrypto[name].priceNow = (returnApi['resultRequest'][result].quote.USD.price).toFixed(3)
           }
-          /* console.log(`${result}`);
-          console.log(`${name}`); */
+           /* console.log(state.userData.dataCrypto); */
+          /*console.log(`${name}`); */
         }
       }
       /* console.log(state.userData.dataCrypto) */
     },
     setWinLostValue: function (state, resultSum) {
+      state.winLostValue = 0
       state.winLostValue = resultSum;
     },
     setCryptoList: function (state, snapshotResult) {
@@ -133,7 +140,7 @@ export default createStore({
     addOnWallet: ({commit}, cryptoInfo) => {
       return new Promise(Validated => {
         if (cryptoInfo['crypto']) {
-          setDoc(doc(db, 'UserCrypto', cryptoInfo['uid'], 'List', cryptoInfo['crypto']), {
+          setDoc(doc(db, `UserCrypto/${cryptoInfo['uid']}/List/${cryptoInfo['crypto']}`), {
             buyPrice: cryptoInfo['buyprice'], 
             quantity: cryptoInfo['quantity']
           }).catch(() => {
@@ -159,7 +166,7 @@ export default createStore({
     //requete deposit user
     loadUserDeposit: ({commit}, userUid) => {
       return new Promise(Validated => {
-        getDoc(doc(db, 'UserDeposit', userUid)).then((snapshot ) => {
+        getDoc(doc(db, 'UserCrypto', userUid)).then((snapshot ) => {
           /* commit('setUserDataCrypto', snapshot.data()) */
           commit('setUserDeposit', snapshot.data())
         }).then(() => {
@@ -171,25 +178,33 @@ export default createStore({
     loadUserCrypto: ({commit}, userUid) => {
       return new Promise(Validated => {
         const tab = []
+        var isEmpty = 0
         getDocs(collection(db, `UserCrypto/${userUid}/List`)).then((snapshot) => {
           snapshot.forEach((doc) => tab[doc.id] = doc.data())
-          
+          snapshot.forEach(() => isEmpty = 1)
         }).then(() => {
-          console.log(tab)
-          commit('setUserDataCrypto', tab)
-          Validated(true)
+          /* console.log(tab) */
+          if (isEmpty != 0) {
+            commit('setUserDataCrypto', tab)
+            Validated(true)
+          } else {
+            Validated(false)
+          }
+          
         })
       })
     },
     //requete recuperation price crypto
     loadCryptoPrice: ({commit}, userCryptoList) => {
       return new Promise(Validated => {
+        /* console.log(userCryptoList) */
         let list = userCryptoList.toString()
         var urlcourante = document.location.host; 
         axios({
           method: 'GET',
           url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
         }).then(result => {
+          /* console.log(result.data.data) */
           commit('setActuelPrice', { 
             resultRequest: result.data.data,
           })
@@ -203,27 +218,31 @@ export default createStore({
     },
     //calcul winloss valeur
     loadWinLostValue: ({commit}, dataCrypto) => {
-      let tab = []
-      let resultSum = 0
-      
-      
-      for (const name in dataCrypto) {
-        tab.push(parseInt((dataCrypto[name].quantity * dataCrypto[name].priceNow).toFixed(2)))
-
-      }
-      
-      /* for (var i=0; i<Object.keys(dataCrypto).length; i++) {
-        tab[i] = parseInt((dataCrypto[i].quantity*dataCrypto[i].priceNow).toFixed(2))
-      } */
-
-      
-
-      for (var b=0; b<tab.length; b++) {
-        resultSum = (resultSum+tab[b])
-      }
-      /* console.log(tab)
-      console.log(resultSum) */
-      commit('setWinLostValue', resultSum)
+      return new Promise(Validated => {
+        let tab = []
+        let resultSum = 0
+        
+        
+        for (const name in dataCrypto) {
+          tab.push(parseInt((dataCrypto[name].quantity * dataCrypto[name].priceNow).toFixed(2)))
+  
+        }
+        
+        /* for (var i=0; i<Object.keys(dataCrypto).length; i++) {
+          tab[i] = parseInt((dataCrypto[i].quantity*dataCrypto[i].priceNow).toFixed(2))
+        } */
+  
+        
+  
+        for (var b=0; b<tab.length; b++) {
+          resultSum = (resultSum+tab[b])
+        }
+        /* console.log(tab)
+        console.log(resultSum) */
+        commit('setWinLostValue', resultSum)
+        Validated(true)
+      })
+     
     },
     //requete recuperation de la liste des creypto valide du site
     loadCryptoList: ({commit}) => {
