@@ -73,7 +73,6 @@ export default {
         }).then((userUid) => {
           setDoc(doc(db, "User", userUid), { 
             deposit: deposit,
-            crypto: {},
           }).then(() => {
             self.$router.push('/')
           })

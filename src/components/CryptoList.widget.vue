@@ -9,16 +9,17 @@
         </div>
       </div>
       <div class="cryptoContener">
-        <div class="rowCrypto" v-for="value in userData.dataCrypto" :key="value">
+        {{userData}}
+        <div class="rowCrypto" v-for="(value, name) in userData.dataCrypto" :key="value">
           <div class="column">
-            <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto" class="img">
+            <img :src="'/img/' + name + '.png'" :alt="name" class="img">
           </div>
           <div class="column titleAlign">
             <div class="titleData">
               Crypto
             </div>
             <div class="styleBold">
-              {{ value.crypto }}
+              {{ name }}
             </div>           
           </div>
           <div class="column titleAlign mobileDisplay">

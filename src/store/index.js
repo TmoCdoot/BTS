@@ -1,7 +1,7 @@
-import { arrayUnion } from "@firebase/firestore";
+/* import { arrayUnion } from "@firebase/firestore"; */
 import { createStore } from "vuex";
 import axios from 'axios' 
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateDoc, db, doc, onAuthStateChanged, getDoc } from "../plug-in/firebase.js";
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, getDoc, collection, db, doc, onAuthStateChanged, getDocs, setDoc } from "../plug-in/firebase.js";
 
 export default createStore({
   state: {
@@ -28,18 +28,47 @@ export default createStore({
       state.userData.uid = uid;
     },
     setUserDataCrypto: function (state, snapshotResult) {
-      state.userData.dataCrypto = snapshotResult.cryptoList;
+      
+
+      /* for (var i=0; i<Object.keys(snapshotResult).length; i++) {
+        console.log(snapshotResult);
+      } */
+      state.userData.dataCrypto = snapshotResult
+      for (const name in snapshotResult) {
+        /* console.log(`${name}`); */
+        state.userData.listCryptoUser.push(name)
+        /* for (const data in snapshotResult[name]) {
+          console.log(`${data}: ${snapshotResult[name][data]}`);
+        } */
+      }
+      console.log(state.userData.dataCrypto) 
+
+      /* state.userData.dataCrypto = snapshotResult.cryptoList;
       for (var i=0; i<Object.keys(snapshotResult.cryptoList).length; i++) {
         state.userData.listCryptoUser[i] = snapshotResult.cryptoList[i].crypto
-      }
+      } */
     },
     setUserDeposit: function (state, snapshotResult) {
       state.userData.deposit = parseInt(snapshotResult.deposit);
     },
     setActuelPrice: function (state, returnApi ) {
-      for (var i=0; i<Object.keys(returnApi['userCryptoList']).length; i++) {
+      /* console.log(returnApi) */
+      /* for (var i=0; i<Object.keys(returnApi['userCryptoList']).length; i++) {
         state.userData.dataCrypto[i].priceNow = (returnApi['resultRequest'][returnApi['userCryptoList'][i]].quote.USD.price).toFixed(3)
+      } */
+
+      for (const result in returnApi['resultRequest']) {
+        for (const name in state.userData.dataCrypto) {
+          if (result == name) {
+            /* console.log('resquette : ' + result + ' && liste : ' + name)
+            console.log((returnApi['resultRequest'][result].quote.USD.price).toFixed(3)) */
+            state.userData.dataCrypto[result].priceNow = (returnApi['resultRequest'][result].quote.USD.price).toFixed(3)
+          }
+          /* console.log(`${result}`);
+          console.log(`${name}`); */
+        }
       }
+      /* console.log(state.userData.dataCrypto) */
     },
     setWinLostValue: function (state, resultSum) {
       state.winLostValue = resultSum;
@@ -104,19 +133,18 @@ export default createStore({
     addOnWallet: ({commit}, cryptoInfo) => {
       return new Promise(Validated => {
         if (cryptoInfo['crypto']) {
-          updateDoc(doc(db, "User", cryptoInfo['uid']), {
-              cryptoList: arrayUnion({
-                crypto: cryptoInfo['crypto'],
-                buyPrice: cryptoInfo['buyprice'],
-                quantity: cryptoInfo['quantity']
-              })
+          setDoc(doc(db, 'UserCrypto', cryptoInfo['uid'], 'List', cryptoInfo['crypto']), {
+            buyPrice: cryptoInfo['buyprice'], 
+            quantity: cryptoInfo['quantity']
           }).catch(() => {
             commit('setError', 'err_addCrypto')
           })
+          commit('setError', 'err_addCrypto')
           Validated(true)
         }      
       })
     },
+    //requete donne user
     loadUserData: ({commit}) => {
       return new Promise(Validated => {
         onAuthStateChanged(auth, user => { 
@@ -128,16 +156,32 @@ export default createStore({
         });
       })
     },
-    loadDataCrypto: ({commit}, userUid) => {
+    //requete deposit user
+    loadUserDeposit: ({commit}, userUid) => {
       return new Promise(Validated => {
-        getDoc(doc(db, 'User', userUid)).then((snapshot ) => {
-          commit('setUserDataCrypto', snapshot.data())
+        getDoc(doc(db, 'UserDeposit', userUid)).then((snapshot ) => {
+          /* commit('setUserDataCrypto', snapshot.data()) */
           commit('setUserDeposit', snapshot.data())
         }).then(() => {
           Validated(true)
         })
       })
     },
+    //requete crypto user
+    loadUserCrypto: ({commit}, userUid) => {
+      return new Promise(Validated => {
+        const tab = []
+        getDocs(collection(db, `UserCrypto/${userUid}/List`)).then((snapshot) => {
+          snapshot.forEach((doc) => tab[doc.id] = doc.data())
+          
+        }).then(() => {
+          console.log(tab)
+          commit('setUserDataCrypto', tab)
+          Validated(true)
+        })
+      })
+    },
+    //requete recuperation price crypto
     loadCryptoPrice: ({commit}, userCryptoList) => {
       return new Promise(Validated => {
         let list = userCryptoList.toString()
@@ -148,7 +192,6 @@ export default createStore({
         }).then(result => {
           commit('setActuelPrice', { 
             resultRequest: result.data.data,
-            userCryptoList: userCryptoList, 
           })
           Validated(true)
           },
@@ -158,17 +201,31 @@ export default createStore({
         )
       })
     },
+    //calcul winloss valeur
     loadWinLostValue: ({commit}, dataCrypto) => {
       let tab = []
       let resultSum = 0
-      for (var i=0; i<Object.keys(dataCrypto).length; i++) {
-        tab[i] = parseInt((dataCrypto[i].quantity*dataCrypto[i].priceNow).toFixed(2))
+      
+      
+      for (const name in dataCrypto) {
+        tab.push(parseInt((dataCrypto[name].quantity * dataCrypto[name].priceNow).toFixed(2)))
+
       }
+      
+      /* for (var i=0; i<Object.keys(dataCrypto).length; i++) {
+        tab[i] = parseInt((dataCrypto[i].quantity*dataCrypto[i].priceNow).toFixed(2))
+      } */
+
+      
+
       for (var b=0; b<tab.length; b++) {
         resultSum = (resultSum+tab[b])
       }
+      /* console.log(tab)
+      console.log(resultSum) */
       commit('setWinLostValue', resultSum)
     },
+    //requete recuperation de la liste des creypto valide du site
     loadCryptoList: ({commit}) => {
       return new Promise(Validated => {
         getDoc(doc(db, 'CryptoList', 'wpcNLNN9xWlI2bi6VvP9')).then((snapshot ) => {

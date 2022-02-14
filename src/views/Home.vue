@@ -142,9 +142,11 @@ export default {
       const self = this;
       this.$store.dispatch('loadUserData').then(() => {
         self.$store.dispatch('loadCryptoList').then(() => {
-          self.$store.dispatch('loadDataCrypto', this.$store.getters.getUserUid).then(() => {
-            self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-              self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+          self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => {
+            self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then(() => {
+              self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+              })
             })
           })
         })
