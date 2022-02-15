@@ -11,7 +11,7 @@
                 </div>
             </div>  
             <div class="dataTextDeposit dataTextDepositAlign">
-                <img src="../assets/pencil.png" alt="add deposit" class="img"/>
+                <button @click="updateDeposit"><img src="../assets/pencil.png" alt="add deposit" class="img"/></button>
             </div>
         </div>
     </div>
@@ -26,7 +26,12 @@
     },
     data: function () {
         return {
-            depositEur: (this.deposit) / 0.89, 
+            
+        }
+    },
+    methods: {
+        updateDeposit: function () {
+            this.$emit('UpdateDeposit', true);
         }
     },
     }

@@ -1,26 +1,26 @@
 <template>
     <div class="depositContener">
         <div class="titleStatisticContener">Profit / Gain</div>
-        <div class="DataConterner">
+        <div class="DataConterner contenerWinLoss">
             <div class="dataTextWinLos dataTextWinLos-align">
                 <div class="topBox" v-if="winLostValue-deposit <= 0">
                     {{ winLostValue-deposit }} $
                 </div>
-                <div v-else>
+                <div class="topBox" v-else>
                     +{{ winLostValue-deposit }} $
                 </div>
                 <div class="bottomBox" v-if="((winLostValue-deposit)*0.89).toFixed(2) <= 0">
                     {{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
                 </div>
-                <div v-else>
+                <div class="bottomBox" v-else>
                     +{{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
                 </div>
             </div>
-            <div class="dataText dataText-pnl">
+            <div class="dataTextWinLos dataText-pnl">
                 <div class="topBox textPnl inferior" v-if="(((winLostValue/deposit)-1)*100).toFixed(2) <= 0">
                     {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
                 </div>
-                <div class="superior" v-else>
+                <div class="topBox textPnl superior" v-else>
                     +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
                 </div>
             </div>  
@@ -56,19 +56,20 @@ export default {
     }
     .dataTextWinLos-align {
         display: flex;
-        width: 60%;
         flex-direction: column;
     }
     .dataText-pnl {
         text-align: right;
         width: auto;
         display: flex;
-        align-items: flex-end;
-        width: 40%;
+        justify-content: flex-end;
     }
     .textPnl {
         font-size: 14px;
-        padding-bottom: 20px;
+        margin-right: 10px;
+    }
+    .contenerWinLoss {
+        flex-direction: column;
     }
 
     @media (max-width: 400px) and (max-height: 850px) {

@@ -5,6 +5,12 @@
     <div v-if="navWallet == true">
       <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav"/>
     </div>
+    <div v-if="updateCrypto == true">
+      <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto"/>
+    </div>
+    <div v-if="updateDeposit == true">
+      <UpdateDeposit :updateDeposit="userData.deposit" @UpdateDeposit="UpdateDeposit"/>
+    </div>
     <div class="topContener">
       <div class="burgerNav">
         <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
@@ -16,7 +22,7 @@
     <div class="mainContener">
       <div class="leftHomeContener">
         <div class="assetsList">
-          <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
+          <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
         </div>
         <div class="walletsList">
           <ListWallet v-bind:deposit="userData.deposit"/>
@@ -32,7 +38,7 @@
               <h1 class="titleStat">Statistic</h1>
             </div>
             <div class="conternsuer">
-              <Deposit v-bind:deposit="userData.deposit"/>
+              <Deposit v-bind:deposit="userData.deposit" @UpdateDeposit="UpdateDeposit"/>
               <WinLost v-bind:deposit="userData.deposit"/>
             </div>
             <div class="disconnectContener">
@@ -53,6 +59,8 @@ import WinLost from "@/components/WinLost.widget.vue";
 import CryptoList from "@/components/CryptoList.widget.vue";
 import AddCrypto from '@/components/AddCrypto.widget.vue'
 import NavWallet from '@/components/NavWallet.widget.vue'
+import UpdateCrypto from '@/components/UpdateCrypto.widget.vue'
+import UpdateDeposit from '@/components/UpdateDeposit.widget.vue'
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -66,7 +74,9 @@ export default {
     AddCrypto,
     CryptoList,
     ListWallet,
-    NavWallet
+    NavWallet,
+    UpdateCrypto,
+    UpdateDeposit
   },
   data: function () {
     return {
@@ -74,6 +84,11 @@ export default {
       graph: 'wky',
       addCrypto: false,
       navWallet: false,
+      updateCrypto: false,
+      updateDeposit: false,
+      updateCryptoName: '',
+      updateCryptoBuy: 0,
+      updateCryptoQtt: 0
     }
   },
   computed: {
@@ -129,6 +144,34 @@ export default {
           document.getElementById('app').style.overflow = "initial";
         } else {
           this.navWallet = true
+          document.getElementById('app').style.overflow = "hidden";
+        }
+      }
+    },
+    UpdateValueCrypto: function ( data ) {
+      if (data['state'] == true) {
+        if (this.updateCrypto == true) {
+          this.updateCryptoName = data['cryptoName']
+          this.updateCryptoBuy = data['cryptoBuy']
+          this.updateCryptoQtt = data['cryptoQtt']
+          this.updateCrypto = false
+          document.getElementById('app').style.overflow = "initial";
+        } else {
+          this.updateCryptoName = data['cryptoName']
+          this.updateCryptoBuy = data['cryptoBuy']
+          this.updateCryptoQtt = data['cryptoQtt']
+          this.updateCrypto = true
+          document.getElementById('app').style.overflow = "hidden";
+        }
+      }
+    },
+    UpdateDeposit: function (data) {
+      if (data == true) {
+        if (this.updateDeposit == true) {
+          this.updateDeposit = false
+          document.getElementById('app').style.overflow = "initial";
+        } else {
+          this.updateDeposit = true
           document.getElementById('app').style.overflow = "hidden";
         }
       }
@@ -233,12 +276,6 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-  }
-  button {
-    text-decoration: none;  
-    border: none;
-    background: none;
-    color: whitesmoke;
   }
   .userblock {
     background-color: #29353E;

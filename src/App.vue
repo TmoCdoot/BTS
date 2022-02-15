@@ -107,6 +107,14 @@
   .title {
         padding-left: 20px;
   }
+  button {
+    cursor: pointer;
+    text-decoration: none;  
+    border: none;
+    background: none;
+    color: whitesmoke;
+    padding: 0px;
+  }
 
   @media screen and (max-height: 815px) and (min-width: 1361px) {
     #app {
