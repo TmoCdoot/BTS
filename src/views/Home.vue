@@ -11,6 +11,9 @@
     <div v-if="updateDeposit == true">
       <UpdateDeposit :updateDeposit="userData.deposit" @UpdateDeposit="UpdateDeposit"/>
     </div>
+    <div v-if="addWallet == true">
+      <AddWallet @AddWallet="AddWallet"/>
+    </div>
     <div class="topContener">
       <div class="burgerNav">
         <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
@@ -25,7 +28,7 @@
           <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
         </div>
         <div class="walletsList">
-          <ListWallet v-bind:deposit="userData.deposit"/>
+          <ListWallet v-bind:deposit="userData.deposit" @AddWallet="AddWallet"/>
         </div>
       </div>
       <div class="rightHomeContener">
@@ -61,6 +64,7 @@ import AddCrypto from '@/components/AddCrypto.widget.vue'
 import NavWallet from '@/components/NavWallet.widget.vue'
 import UpdateCrypto from '@/components/UpdateCrypto.widget.vue'
 import UpdateDeposit from '@/components/UpdateDeposit.widget.vue'
+import AddWallet from '@/components/AddWallet.widget.vue'
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -76,7 +80,8 @@ export default {
     ListWallet,
     NavWallet,
     UpdateCrypto,
-    UpdateDeposit
+    UpdateDeposit,
+    AddWallet
   },
   data: function () {
     return {
@@ -86,6 +91,7 @@ export default {
       navWallet: false,
       updateCrypto: false,
       updateDeposit: false,
+      addWallet: false,
       updateCryptoName: '',
       updateCryptoBuy: 0,
       updateCryptoQtt: 0
@@ -176,6 +182,17 @@ export default {
         }
       }
     },
+    AddWallet: function (data) {
+      if (data == true) {
+        if (this.addWallet == true) {
+          this.addWallet = false
+          document.getElementById('app').style.overflow = "initial";
+        } else {
+          this.addWallet = true
+          document.getElementById('app').style.overflow = "hidden";
+        }
+      }
+    },
     closeNav: function () {
       this.navWallet = true;  
       document.getElementById('app').style.overflow = "hidden";
@@ -183,16 +200,27 @@ export default {
   },
   beforeMount() {
       const self = this;
+      //load uid email
       this.$store.dispatch('loadUserData').then(() => {
+        //load crypto list server
         self.$store.dispatch('loadCryptoList').then(() => {
-          self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => {
-            self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
-              if (e != false) {
-                self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                  self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+          //load wallet user
+          self.$store.dispatch('loadUserWallet').then((e) => {
+            if (e) {
+              //load deposit user
+              /* self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => { */
+                //load crypto user
+                self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
+                  if (e != false) {
+                    //load crypto price
+                    self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                      //calcul win loss user
+                      self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                    })
+                  }             
                 })
-              }             
-            })
+              /* }) */
+            }
           })
         })
       })
