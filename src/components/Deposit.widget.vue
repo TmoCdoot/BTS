@@ -4,10 +4,10 @@
         <div class="DataConterner">
             <div class="dataTextDeposit dataTextDeposit-align">
                 <div class="topBox">
-                    {{ deposit }} $
+                    {{ userData.depositSelect }} $
                 </div>
                 <div class="bottomBox">
-                    {{ Math.round(deposit*0.89) }} €
+                    {{ Math.round(userData.depositSelect*0.89) }} €
                 </div>
             </div>  
             <div class="dataTextDeposit dataTextDepositAlign">
@@ -18,16 +18,20 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
 
     export default {
     name: "Deposit",
-    props: {
+/*     props: {
         deposit: Number,
-    },
+    }, */
     data: function () {
         return {
             
         }
+    },
+    computed: {
+        ...mapState(['userData']),
     },
     methods: {
         updateDeposit: function () {

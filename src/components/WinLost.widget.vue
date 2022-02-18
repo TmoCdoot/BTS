@@ -3,25 +3,34 @@
         <div class="titleStatisticContener">Profit / Gain</div>
         <div class="DataConterner contenerWinLoss">
             <div class="dataTextWinLos dataTextWinLos-align">
-                <div class="topBox" v-if="winLostValue-deposit <= 0">
-                    {{ winLostValue-deposit }} $
+                <div class="topBox" v-if="winLostValue-userData.depositSelect <= 0 && winLostValue != 0">
+                    {{ winLostValue-userData.depositSelect }} $
+                </div>
+                <div class="topBox" v-else-if="winLostValue-userData.depositSelect >= 0 && winLostValue != 0">
+                    +{{ winLostValue-userData.depositSelect }} $
                 </div>
                 <div class="topBox" v-else>
-                    +{{ winLostValue-deposit }} $
+                    0 $
                 </div>
-                <div class="bottomBox" v-if="((winLostValue-deposit)*0.89).toFixed(2) <= 0">
-                    {{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
+                <div class="bottomBox" v-if="((winLostValue-userData.depositSelect)*0.89).toFixed(2) <= 0 && winLostValue != 0">
+                    {{ ((winLostValue-userData.depositSelect)*0.89).toFixed(2) }} €
+                </div>
+                <div class="bottomBox" v-else-if="((winLostValue-userData.depositSelect)*0.89).toFixed(2) >= 0 && winLostValue != 0">
+                    +{{ ((winLostValue-userData.depositSelect)*0.89).toFixed(2) }} €
                 </div>
                 <div class="bottomBox" v-else>
-                    +{{ ((winLostValue-deposit)*0.89).toFixed(2) }} €
+                    0 €
                 </div>
             </div>
             <div class="dataTextWinLos dataText-pnl">
-                <div class="topBox textPnl inferior" v-if="(((winLostValue/deposit)-1)*100).toFixed(2) <= 0">
-                    {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                <div class="topBox textPnl inferior" v-if="(((winLostValue/userData.depositSelect)-1)*100).toFixed(2) <= 0 && winLostValue != 0">
+                    {{ (((winLostValue/userData.depositSelect)-1)*100).toFixed(2) }} %
+                </div>
+                <div class="topBox textPnl superior" v-else-if="(((winLostValue/userData.depositSelect)-1)*100).toFixed(2) >= 0 && winLostValue != 0">
+                    +{{ (((winLostValue/userData.depositSelect)-1)*100).toFixed(2) }} %
                 </div>
                 <div class="topBox textPnl superior" v-else>
-                    +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                    +0 %
                 </div>
             </div>  
         </div>
@@ -33,11 +42,11 @@
 
 export default {
   name: "WinLost",
-  props: {
+/*   props: {
     deposit: Number,
-  },
+  }, */
   computed: {
-    ...mapState(['winLostValue']),
+    ...mapState(['winLostValue', 'userData']),
   }
 }
 </script>

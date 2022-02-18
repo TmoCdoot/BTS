@@ -7,9 +7,8 @@
                     <button class="addButton" @click="AddWallet">Add new wallet</button> 
                 </div>
             </div>
-            {{userData.walletList[0]}}
             <div class="listWalletBox">
-                <div class="rowWallet" v-for="(value,name) in userData.walletList" :key="value" @click="test(value)" v-on:click="walletName = value" :class="{active : value == selectedWallet}">
+                <div class="rowWallet" v-for="(value,name) in userData.walletList" :key="value" @click="test(value)" v-on:click="walletName = value" :class="{active : value == userData.walletSelected}">
                     <div class="column">
                         <img src="../assets/wallet.png" alt="Binance Wallet" class="img">
                     </div>
@@ -23,30 +22,36 @@
                             Deposit
                         </div>
                         <div class="styleBold">
-                            {{ deposit[name].deposit }} $
+                            {{ userData.depositList[name].deposit }} $
                         </div>       
                     </div>
                     <div class="column titleAlign">
                         <div class="titleData">
                             Win / Loss
                         </div>
-                        <div class="styleBold" v-if="winLostValue-deposit <= 0">
-                            {{ winLostValue-deposit }} $
+                        <div class="styleBold" v-if="winLostValue-userData.depositList[name].deposit <= 0 && winLostValue != 0">
+                            {{ winLostValue-userData.depositList[name].deposit }} $
+                        </div>    
+                        <div v-else-if="winLostValue-userData.depositList[name].deposit >= 0 && winLostValue != 0">
+                            +{{ (((winLostValue/userData.depositList[name].deposit)-1)*100).toFixed(2) }} %
                         </div>    
                         <div v-else>
-                            +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
-                        </div>       
+                            +0 %
+                        </div>      
                     </div>
                     <div class="column titleAlign">
-                        <div class="styleBold inferior" v-if="(((winLostValue/deposit)-1)*100).toFixed(2) <= 0">
-                            {{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                        <div class="styleBold inferior" v-if="(((winLostValue/userData.depositList[name].deposit)-1)*100).toFixed(2) <= 0 && winLostValue != 0">
+                            {{ (((winLostValue/userData.depositList[name].deposit)-1)*100).toFixed(2) }} %
                         </div>        
+                        <div class="superior" v-else-if="(((winLostValue/userData.depositList[name].deposit)-1)*100).toFixed(2) >= 0 && winLostValue != 0">
+                            +{{ (((winLostValue/userData.depositList[name].deposit)-1)*100).toFixed(2) }} %
+                        </div>   
                         <div class="superior" v-else>
-                            +{{ (((winLostValue/deposit)-1)*100).toFixed(2) }} %
+                            +0 %
                         </div>   
                     </div>
                     <div class="column">
-                        <img src="../assets/poubelle.png" alt="Delete" class="img">
+                        <button v-on:click="walletName = value" @click="deleteWalletUser"><img src="../assets/poubelle.png" alt="Delete" class="img"></button>
                     </div>
                 </div>
             </div>
@@ -64,11 +69,8 @@ export default {
     data: function () {
       return {
         walletName: '',
-        selectedWallet: ''
+        /* deposit: this.$store.getters.getUserDepositSelect, */
       }
-    },
-    props: {
-        deposit: Array,
     },
     computed: {
         ...mapState(['winLostValue', 'userData']),
@@ -78,10 +80,60 @@ export default {
             this.$emit('AddWallet', true);
         },
         test: function (value) {
-            this.$store.dispatch('selectWallet', value)
-            this.selectedWallet = this.$store.state.userData.walletSelected
-            console.log(this.selectedWallet)
-        }
+            const self = this
+            this.$store.dispatch('selectWallet', value).then(() => {
+                self.$store.dispatch('loadUserDeposit').then(() => {
+                    self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
+                      if (e != false) {
+                        //load crypto price
+                        self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                          //calcul win loss user
+                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                        })
+                      } else {
+                        self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                      }            
+                    })
+                })
+            })
+           /*  console.log(this.$store.state.userData.walletSelected) */
+        },
+        deleteWalletUser: function () {
+        const self = this
+        this.$store.dispatch("deleteWalletUser", {
+          walletName: this.walletName
+        }).then(() => {
+            self.$store.dispatch('loadUserWallet').then((e) => {
+                if (e) {
+                //select wallet 
+                    self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
+                        if (e) {
+                        //load deposit user
+                            self.$store.dispatch('loadUserDeposit').then(() => {
+                                self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                                    if (e != false) {
+                                        self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then(() => {
+                                            self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                                        })
+                                    } else {
+                                        self.$store.state.loadCryptoPrice = 0
+                                        self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+
+
+
+
+          
+            
+          
+        })
+      },
     },
 }
 </script>

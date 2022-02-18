@@ -9,7 +9,7 @@
       <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto"/>
     </div>
     <div v-if="updateDeposit == true">
-      <UpdateDeposit :updateDeposit="userData.deposit" @UpdateDeposit="UpdateDeposit"/>
+      <UpdateDeposit :updateDeposit="userData.depositSelect" @UpdateDeposit="UpdateDeposit"/>
     </div>
     <div v-if="addWallet == true">
       <AddWallet @AddWallet="AddWallet"/>
@@ -28,7 +28,7 @@
           <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
         </div>
         <div class="walletsList">
-          <ListWallet v-bind:deposit="userData.deposit" @AddWallet="AddWallet"/>
+          <ListWallet @AddWallet="AddWallet"/>
         </div>
       </div>
       <div class="rightHomeContener">
@@ -41,8 +41,8 @@
               <h1 class="titleStat">Statistic</h1>
             </div>
             <div class="conternsuer">
-              <Deposit v-bind:deposit="userData.deposit" @UpdateDeposit="UpdateDeposit"/>
-              <WinLost v-bind:deposit="userData.deposit"/>
+              <Deposit @UpdateDeposit="UpdateDeposit"/>
+              <WinLost/>
             </div>
             <div class="disconnectContener">
               <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
@@ -207,19 +207,26 @@ export default {
           //load wallet user
           self.$store.dispatch('loadUserWallet').then((e) => {
             if (e) {
-              //load deposit user
-              /* self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => { */
-                //load crypto user
-                self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
-                  if (e != false) {
-                    //load crypto price
-                    self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                      //calcul win loss user
-                      self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+              //select wallet 
+              /* console.log(this.$store.getters.getUserWalletList[0]) */
+              self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
+                if (e) {
+                  /* console.log(this.$store.state.userData.walletSelected) */
+                  //load deposit user
+                  self.$store.dispatch('loadUserDeposit').then(() => {
+                    //load crypto user
+                    self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
+                      if (e != false) {
+                        //load crypto price
+                        self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                          //calcul win loss user
+                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                        })
+                      }             
                     })
-                  }             
-                })
-              /* }) */
+                  })
+                }
+              })
             }
           })
         })

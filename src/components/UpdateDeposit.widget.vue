@@ -54,31 +54,35 @@
                     deposit: this.deposit
                 }).then((e) => {
                     if (e) {
-                        self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => {
-                            self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
-                                if (e != false) {
-                                    self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
-                                    if (e) {
-                                        self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                                        if (e) {
-                                            self.$emit('UpdateDeposit', true);
+                        self.$store.dispatch('loadUserWallet').then((e) => {
+                            if (e) {
+                                //select wallet 
+                                self.$store.dispatch('loadUserDeposit', this.$store.getters.getUserUid).then(() => {
+                                    self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                                        if (e != false) {
+                                            self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
+                                                if (e) {
+                                                    self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                                                        if (e) {
+                                                            self.$emit('UpdateDeposit', true);
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        } else {
+                                            self.$store.state.loadCryptoPrice = 0
+                                            self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                                                if (e) {
+                                                    self.$emit('UpdateDeposit', true);
+                                                }
+                                            })
                                         }
-                                        })
-                                    }
                                     })
-                                } else {
-                                    self.$store.state.loadCryptoPrice = 0
-                                    self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                                    if (e) {
-                                        self.$emit('UpdateDeposit', true);
-                                    }
-                                    })
-                                }
-                            })
+                                })
+                            }   
                         })
                     }
-                })
-                
+                })  
             }
         }
     }

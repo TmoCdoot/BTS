@@ -9,7 +9,8 @@ export default createStore({
     userData: {
       email: '',
       uid: '',
-      deposit: [],
+      depositSelect: 0,
+      depositList: [],
       dataCrypto: [],
       listCryptoUser: [],
       walletList: [],
@@ -35,11 +36,15 @@ export default createStore({
         state.userData.dataCrypto.push(snapshotResult[name])
       }
     },
-    setUserDeposit: function (state, snapshotResult) {
+    setUserDepositList: function (state, snapshotResult) {
       for (const name in snapshotResult) {
-        state.userData.deposit.push(snapshotResult[name])
+        state.userData.depositList.push(snapshotResult[name])
       }
-      console.log(state.userData.deposit)
+      /* console.log(state.userData.depositList) */
+    },
+    setUserDepositSelect: function (state, snapshotResult) {
+      state.userData.depositSelect = snapshotResult.deposit
+      /* console.log(state.userData.depositSelect) */
     },
     setActuelPrice: function (state, returnApi ) {
       for (const result in returnApi['resultRequest']) {
@@ -79,6 +84,12 @@ export default createStore({
     },
     getUserListCrypto: state =>{
       return state.userData.listCryptoUser
+    },
+    getUserWalletList: state =>{
+      return state.userData.walletList
+    },
+    getUserDepositSelect: state =>{
+      return state.userData.depositSelect
     }
   },
   actions: {
@@ -120,10 +131,10 @@ export default createStore({
         }
       })
     },
-    addOnWallet: ({commit}, cryptoInfo) => {
+    addOnWallet: ({commit, state}, cryptoInfo) => {
       return new Promise(Validated => {
         if (cryptoInfo['crypto']) {
-          setDoc(doc(db, `UserCrypto/${cryptoInfo['uid']}/List/${cryptoInfo['crypto']}`), {
+          setDoc(doc(db, `UserCrypto/${cryptoInfo['uid']}/${state.userData.walletSelected}/${cryptoInfo['crypto']}`), {
             buyPrice: cryptoInfo['buyprice'], 
             quantity: cryptoInfo['quantity']
           }).catch(() => {
@@ -147,10 +158,12 @@ export default createStore({
       })
     },
     //requete deposit user
-    loadUserDeposit: ({commit}, userUid) => {
+    loadUserDeposit: ({commit, state}) => {
       return new Promise(Validated => {
-        getDoc(doc(db, 'UserCrypto', userUid)).then((snapshot ) => {
-          commit('setUserDeposit', snapshot.data())
+        state.userData.deposit = 0
+        getDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${state.userData.walletSelected}`, )).then((snapshot ) => {
+         /*  console.log(snapshot.data()) */
+          commit('setUserDepositSelect', snapshot.data())
         }).then(() => {
           Validated(true)
         })
@@ -163,11 +176,11 @@ export default createStore({
         state.userData.dataCrypto = []
         const tab = []
         var isEmpty = 0
-        getDocs(collection(db, `UserCrypto/${userUid}/List`)).then((snapshot) => {
+        getDocs(collection(db, `UserCrypto/${userUid}/${state.userData.walletSelected}`)).then((snapshot) => {
           snapshot.forEach((doc) => tab[doc.id] = doc.data())
           snapshot.forEach(() => isEmpty = 1)
         }).then(() => {
-          console.log(tab)
+          /* console.log(tab) */
           if (isEmpty != 0) {
             commit('setUserDataCrypto', tab)
             Validated(true)
@@ -204,7 +217,7 @@ export default createStore({
         let resultSum = 0
         for (const name in dataCrypto) {
           tab.push(parseInt((dataCrypto[name].quantity * dataCrypto[name].priceNow).toFixed(2)))
-        }      
+        }     
         for (var b=0; b<tab.length; b++) {
           resultSum = (resultSum+tab[b])
         }
@@ -225,7 +238,7 @@ export default createStore({
     //delete crypto
     deleteCryptoUser: ({state}, data) => {
       return new Promise(Validated => {
-        deleteDoc(doc(db, `UserCrypto/${state.userData.uid}/List/${data['cryptoName']}`)).then(() => {
+        deleteDoc(doc(db, `UserCrypto/${state.userData.uid}/${state.userData.walletSelected}/${data['cryptoName']}`)).then(() => {
           Validated(true)
         })
       })
@@ -233,7 +246,7 @@ export default createStore({
     //update deposit
     updateDeposit: ({state}, data) => {
       return new Promise(Validated => {
-        updateDoc(doc(db, `UserCrypto/${state.userData.uid}`), {
+        updateDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${state.userData.walletSelected}`), {
           deposit: data['deposit']
         }).then(() => {
           Validated(true)
@@ -243,7 +256,7 @@ export default createStore({
     //update crypto user
     updateCryptoUser: ({state}, data) => {
       return new Promise(Validated => {
-        updateDoc(doc(db, `UserCrypto/${state.userData.uid}/List/${data['cryptoName']}`), {
+        updateDoc(doc(db, `UserCrypto/${state.userData.uid}/${state.userData.walletSelected}/${data['cryptoName']}`), {
           buyPrice: data['buyprice'],
           quantity: data['quantity']
         }).then(() => {
@@ -265,15 +278,22 @@ export default createStore({
     loadUserWallet: ({state, commit}) => {
       return new Promise(Validated => {
         state.userData.walletList = []
-        state.userData.deposit = []
+        state.userData.depositList = []
         const tab = []
+        var isEmpty = 0
         getDocs(collection(db, `UserWallet/${state.userData.uid}/ListWallet`)).then((snapshot) => {
           snapshot.forEach((doc) => tab[doc.id] = doc.data())
+          snapshot.forEach(() => isEmpty = 1)
 /*           snapshot.forEach(() => isEmpty = 1) */
         }).then(() => {
-          commit('setWalletUser', tab)
-          commit('setUserDeposit', tab)
-          Validated(true)
+          if (isEmpty != 0) {
+            commit('setWalletUser', tab)
+            commit('setUserDepositList', tab)
+            Validated(true)
+          } else {
+            Validated(false)
+          }
+          
         })
       })
     },
@@ -283,7 +303,20 @@ export default createStore({
         Validated(true)
       })
       
-    }
+    },
+    deleteWalletUser: ({state}, value) => {
+      return new Promise(Validated => {
+        deleteDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${value['walletName']}`)).then(() => {
+          getDocs(collection(db, `UserCrypto/${state.userData.uid}/${value['walletName']}`)).then((snapshot) => {
+            snapshot.forEach((docu) => deleteDoc(doc(db, `UserCrypto/${state.userData.uid}/${value['walletName']}/${docu.id}`)).then(() => {
+              Validated(false)
+            }))
+          })
+        }).then(() => {
+          Validated(true)
+        })
+      })
+    },
   },
   modules: {},
 });

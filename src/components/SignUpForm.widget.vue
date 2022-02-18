@@ -13,6 +13,9 @@
                 <input type="password" placeholder=" Confirm password" class="password" v-model="confirm_pass">
             </div><br>
             <div>
+                <input type="text" placeholder="Account name" class="account" v-model="account">
+            </div><br>
+            <div>
                 <input type="number" placeholder="Deposit" class="deposit" v-model="deposit">
             </div><br>
             <div v-if="error == 'err_mail'" class="error">
@@ -49,12 +52,13 @@ export default {
       password: '',
       confirm_pass: '',
       deposit: '',
+      account: '',
     }
   },
   computed: {
     ...mapState(['error']),
     noEmptyField: function () {
-      if (this.email != '' && this.password != '' && this.confirm_pass != '' && this.deposit != '') {
+      if (this.email != '' && this.password != '' && this.confirm_pass != '' && this.deposit != '' && this.account != '') {
         return true
       } else {
         return false
@@ -64,6 +68,7 @@ export default {
   methods: {
     signUp: function () {
         const deposit = this.deposit
+        const account = this.account
         const self = this
         this.$store.dispatch("signUp", {
             email: this.email,
@@ -71,7 +76,7 @@ export default {
             confirm_pass: this.confirm_pass,
             deposit: this.deposit,
         }).then((userUid) => {
-          setDoc(doc(db, "UserCrypto", userUid), { 
+          setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${account}`), { 
             deposit: deposit,
           }).then(() => {
             self.$router.push('/')
@@ -83,6 +88,16 @@ export default {
       },
   }
 };
+
+/* setDoc(doc(db, `UserWallet/${userUid}`), { 
+            Edit: 123,
+          }).then(() => {
+            setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${account}`), { 
+            deposit: deposit,
+            }).then(() => {
+              self.$router.push('/')
+            })
+          }) */
 </script>
 
 <style scoped lang="scss">
@@ -101,7 +116,7 @@ export default {
     padding-right: 15px;
   border-radius: 15px;
 }
-.email, .password, .deposit {
+.email, .password, .deposit, .account {
   padding: 12px 130px 12px 40px;
   border: none;
   border-radius: 15px;
