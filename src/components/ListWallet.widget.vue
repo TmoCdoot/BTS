@@ -8,9 +8,9 @@
                 </div>
             </div>
             <div class="listWalletBox">
-                <div class="rowWallet" v-for="(value,name) in userData.walletList" :key="value" @click="test(value)" v-on:click="walletName = value" :class="{active : value == userData.walletSelected}">
+                <div class="rowWallet" v-for="(value,name) in userData.walletList" :key="value" @click="selectWallet(value)" v-on:click="walletName = value" :class="{active : value == userData.walletSelected}">
                     <div class="column">
-                        <img src="../assets/wallet.png" alt="Binance Wallet" class="img">
+                        <img src="../assets/wallet.png" :alt="value" class="img">
                     </div>
                     <div class="column">
                       <div>
@@ -79,7 +79,7 @@ export default {
         AddWallet: function () {
             this.$emit('AddWallet', true);
         },
-        test: function (value) {
+        selectWallet: function (value) {
             const self = this
             this.$store.dispatch('selectWallet', value).then(() => {
                 self.$store.dispatch('loadUserDeposit').then(() => {
@@ -99,41 +99,34 @@ export default {
            /*  console.log(this.$store.state.userData.walletSelected) */
         },
         deleteWalletUser: function () {
-        const self = this
-        this.$store.dispatch("deleteWalletUser", {
-          walletName: this.walletName
-        }).then(() => {
-            self.$store.dispatch('loadUserWallet').then((e) => {
-                if (e) {
-                //select wallet 
-                    self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
-                        if (e) {
-                        //load deposit user
-                            self.$store.dispatch('loadUserDeposit').then(() => {
-                                self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
-                                    if (e != false) {
-                                        self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then(() => {
+            const self = this
+            this.$store.dispatch("deleteWalletUser", {
+            walletName: this.walletName
+            }).then(() => {
+                self.$store.dispatch('loadUserWallet').then((e) => {
+                    if (e) {
+                    //select wallet 
+                        self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
+                            if (e) {
+                            //load deposit user
+                                self.$store.dispatch('loadUserDeposit').then(() => {
+                                    self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                                        if (e != false) {
+                                            self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then(() => {
+                                                self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                                            })
+                                        } else {
+                                            self.$store.state.loadCryptoPrice = 0
                                             self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
-                                        })
-                                    } else {
-                                        self.$store.state.loadCryptoPrice = 0
-                                        self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
-                                    }
+                                        }
+                                    })
                                 })
-                            })
-                        }
-                    })
-                }
+                            }
+                        })
+                    }
+                })
             })
-
-
-
-
-          
-            
-          
-        })
-      },
+        },
     },
 }
 </script>

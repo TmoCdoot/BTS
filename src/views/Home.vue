@@ -3,7 +3,7 @@
       <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
     </div>
     <div v-if="navWallet == true">
-      <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav"/>
+      <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav" @AddWallet="AddWallet"/>
     </div>
     <div v-if="updateCrypto == true">
       <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto"/>
