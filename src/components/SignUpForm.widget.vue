@@ -39,7 +39,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { setDoc, db, doc } from "../plug-in/firebase.js";
 
 export default {
   name: "Form",
@@ -67,20 +66,15 @@ export default {
   },
   methods: {
     signUp: function () {
-        const deposit = this.deposit
-        const account = this.account
         const self = this
         this.$store.dispatch("signUp", {
             email: this.email,
             password: this.password,
             confirm_pass: this.confirm_pass,
             deposit: this.deposit,
-        }).then((userUid) => {
-          setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${account}`), { 
-            deposit: deposit,
-          }).then(() => {
-            self.$router.push('/')
-          })
+            account: this.account,
+        }).then(() => {
+          self.$emit('ChangeState', true);
       })
     },
     ChangeState: function () {

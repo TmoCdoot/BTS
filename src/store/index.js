@@ -102,7 +102,11 @@ export default createStore({
             if (!depositReg.test(userInfo["deposit"])) {
               createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userData) => {
                 const userUid = userData.user.uid;
-                Validated(userUid);
+                setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${userInfo["account"]}`), { 
+                  deposit: userInfo["deposit"],
+                }).then(() => {
+                  Validated(true);
+                })
               }).catch((error) => {
                 commit('setError', error.code)
               })
