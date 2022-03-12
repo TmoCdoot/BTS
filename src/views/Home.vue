@@ -130,7 +130,6 @@ export default {
       if (this.page != pageLoad) {
         this.page = pageLoad
       }
-      //console.log(this.page)
     },
     ChangeValueAddCrypto: function ( data ) {
       if (data == true) {
@@ -220,7 +219,10 @@ export default {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                           //calcul win loss user
-                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                            //calcul tableau
+                            self.$store.dispatch('loadCryptoPriceHistoryHour')
+                          })
                         })
                       }             
                     })

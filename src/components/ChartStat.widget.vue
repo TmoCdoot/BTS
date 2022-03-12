@@ -8,9 +8,8 @@
       </div>
       <div class="navStatContener">
         <ul class="navList">
-          <li class="liAlign"><button class="butttonBox" @click="changeButton('wky')" :class="{'activeButtonStat' : activeButtonWky}">24H</button></li>
           <li class="liAlign"><button class="butttonBox" @click="changeButton('dly')" :class="{'activeButtonStat' : activeButtonDly}">1D</button></li>
-          <li class="liAlign"><button class="butttonBox" @click="changeButton('mty')" :class="{'activeButtonStat' : activeButtonMty}">1W</button></li>
+          <li class="liAlign"><button class="butttonBox" @click="changeButton('wky')" :class="{'activeButtonStat' : activeButtonWky}">1W</button></li>
           <li class="liAlign"><button class="butttonBox" @click="changeButton('mty')" :class="{'activeButtonStat' : activeButtonMty}">1M</button></li>
         </ul>
       </div>
@@ -27,7 +26,7 @@ export default {
   },
   data: function () {
     return {
-      graph: 'wky'
+      graph: 'dly'
     }
   },
   computed: {

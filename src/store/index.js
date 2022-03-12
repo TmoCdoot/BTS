@@ -279,6 +279,7 @@ export default createStore({
         }      
       })
     },
+    //load all user wallet
     loadUserWallet: ({state, commit}) => {
       return new Promise(Validated => {
         state.userData.walletList = []
@@ -301,6 +302,7 @@ export default createStore({
         })
       })
     },
+    //add select wallet
     selectWallet: ({commit}, value) => {
       return new Promise(Validated => {
         commit('setSelectedWallet', value)
@@ -308,6 +310,7 @@ export default createStore({
       })
       
     },
+    //delete wallet
     deleteWalletUser: ({state}, value) => {
       return new Promise(Validated => {
         deleteDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${value['walletName']}`)).then(() => {
@@ -319,6 +322,131 @@ export default createStore({
         }).then(() => {
           Validated(true)
         })
+      })
+    },
+
+    //requete recuperation price crypto pour graph
+    loadCryptoPriceHistoryHour: ({/* commit */ state}) => {
+      return new Promise(Validated => {
+        var tab = []
+        //var tabResultFinal = []
+        for (const token in state.userData.listCryptoUser) {
+          //console.log(token)
+          axios({
+            method: 'GET',
+            url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=23'
+          }).then(result => {
+            var data = result.data.Data.Data    
+            //parse resultat des prix qio contient 24 prix pour 24h
+            if (typeof data != 'undefined') {
+              //faire correspondre list crypto user avec resultat
+              for (const cryptoUser in state.userData.dataCrypto) {
+                //si correspondance
+                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                  //alors parse les 24h de donner puis ajouter dans tableau en multipliant
+                  for (const val in data) {
+                    //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    if (tab[val] == null) {
+                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    } else {
+                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    }
+                  }
+                }
+              }        
+            }
+          })
+        }
+        console.log(tab)
+       
+        /*
+        axios({
+          method: 'GET',
+          url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
+        }).then(result => {
+          commit('setActuelPrice', { 
+            resultRequest: result.data.data,
+          })*/
+          Validated(state)/*
+          },
+          error => {
+            Validated(error)
+          }
+        ) */
+      })
+    },
+
+    //requete recuperation price crypto pour graph
+    loadCryptoPriceHistoryWly: ({/* commit */ state}) => {
+      return new Promise(Validated => {
+        var tab = []
+        //var tabResultFinal = []
+        for (const token in state.userData.listCryptoUser) {
+          //console.log(token)
+          axios({
+            method: 'GET',
+            url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=6'
+          }).then(result => {
+            var data = result.data.Data.Data    
+            //parse resultat des prix qio contient 24 prix pour 24h
+            if (typeof data != 'undefined') {
+              //faire correspondre list crypto user avec resultat
+              for (const cryptoUser in state.userData.dataCrypto) {
+                //si correspondance
+                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                  //alors parse les 24h de donner puis ajouter dans tableau en multipliant
+                  for (const val in data) {
+                    //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    if (tab[val] == null) {
+                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    } else {
+                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    }
+                  }
+                }
+              }        
+            }
+          })
+        }
+        console.log(tab)
+        Validated(state)
+      })
+    },
+
+    //requete recuperation price crypto pour graph
+    loadCryptoPriceHistoryMth: ({/* commit */ state}) => {
+      return new Promise(Validated => {
+        var tab = []
+        //var tabResultFinal = []
+        for (const token in state.userData.listCryptoUser) {
+          //console.log(token)
+          axios({
+            method: 'GET',
+            url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=23'
+          }).then(result => {
+            var data = result.data.Data.Data    
+            //parse resultat des prix qio contient 24 prix pour 24h
+            if (typeof data != 'undefined') {
+              //faire correspondre list crypto user avec resultat
+              for (const cryptoUser in state.userData.dataCrypto) {
+                //si correspondance
+                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                  //alors parse les 24h de donner puis ajouter dans tableau en multipliant
+                  for (const val in data) {
+                    //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    if (tab[val] == null) {
+                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    } else {
+                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    }
+                  }
+                }
+              }        
+            }
+          })
+        }
+        console.log(tab)
+        Validated(state)
       })
     },
   },

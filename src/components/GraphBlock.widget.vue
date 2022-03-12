@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div v-if="graph == 'wky'">
+        <div v-if="graph == 'dly'">
             <area-chart :data="chartDataDly" :colors="['#479EDD']" class="graph" label="PNL réaliser"></area-chart>
         </div>
-        <div v-if="graph == 'dly'">
+        <div v-if="graph == 'wky'">
             <area-chart :data="chartDataWky" :colors="['#479EDD']" class="graph" label="PNL réaliser"></area-chart>
         </div>
         <div v-if="graph == 'mty'"> 
