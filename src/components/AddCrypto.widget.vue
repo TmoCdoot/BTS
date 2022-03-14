@@ -71,7 +71,14 @@
                                     if (e) {
                                         self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
                                             if (e) {
-                                                self.$emit('ChangeValueAddCrypto', true);
+                                                self.$emit('ChangeValueAddCrypto', true).then(() => {
+                                                    //calcul graph
+                                                    self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                                        self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                                            self.$store.state.ready = 1
+                                                        })
+                                                    })
+                                                })
                                             }
                                         })
                                     }    

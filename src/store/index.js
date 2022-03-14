@@ -17,8 +17,16 @@ export default createStore({
       walletSelected: '',
     },
     historyWalletDly: '',
+    historyTimeDly: '',
+
+    historyWalletWky: '',
+    historyTimeWky: '',
+
+    historyWalletMth: '',
+
     actualPrice: [ ],
     winLostValue: 0,
+    ready: 0
   },
   mutations: {
     setError: function (state, error) {
@@ -72,9 +80,23 @@ export default createStore({
     setSelectedWallet: function (state, value) {
       state.userData.walletSelected = value
     },
+
+
     setHistoWalletDly: function (state, data) {
-      state.historyWalletDly = data
-    }
+      state.historyWalletDly = data['tabCrypto']
+      state.historyTimeDly =  data['tabTime']
+      console.log(state.historyWalletDly)
+    },
+    setHistoWalletWky: function (state, data) {
+      state.historyWalletWky = data['tabCrypto']
+      state.historyTimeWky = data['tabTime']
+      console.log(state.historyTimeWky)
+    },
+    setHistoWalletMth: function (state, data) {
+      state.historyWalletMth = data
+      console.log(state.historyWalletMth)
+    },
+    
   },
   getters: {
     getUserEmail: state => {
@@ -94,7 +116,20 @@ export default createStore({
     },
     getUserDepositSelect: state =>{
       return state.userData.depositSelect
-    }
+    },
+
+    getHistoWalletDly: state =>{
+      return state.historyWalletDly
+    },
+    getHistoTimeDly: state =>{
+      return state.historyTimeDly
+    },
+    getHistoWalletWky: state =>{
+      return state.historyWalletWky
+    },
+    getHistoTimeWky: state =>{
+      return state.historyTimeWky
+    },
   },
   actions: {
     signUp: ({commit}, userInfo) => {
@@ -332,7 +367,10 @@ export default createStore({
     //requete recuperation price crypto pour graph
     loadCryptoPriceHistoryHour: ({commit, state}) => {
       return new Promise(Validated => {
-        var tab = []
+        state.historyTimeDly = ''
+        state.historyWalletDly = ''
+        var tabCrypto = []
+        var tabTime = []
         var countUserCrypto = state.userData.listCryptoUser.length
         var count = 0
         //var tabResultFinal = []
@@ -358,10 +396,12 @@ export default createStore({
                   //alors parse les 24h de donner puis ajouter dans tableau en multipliant
                   for (const val in data) {
                     //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
-                    if (tab[val] == null) {
-                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    if (tabCrypto[val] == null) {
+                      tabCrypto[val] = Math.round(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabTime[val] = timeConverter(data[val].time)
                     } else {
-                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabCrypto[val] = Math.round(tabCrypto[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity))
+                      tabTime[val] = timeConverter(data[val].time)
                     }
                   }
                 }
@@ -369,31 +409,38 @@ export default createStore({
             }
             count++
           if (countUserCrypto == count) {
-            commit('setHistoWalletDly', tab)
+            commit('setHistoWalletDly', {
+              tabCrypto: tabCrypto,
+              tabTime: tabTime
+            })
+            Validated(state)
           }
         }
 
-        /*
-        axios({
-          method: 'GET',
-          url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
-        }).then(result => {
-          commit('setActuelPrice', { 
-            resultRequest: result.data.data,
-          })*/
-          Validated(state)/*
-          },
-          error => {
-            Validated(error)
-          }
-        ) */
+        function timeConverter(UNIX_timestamp){
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = ['Jan','Feb','March','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var hour = a.getHours();
+          var min = a.getMinutes();
+          var sec = a.getSeconds();
+          var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+          return time;
+        }
       })
     },
 
     //requete recuperation price crypto pour graph
-    loadCryptoPriceHistoryWly: ({/* commit */ state}) => {
+    loadCryptoPriceHistoryWly: ({commit, state}) => {
       return new Promise(Validated => {
-        var tab = []
+        state.historyTimeWky = ''
+        state.historyWalletWky = ''
+        var tabCrypto = []
+        var tabTime = []
+        var countUserCrypto = state.userData.listCryptoUser.length
+        var count = 0
         //var tabResultFinal = []
         for (const token in state.userData.listCryptoUser) {
           //console.log(token)
@@ -401,7 +448,12 @@ export default createStore({
             method: 'GET',
             url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=6'
           }).then(result => {
-            var data = result.data.Data.Data    
+            addOnArray(result.data.Data.Data, token, countUserCrypto, count)
+          })
+        }
+
+        function addOnArray(result, token, countUserCrypto) {
+          var data = result 
             //parse resultat des prix qio contient 24 prix pour 24h
             if (typeof data != 'undefined') {
               //faire correspondre list crypto user avec resultat
@@ -411,19 +463,36 @@ export default createStore({
                   //alors parse les 24h de donner puis ajouter dans tableau en multipliant
                   for (const val in data) {
                     //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
-                    if (tab[val] == null) {
-                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    if (tabCrypto[val] == null) {
+                      tabCrypto[val] = Math.round(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabTime[val] = timeConverter(data[val].time)
                     } else {
-                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabCrypto[val] =  Math.round(tabCrypto[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity))
+                      tabTime[val] = timeConverter(data[val].time)
                     }
                   }
                 }
               }        
             }
-          })
+            count++
+          if (countUserCrypto == count) {
+            commit('setHistoWalletWky', {
+              tabCrypto: tabCrypto,
+              tabTime: tabTime
+            })
+            Validated(state)
+          }
         }
-        console.log(tab)
-        Validated(state)
+
+        function timeConverter(UNIX_timestamp){
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var time = date + ' ' + month + ' ' + year + ' ';
+          return time;
+        }
       })
     },
 

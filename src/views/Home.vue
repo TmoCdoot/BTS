@@ -220,8 +220,16 @@ export default {
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                           //calcul win loss user
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                            //calcul tableau
-                            self.$store.dispatch('loadCryptoPriceHistoryHour')
+
+                            //calcul graph dly
+                            self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                              //calcul graph wly
+                              self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                //calcul graph mth
+                                //self.$store.dispatch('loadCryptoPriceHistoryMth')
+                                self.$store.state.ready = 1
+                              })
+                            })
                           })
                         })
                       }             

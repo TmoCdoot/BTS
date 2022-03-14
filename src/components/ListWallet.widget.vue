@@ -88,10 +88,20 @@ export default {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                           //calcul win loss user
-                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                              //calcul graph
+                              self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                    self.$store.state.ready = 1
+                                })
+                              })
+                          })
                         })
                       } else {
-                        self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                        self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                            //calcul graph
+                            self.$store.state.ready = 0
+                        })
                       }            
                     })
                 })
