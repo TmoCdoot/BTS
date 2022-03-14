@@ -16,6 +16,7 @@ export default createStore({
       walletList: [],
       walletSelected: '',
     },
+    historyWalletDly: '',
     actualPrice: [ ],
     winLostValue: 0,
   },
@@ -70,6 +71,9 @@ export default createStore({
     },
     setSelectedWallet: function (state, value) {
       state.userData.walletSelected = value
+    },
+    setHistoWalletDly: function (state, data) {
+      state.historyWalletDly = data
     }
   },
   getters: {
@@ -326,9 +330,11 @@ export default createStore({
     },
 
     //requete recuperation price crypto pour graph
-    loadCryptoPriceHistoryHour: ({/* commit */ state}) => {
+    loadCryptoPriceHistoryHour: ({commit, state}) => {
       return new Promise(Validated => {
         var tab = []
+        var countUserCrypto = state.userData.listCryptoUser.length
+        var count = 0
         //var tabResultFinal = []
         for (const token in state.userData.listCryptoUser) {
           //console.log(token)
@@ -336,7 +342,13 @@ export default createStore({
             method: 'GET',
             url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=23'
           }).then(result => {
-            var data = result.data.Data.Data    
+            addOnArray(result.data.Data.Data, token, countUserCrypto, count)
+          })
+        }
+        
+       
+        function addOnArray(result, token, countUserCrypto) {
+          var data = result 
             //parse resultat des prix qio contient 24 prix pour 24h
             if (typeof data != 'undefined') {
               //faire correspondre list crypto user avec resultat
@@ -355,10 +367,12 @@ export default createStore({
                 }
               }        
             }
-          })
+            count++
+          if (countUserCrypto == count) {
+            commit('setHistoWalletDly', tab)
+          }
         }
-        console.log(tab)
-       
+
         /*
         axios({
           method: 'GET',
@@ -452,6 +466,30 @@ export default createStore({
   },
   modules: {},
 });
+
+
+/*.then(result => {
+            var data = result.data.Data.Data    
+            //parse resultat des prix qio contient 24 prix pour 24h
+            if (typeof data != 'undefined') {
+              //faire correspondre list crypto user avec resultat
+              for (const cryptoUser in state.userData.dataCrypto) {
+                //si correspondance
+                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                  //alors parse les 24h de donner puis ajouter dans tableau en multipliant
+                  for (const val in data) {
+                    //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    if (tab[val] == null) {
+                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    } else {
+                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                    }
+                  }
+                }
+              }        
+            }
+          })*/
+
 
 
 /*
