@@ -7,7 +7,7 @@
             <area-chart :data="chartDataWky" :colors="['#479EDD']" class="graph" label="Wallet" :min="Math.min(this.$store.getters.getHistoWalletWky)" :max="Math.max(this.$store.getters.getHistoWalletWky)"></area-chart>
         </div>
         <div v-if="graph == 'mty'"> 
-            <area-chart :data="chartDatatMty" :colors="['#479EDD']" class="graph" label="Wallet"></area-chart>
+            <area-chart :data="chartDatatMty" :colors="['#479EDD']" class="graph" label="Wallet" :min="Math.min(this.$store.getters.getHistoWalletMth)" :max="Math.max(this.$store.getters.getHistoWalletMth)"></area-chart>
         </div>
     </div>
 </template>
@@ -59,15 +59,32 @@
                     [this.$store.getters.getHistoTimeWky[6], this.$store.getters.getHistoWalletWky[6]],
                     
                 ],
-                chartDatatMty: {
-                    'Dec': 3,
-                    'Nov': 2,
-                    'Oct': 8,
-                    'Sep': 4,
-                    'Aug': 3,
-                    'Jui': -1,
-                    'Jun': -4,
-                }
+                chartDatatMty: [
+                    [this.$store.getters.getHistoTimeMth[0], this.$store.getters.getHistoWalletMth[0]],
+                    [this.$store.getters.getHistoTimeMth[1], this.$store.getters.getHistoWalletMth[1]],
+                    [this.$store.getters.getHistoTimeMth[2], this.$store.getters.getHistoWalletMth[2]],
+                    [this.$store.getters.getHistoTimeMth[3], this.$store.getters.getHistoWalletMth[3]],
+                    [this.$store.getters.getHistoTimeMth[4], this.$store.getters.getHistoWalletMth[4]],
+                    [this.$store.getters.getHistoTimeMth[5], this.$store.getters.getHistoWalletMth[5]],
+                    [this.$store.getters.getHistoTimeMth[6], this.$store.getters.getHistoWalletMth[6]],
+                    [this.$store.getters.getHistoTimeMth[7], this.$store.getters.getHistoWalletMth[7]],
+                    [this.$store.getters.getHistoTimeMth[8], this.$store.getters.getHistoWalletMth[8]],
+                    [this.$store.getters.getHistoTimeMth[9], this.$store.getters.getHistoWalletMth[9]],
+                    [this.$store.getters.getHistoTimeMth[10], this.$store.getters.getHistoWalletMth[10]],
+                    [this.$store.getters.getHistoTimeMth[11], this.$store.getters.getHistoWalletMth[11]],
+                    [this.$store.getters.getHistoTimeMth[12], this.$store.getters.getHistoWalletMth[12]],
+                    [this.$store.getters.getHistoTimeMth[13], this.$store.getters.getHistoWalletMth[13]],
+                    [this.$store.getters.getHistoTimeMth[14], this.$store.getters.getHistoWalletMth[14]],
+                    [this.$store.getters.getHistoTimeMth[15], this.$store.getters.getHistoWalletMth[15]],
+                    [this.$store.getters.getHistoTimeMth[16], this.$store.getters.getHistoWalletMth[16]],
+                    [this.$store.getters.getHistoTimeMth[17], this.$store.getters.getHistoWalletMth[17]],
+                    [this.$store.getters.getHistoTimeMth[18], this.$store.getters.getHistoWalletMth[18]],
+                    [this.$store.getters.getHistoTimeMth[19], this.$store.getters.getHistoWalletMth[19]],
+                    [this.$store.getters.getHistoTimeMth[20], this.$store.getters.getHistoWalletMth[20]],
+                    [this.$store.getters.getHistoTimeMth[21], this.$store.getters.getHistoWalletMth[21]],
+                    [this.$store.getters.getHistoTimeMth[22], this.$store.getters.getHistoWalletMth[22]],
+                    [this.$store.getters.getHistoTimeMth[23], this.$store.getters.getHistoWalletMth[23]],
+                ]
             }
         },
     }

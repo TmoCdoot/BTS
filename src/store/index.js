@@ -23,6 +23,7 @@ export default createStore({
     historyTimeWky: '',
 
     historyWalletMth: '',
+    historyTimeMth: '',
 
     actualPrice: [ ],
     winLostValue: 0,
@@ -85,7 +86,7 @@ export default createStore({
     setHistoWalletDly: function (state, data) {
       state.historyWalletDly = data['tabCrypto']
       state.historyTimeDly =  data['tabTime']
-      console.log(state.historyWalletDly)
+      console.log(state.historyTimeDly)
     },
     setHistoWalletWky: function (state, data) {
       state.historyWalletWky = data['tabCrypto']
@@ -93,8 +94,9 @@ export default createStore({
       console.log(state.historyTimeWky)
     },
     setHistoWalletMth: function (state, data) {
-      state.historyWalletMth = data
-      console.log(state.historyWalletMth)
+      state.historyWalletMth = data['tabCrypto']
+      state.historyTimeMth = data['tabTime']
+      console.log(state.historyTimeMth)
     },
     
   },
@@ -129,6 +131,13 @@ export default createStore({
     },
     getHistoTimeWky: state =>{
       return state.historyTimeWky
+    },
+
+    getHistoWalletMth: state =>{
+      return state.historyWalletMth
+    },
+    getHistoTimeMth: state =>{
+      return state.historyTimeMth
     },
   },
   actions: {
@@ -384,7 +393,6 @@ export default createStore({
           })
         }
         
-       
         function addOnArray(result, token, countUserCrypto) {
           var data = result 
             //parse resultat des prix qio contient 24 prix pour 24h
@@ -497,17 +505,25 @@ export default createStore({
     },
 
     //requete recuperation price crypto pour graph
-    loadCryptoPriceHistoryMth: ({/* commit */ state}) => {
+    loadCryptoPriceHistoryMth: ({commit, state}) => {
       return new Promise(Validated => {
-        var tab = []
+        var tabCrypto = []
+        var tabTime = []
+        var countUserCrypto = state.userData.listCryptoUser.length
+        var count = 0
         //var tabResultFinal = []
         for (const token in state.userData.listCryptoUser) {
           //console.log(token)
           axios({
             method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=23'
+            url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + state.userData.listCryptoUser[token] + '&tsym=USD&limit=30'
           }).then(result => {
-            var data = result.data.Data.Data    
+            addOnArray(result.data.Data.Data, token, countUserCrypto)
+          })
+        }
+
+        function addOnArray(result, token, countUserCrypto) {
+          var data = result 
             //parse resultat des prix qio contient 24 prix pour 24h
             if (typeof data != 'undefined') {
               //faire correspondre list crypto user avec resultat
@@ -517,19 +533,36 @@ export default createStore({
                   //alors parse les 24h de donner puis ajouter dans tableau en multipliant
                   for (const val in data) {
                     //console.log(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
-                    if (tab[val] == null) {
-                      tab[val] = data[val].open * state.userData.dataCrypto[cryptoUser].quantity
+                    if (tabCrypto[val] == null) {
+                      tabCrypto[val] = Math.round(data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabTime[val] = timeConverter(data[val].time)
                     } else {
-                      tab[val] = tab[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity)
+                      tabCrypto[val] = Math.round(tabCrypto[val] + (data[val].open * state.userData.dataCrypto[cryptoUser].quantity))
+                      tabTime[val] = timeConverter(data[val].time)
                     }
                   }
                 }
               }        
             }
-          })
+            count++
+          if (countUserCrypto == count) {
+            commit('setHistoWalletMth', {
+              tabCrypto: tabCrypto,
+              tabTime: tabTime
+            })
+            Validated(state)
+          }
         }
-        console.log(tab)
-        Validated(state)
+
+        function timeConverter(UNIX_timestamp){
+          var a = new Date(UNIX_timestamp * 1000);
+          var months = ['Jan','Feb','March','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var time = date + ' ' + month + ' ' + year;
+          return time;
+        }
       })
     },
   },
