@@ -84,6 +84,12 @@
                     [this.$store.getters.getHistoTimeMth[21], this.$store.getters.getHistoWalletMth[21]],
                     [this.$store.getters.getHistoTimeMth[22], this.$store.getters.getHistoWalletMth[22]],
                     [this.$store.getters.getHistoTimeMth[23], this.$store.getters.getHistoWalletMth[23]],
+                    [this.$store.getters.getHistoTimeMth[24], this.$store.getters.getHistoWalletMth[24]],
+                    [this.$store.getters.getHistoTimeMth[25], this.$store.getters.getHistoWalletMth[25]],
+                    [this.$store.getters.getHistoTimeMth[26], this.$store.getters.getHistoWalletMth[26]],
+                    [this.$store.getters.getHistoTimeMth[27], this.$store.getters.getHistoWalletMth[27]],
+                    [this.$store.getters.getHistoTimeMth[28], this.$store.getters.getHistoWalletMth[28]],
+                    [this.$store.getters.getHistoTimeMth[29], this.$store.getters.getHistoWalletMth[29]],
                 ]
             }
         },
