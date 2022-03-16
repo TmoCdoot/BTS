@@ -118,4 +118,22 @@ export default createStore({
   
 ```
 
-A TERMINER
+Get function in view
+
+```js
+
+this.$store.dispatch('signUp', YourData)
+
+```
+
+### Add external plugin
+
+To add other plugin, creat new folder and new file in this folder, after import plugin on store
+
+```js
+
+import { createStore } from "vuex";
+import axios from 'axios' 
+import { auth, ... } from "../plug-in/firebase.js";
+
+```
