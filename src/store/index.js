@@ -421,7 +421,7 @@ export default createStore({
               tabCrypto: tabCrypto,
               tabTime: tabTime
             })
-            Validated(state)
+            Validated(true)
           }
         }
 
@@ -488,7 +488,7 @@ export default createStore({
               tabCrypto: tabCrypto,
               tabTime: tabTime
             })
-            Validated(state)
+            Validated(true)
           }
         }
 
@@ -507,6 +507,8 @@ export default createStore({
     //requete recuperation price crypto pour graph
     loadCryptoPriceHistoryMth: ({commit, state}) => {
       return new Promise(Validated => {
+        state.historyTimeMth = ''
+        state.historyWalletMth = ''
         var tabCrypto = []
         var tabTime = []
         var countUserCrypto = state.userData.listCryptoUser.length
@@ -550,7 +552,7 @@ export default createStore({
               tabCrypto: tabCrypto,
               tabTime: tabTime
             })
-            Validated(state)
+            Validated(true)
           }
         }
 

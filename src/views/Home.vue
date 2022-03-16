@@ -222,14 +222,18 @@ export default {
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
                             //calcul graph dly
                             self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                              //calcul graph wly
-                              self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                //calcul graph mth
-                                self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                                  self.$store.state.ready = 1
-                                })
-                              })
+                              self.$store.state.ready = self.$store.state.ready+1
                             })
+                              //calcul graph wly
+                            self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                              self.$store.state.ready = self.$store.state.ready+1
+                            })
+                                //calcul graph mth
+                            self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                              self.$store.state.ready = self.$store.state.ready+1
+                            })
+                              
+                            
                           })
                         })
                       }             
