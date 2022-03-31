@@ -97,7 +97,5 @@
 </script>
 
 <style scoped lang="scss">
-    .graph {
-        /* border: 1px solid blue; */
-    }
+
 </style>

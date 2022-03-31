@@ -118,9 +118,9 @@ export default {
 
 @media screen and (max-width: 1360px) {
   .statContener {
-    margin-left: 60px;
-    margin-right: 60px;
-    width: 80%;
+    /* margin-left: 60px;
+    margin-right: 60px;*/
+    width: 90%; 
   }
 
 }
