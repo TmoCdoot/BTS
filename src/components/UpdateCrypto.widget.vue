@@ -72,28 +72,28 @@
                             self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                             if (e) {
                                 self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                                if (e) {
-                                    self.$emit('UpdateValueCrypto', {state: true}).then(() => {
+                                    if (e) {
                                         //calcul graph
                                         self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                                            self.$store.dispatch('loadCryptoPriceHistoryWly')
+                                            self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                                self.$emit('UpdateValueCrypto', {state: true})
+                                            })
                                         })
-                                    })
-                                }
+                                    }
                                 })
                             }
                             })
                         } else {
                             self.$store.state.loadCryptoPrice = 0
                             self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                            if (e) {
-                                self.$emit('UpdateValueCrypto', {state: true}).then(() => {
-                                        //calcul graph
-                                        self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                                            self.$store.dispatch('loadCryptoPriceHistoryWly')
+                                if (e) {
+                                    //calcul graph
+                                    self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                        self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                            self.$emit('UpdateValueCrypto', {state: true})
                                         })
                                     })
-                            }
+                                }
                             })
                         }
                         })

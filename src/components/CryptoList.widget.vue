@@ -136,7 +136,17 @@
               if (e != false) {
                 self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                   if (e) {
-                    self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                    self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                      if (e) {
+                        self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                          self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                            self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                              self.$store.state.ready = 3
+                            })
+                          })
+                        })
+                      }
+                    })
                   }
                 })
               } else {

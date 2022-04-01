@@ -220,6 +220,7 @@ export default {
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                           //calcul win loss user
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                            /* self.$store.dispatch('testGraph') */
                             //calcul graph dly
                             self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
                               self.$store.state.ready = self.$store.state.ready+1

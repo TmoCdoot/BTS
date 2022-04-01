@@ -90,6 +90,7 @@
                     [this.$store.getters.getHistoTimeMth[27], this.$store.getters.getHistoWalletMth[27]],
                     [this.$store.getters.getHistoTimeMth[28], this.$store.getters.getHistoWalletMth[28]],
                     [this.$store.getters.getHistoTimeMth[29], this.$store.getters.getHistoWalletMth[29]],
+                    [this.$store.getters.getHistoTimeMth[30], this.$store.getters.getHistoWalletMth[30]],
                 ]
             }
         },
