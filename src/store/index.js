@@ -27,6 +27,7 @@ export default createStore({
 
     actualPrice: [],
     winLostValue: 0,
+    eurPrice: 0,
     ready: 0
   },
   mutations: {
@@ -65,6 +66,9 @@ export default createStore({
         }
       }
     },
+    setEurPrice: function (state, result) {
+      state.eurPrice = result.resultRequest
+    },
     setWinLostValue: function (state, resultSum) {
       state.winLostValue = 0
       state.winLostValue = resultSum;
@@ -81,8 +85,6 @@ export default createStore({
     setSelectedWallet: function (state, value) {
       state.userData.walletSelected = value
     },
-
-
     setHistoWalletDly: function (state, data) {
       state.historyWalletDly = data['tabCrypto']
       state.historyTimeDly = data['tabTime']
@@ -259,7 +261,27 @@ export default createStore({
           error => {
             Validated(error)
           }
-        )
+        )   
+      })
+    },
+    //load eur price
+    loadEurPrice: ({commit}) => {
+      return new Promise(Validated => {
+        axios({
+          method: 'GET',
+          url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=usd&tsym=eur&limit=1'
+        }).then(result => {
+          commit('setEurPrice', {
+            resultRequest: result.data.Data.Data[0].open,
+          })
+          Validated(true)
+        },
+          error => {
+            if(error) {
+              Validated(false)
+            }
+          }
+        )    
       })
     },
     //calcul winloss valeur
@@ -439,7 +461,6 @@ export default createStore({
         }
       })
     },
-
     //requete recuperation price crypto pour graph
     loadCryptoPriceHistoryWly: ({ commit, state }) => {
       return new Promise(Validated => {
@@ -503,7 +524,6 @@ export default createStore({
         }
       })
     },
-
     //requete recuperation price crypto pour graph
     loadCryptoPriceHistoryMth: ({ commit, state }) => {
       return new Promise(Validated => {

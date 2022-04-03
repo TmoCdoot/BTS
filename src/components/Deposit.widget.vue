@@ -7,7 +7,7 @@
                     {{ userData.depositSelect }} $
                 </div>
                 <div class="bottomBox">
-                    {{ Math.round(userData.depositSelect*0.89) }} €
+                    {{ Math.round(userData.depositSelect*eurPrice) }} €
                 </div>
             </div>  
             <div class="dataTextDeposit dataTextDepositAlign">
@@ -31,7 +31,7 @@
         }
     },
     computed: {
-        ...mapState(['userData']),
+        ...mapState(['userData', 'eurPrice']),
     },
     methods: {
         updateDeposit: function () {

@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="cryptoContener" v-if="userData.dataCrypto.length > 0">
-      <div class="rowCrypto" v-for="value in userData.dataCrypto" :key="value">
+      <div class="rowCrypto" v-for="value in userData.dataCrypto" :key="value" :id="value.crypto">
         <div class="column">
           <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto" class="img">
         </div>
@@ -132,28 +132,31 @@
           cryptoName: this.cryptoName
         }).then((e) => {
           if (e) {
-            self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
-              if (e != false) {
-                self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
-                  if (e) {
-                    self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                      if (e) {
-                        self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                          self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                            self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                              self.$store.state.ready = 3
+            document.getElementById(this.cryptoName).style.opacity = "0%"
+            setTimeout(()=> {
+              self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                if (e != false) {
+                  self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
+                    if (e) {
+                      self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                        if (e) {
+                          self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                            self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                              self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                self.$store.state.ready = 3
+                              })
                             })
                           })
-                        })
-                      }
-                    })
-                  }
-                })
-              } else {
-                self.$store.state.loadCryptoPrice = 0
-                self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
-              }
-            })
+                        }
+                      })
+                    }
+                  })
+                } else {
+                  self.$store.state.loadCryptoPrice = 0
+                  self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                }
+              })
+            }, 400)
           }
         })
       },
@@ -205,6 +208,7 @@
     margin-left: 15px;
     padding-top: 15px;
     padding-bottom: 15px;
+    transition: 0.4s;
   }
 
   ::-webkit-scrollbar {

@@ -12,11 +12,11 @@
                 <div class="topBox" v-else>
                     0 $
                 </div>
-                <div class="bottomBox" v-if="((winLostValue-userData.depositSelect)*0.89).toFixed(2) <= 0 && winLostValue != 0">
-                    {{ ((winLostValue-userData.depositSelect)*0.89).toFixed(2) }} €
+                <div class="bottomBox" v-if="((winLostValue-userData.depositSelect)*eurPrice).toFixed(2) <= 0 && winLostValue != 0">
+                    {{ ((winLostValue-userData.depositSelect)*eurPrice).toFixed(2) }} €
                 </div>
-                <div class="bottomBox" v-else-if="((winLostValue-userData.depositSelect)*0.89).toFixed(2) >= 0 && winLostValue != 0">
-                    +{{ ((winLostValue-userData.depositSelect)*0.89).toFixed(2) }} €
+                <div class="bottomBox" v-else-if="((winLostValue-userData.depositSelect)*eurPrice).toFixed(2) >= 0 && winLostValue != 0">
+                    +{{ ((winLostValue-userData.depositSelect)*eurPrice).toFixed(2) }} €
                 </div>
                 <div class="bottomBox" v-else>
                     0 €
@@ -46,7 +46,7 @@ export default {
     deposit: Number,
   }, */
   computed: {
-    ...mapState(['winLostValue', 'userData']),
+    ...mapState(['winLostValue', 'userData', 'eurPrice']),
   }
 }
 </script>

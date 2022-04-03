@@ -1,56 +1,59 @@
 <template>  
-    <div v-if="addCrypto == true">
-      <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto"/>
+  <div id="loading_page">
+    <img alt="Logo" src="../assets/test.png" id="logoBox_loading"/>
+  </div>
+  <div v-if="addCrypto == true">
+    <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" id="add_crypto"/>
+  </div>
+  <div v-if="navWallet == true">
+    <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav" @AddWallet="AddWallet" id="test"/>
+  </div>
+  <div v-if="updateCrypto == true">
+    <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto" id="update_crypto"/>
+  </div>
+  <div v-if="updateDeposit == true">
+    <UpdateDeposit :updateDeposit="userData.depositSelect" @UpdateDeposit="UpdateDeposit" id="update_deposit"/>
+  </div>
+  <div v-if="addWallet == true">
+    <AddWallet @AddWallet="AddWallet" id="add_wallet"/>
+  </div>
+  <div class="topContener">
+    <div class="burgerNav">
+      <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
     </div>
-    <div v-if="navWallet == true">
-      <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav" @AddWallet="AddWallet"/>
+    <div class="logoContener">
+      <img alt="Logo" src="../assets/test.png" class="logoBox"/>
     </div>
-    <div v-if="updateCrypto == true">
-      <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto"/>
-    </div>
-    <div v-if="updateDeposit == true">
-      <UpdateDeposit :updateDeposit="userData.depositSelect" @UpdateDeposit="UpdateDeposit"/>
-    </div>
-    <div v-if="addWallet == true">
-      <AddWallet @AddWallet="AddWallet"/>
-    </div>
-    <div class="topContener">
-      <div class="burgerNav">
-        <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
+  </div>
+  <div class="mainContener">
+    <div class="leftHomeContener">
+      <div class="assetsList">
+        <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
       </div>
-      <div class="logoContener">
-        <img alt="Logo" src="../assets/logov1.png" class="logoBox"/>
+      <div class="walletsList">
+        <ListWallet @AddWallet="AddWallet"/>
       </div>
     </div>
-    <div class="mainContener">
-      <div class="leftHomeContener">
-        <div class="assetsList">
-          <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
-        </div>
-        <div class="walletsList">
-          <ListWallet @AddWallet="AddWallet"/>
-        </div>
+    <div class="rightHomeContener">
+      <div class="chartsLine">
+        <ChartStat/>
       </div>
-      <div class="rightHomeContener">
-        <div class="chartsLine">
-          <ChartStat/>
-        </div>
-        <div class="statisticList">
-          <div class="userblock">
-            <div class="titleuser">
-              <h1 class="titleStat">Statistic</h1>
-            </div>
-            <div class="conternsuer">
-              <Deposit @UpdateDeposit="UpdateDeposit"/>
-              <WinLost/>
-            </div>
-            <div class="disconnectContener">
-              <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
-            </div>
+      <div class="statisticList">
+        <div class="userblock">
+          <div class="titleuser">
+            <h1 class="titleStat">Statistic</h1>
+          </div>
+          <div class="conternsuer">
+            <Deposit @UpdateDeposit="UpdateDeposit"/>
+            <WinLost/>
+          </div>
+          <div class="disconnectContener">
+            <button @click="logOutUser" class="disconnectButton"><h3>Disconnect</h3></button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -134,8 +137,9 @@ export default {
     ChangeValueAddCrypto: function ( data ) {
       if (data == true) {
         if (this.addCrypto == true) {
-          this.addCrypto = false
+          document.getElementById('add_crypto').style.opacity = "0%";
           document.getElementById('app').style.overflow = "initial";
+          setTimeout(()=> {this.addCrypto = false}, 400)
         } else {
           this.addCrypto = true
           document.getElementById('app').style.overflow = "hidden";
@@ -145,22 +149,27 @@ export default {
     ChangeValueWalletNav: function ( data ) {
       if (data == true) {
         if (this.navWallet == true) {
-          this.navWallet = false
+          document.getElementById('test').style.transform = "translateX(-100%)";
           document.getElementById('app').style.overflow = "initial";
+          setTimeout(()=> {this.navWallet = false}, 1000)
+          
         } else {
-          this.navWallet = true
+          
+          document.getElementById('test').style.transform = "translateX(100%)";
           document.getElementById('app').style.overflow = "hidden";
+          setTimeout(()=> {this.navWallet = false}, 1000)
         }
       }
     },
     UpdateValueCrypto: function ( data ) {
       if (data['state'] == true) {
         if (this.updateCrypto == true) {
+          document.getElementById('update_crypto').style.opacity = "0%";
           this.updateCryptoName = data['cryptoName']
           this.updateCryptoBuy = data['cryptoBuy']
           this.updateCryptoQtt = data['cryptoQtt']
-          this.updateCrypto = false
           document.getElementById('app').style.overflow = "initial";
+          setTimeout(()=> {this.updateCrypto = false}, 400)
         } else {
           this.updateCryptoName = data['cryptoName']
           this.updateCryptoBuy = data['cryptoBuy']
@@ -173,8 +182,9 @@ export default {
     UpdateDeposit: function (data) {
       if (data == true) {
         if (this.updateDeposit == true) {
-          this.updateDeposit = false
+          document.getElementById('update_deposit').style.opacity = "0%";
           document.getElementById('app').style.overflow = "initial";
+          setTimeout(()=> {this.updateDeposit = false}, 400)
         } else {
           this.updateDeposit = true
           document.getElementById('app').style.overflow = "hidden";
@@ -184,8 +194,9 @@ export default {
     AddWallet: function (data) {
       if (data == true) {
         if (this.addWallet == true) {
-          this.addWallet = false
+          document.getElementById('add_wallet').style.opacity = "0%";
           document.getElementById('app').style.overflow = "initial";
+          setTimeout(()=> {this.addWallet = false}, 400)
         } else {
           this.addWallet = true
           document.getElementById('app').style.overflow = "hidden";
@@ -207,10 +218,8 @@ export default {
           self.$store.dispatch('loadUserWallet').then((e) => {
             if (e) {
               //select wallet 
-              /* console.log(this.$store.getters.getUserWalletList[0]) */
               self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
                 if (e) {
-                  /* console.log(this.$store.state.userData.walletSelected) */
                   //load deposit user
                   self.$store.dispatch('loadUserDeposit').then(() => {
                     //load crypto user
@@ -219,22 +228,29 @@ export default {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                           //calcul win loss user
+                          self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                            /* self.$store.dispatch('testGraph') */
                             //calcul graph dly
                             self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
                               self.$store.state.ready = self.$store.state.ready+1
+
+                              self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                self.$store.state.ready = self.$store.state.ready+1
+
+                                self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                  self.$store.state.ready = self.$store.state.ready+1
+                                  
+                                  if (self.$store.state.ready == 3) {
+                                    document.getElementById('loading_page').style.opacity = '0'
+                                    document.getElementById('loading_page').style.pointerEvents = 'none'
+                                    document.getElementById('logoBox_loading').style.opacity = '0'
+                                    document.getElementById('logoBox_loading').style.pointerEvents = 'none'
+                                    document.getElementById('logoBox_loading').style.width = '400px'
+                                    document.getElementById('app').style.overflow = 'initial'
+                                  }
+                                })
+                              })                            
                             })
-                              //calcul graph wly
-                            self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                              self.$store.state.ready = self.$store.state.ready+1
-                            })
-                                //calcul graph mth
-                            self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                              self.$store.state.ready = self.$store.state.ready+1
-                            })
-                              
-                            
                           })
                         })
                       }             
@@ -277,7 +293,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 50px;
+    padding-left: 40px;
   }
   .logoBox  {
     margin-top: 5px;
@@ -359,6 +375,52 @@ export default {
   .superior {
     color: green;
   }
+  #loading_page {
+    background-color: #29353e;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    transition: 1.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #logoBox_loading {
+    transition: 0.8s;
+  }
+  #app {
+    overflow: hidden;
+  }
+
+  #test {
+    animation: slidein 0.5s cubic-bezier(0.09, -0.01, 0.24, 0.99);
+    transition: 0.5s;
+  }
+
+  @keyframes slidein {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  #add_crypto, #update_crypto, #add_wallet, #update_deposit {
+    animation: pop 0.4s cubic-bezier(0, 0.15, 0, 0.99);
+    transition: 0.4s;
+  }
+  @keyframes pop {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
 
   @media screen and (max-width: 1361px) {
     .mainContener {
@@ -435,7 +497,7 @@ export default {
   }
   @media (min-width: 0px) and (max-width: 1060px) {
         .navWalletContener {
-            width: 315px;
+            width: 100%;
         }
   }
   @media screen and (max-height: 815px) {

@@ -171,4 +171,17 @@
         font-style: italic;
         color: #727272;
     }
+
+    .imgClose:hover {
+        animation: rotate 1s cubic-bezier(0.69, 0, 0.62, 1) infinite alternate;
+
+    }
+    @keyframes rotate {
+        from {
+        }
+
+        to {
+            transform: scale(1.2);
+        }
+    }
 </style>
