@@ -127,7 +127,7 @@ export default {
   methods: {
     logOutUser: function () {
       signOut(auth);
-      this.$router.push('/')
+      this.$router.push({name: "Auth"})
     },
     changePage: function (pageLoad) {
       if (this.page != pageLoad) {
@@ -253,7 +253,15 @@ export default {
                             })
                           })
                         })
-                      }             
+                      } else {
+                        self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
+                        document.getElementById('loading_page').style.opacity = '0'
+                        document.getElementById('loading_page').style.pointerEvents = 'none'
+                        document.getElementById('logoBox_loading').style.opacity = '0'
+                        document.getElementById('logoBox_loading').style.pointerEvents = 'none'
+                        document.getElementById('logoBox_loading').style.width = '400px'
+                        document.getElementById('app').style.overflow = 'initial'
+                      }            
                     })
                   })
                 }
@@ -378,7 +386,7 @@ export default {
   #loading_page {
     background-color: #29353e;
     position: absolute;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     transition: 1.5s;
     display: flex;

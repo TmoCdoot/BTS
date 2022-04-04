@@ -20,11 +20,11 @@ const routes = [
 //probleme avec la fonction revoir celle-ci pour plus propre probleme callback
 function loginRequired (to, from, next) {
   onAuthStateChanged(auth, user => { 
-    //console.log(user) 
+    /* console.log(user)  */
     if (user != null) {
       next()
     } else {
-      next('/')
+      next({name: 'Auth'})
     }
   })
 }
