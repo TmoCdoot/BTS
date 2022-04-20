@@ -1,60 +1,52 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Auth from "../views/Auth.vue";
 import Home from "../views/Home.vue";
-import { auth  /* onAuthStateChanged */ } from '../plug-in/firebase.js';
+import { auth, onAuthStateChanged } from '../plug-in/firebase.js';
 
 const routes = [
   {
     path: "/",
     name: "Auth",
     component: Auth,
-   /*  beforeEnter: test */
+    beforeEnter: noLogin
   },
   {
     path: "/home",
     name: "Home",
     component: Home,
-    beforeEnter: notrequireAuth
+    beforeEnter: isLogin
   },
 ];
 
 //probleme avec la fonction revoir celle-ci pour plus propre probleme callback
-/* function loginRequired (to, from, next) {
-  var user = onAuthStateChanged(auth, user => { 
+function isLogin (to, from, next) {
+  onAuthStateChanged(auth, user => { 
+    /* console.log(user)  */
     if (user != null) {
-      return true
+      next()
     } else {
-      return false
+      next({name: 'Auth'})
     }
   })
+}
 
-  console.log(user)
-  if (user == true) {
-    next('/home')
-    return
-  } else {
-    next('/')
-    return
-  }
-} */
+function noLogin(to, from, next) {
+  onAuthStateChanged(auth, user => { 
+    /* console.log(user)  */
+    if (user != null) {
+      next({name: 'Home'})
+    } else {
+      next()
+    }
+  })
+}
 
-function notrequireAuth (to,from,next) {
+/* function notrequireAuth (to,from,next) {
   let user = auth.currentUser
   if(user != null){
     next()
   }else{
     next({name:'Auth'})
-  }
-}
-
-/* function test (to,from,next) {
-  let user = auth.currentUser
-  console.log(auth)
-  console.log(user)
-  if(user == null){
-    next()
-  }else{
-    next({name:'Home'})
   }
 } */
 
