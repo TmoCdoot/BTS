@@ -10,7 +10,7 @@
                     <div>
                         <select class="input" v-model="crypto">
                             <option value="" selected disabled>Crypto</option>
-                            <option v-for="listValue in valuesList" :key="listValue">{{ listValue }}</option>
+                            <option v-for="(listValue, index) in valuesList" :key="listValue" :value="listValue">{{ listTest[index] }}</option>
                         </select>
                     </div><br>
                     <div>
@@ -41,8 +41,7 @@
             }
         },
         computed: {
-            ...mapState(['error']),
-            ...mapState(['valuesList']),
+            ...mapState(['valuesList', 'error', 'listTest']),
             noEmptyField: function () {
                 if (this.quantity != '') {
                     /* console.log("fe") */

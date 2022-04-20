@@ -6,6 +6,7 @@ export default createStore({
   state: {
     error: '',
     valuesList: '',
+    listTest: '',
     userData: {
       email: '',
       uid: '',
@@ -43,7 +44,7 @@ export default createStore({
     setUserDataCrypto: function (state, snapshotResult) {
       for (const name in snapshotResult) {
         snapshotResult[name]['crypto'] = name
-        state.userData.listCryptoUser.push(name)
+        //state.userData.listCryptoUser.push(name)
         state.userData.dataCrypto.push(snapshotResult[name])
       }
     },
@@ -60,9 +61,12 @@ export default createStore({
     setActuelPrice: function (state, returnApi) {
       for (const result in returnApi['resultRequest']) {
         for (const name in state.userData.dataCrypto) {
-          if (result == state.userData.dataCrypto[name].crypto) {
-            state.userData.dataCrypto[name].priceNow = (returnApi['resultRequest'][result].quote.USD.price).toFixed(3)
-          }
+          if (returnApi['resultRequest'][result].id == state.userData.dataCrypto[name].crypto) {
+            state.userData.dataCrypto[name].priceNow = (returnApi['resultRequest'][result].current_price).toFixed(3)
+            state.userData.dataCrypto[name].name = returnApi['resultRequest'][result].name
+            state.userData.dataCrypto[name].symbol = returnApi['resultRequest'][result].symbol
+            state.userData.listCryptoUser.push(returnApi['resultRequest'][result].symbol)
+          }         
         }
       }
     },
@@ -76,6 +80,9 @@ export default createStore({
     setCryptoList: function (state, snapshotResult) {
       state.valuesList = snapshotResult
     },
+    setListTest: function (state, snapshotResult) {
+      state.listTest = snapshotResult
+    },
     setWalletUser: function (state, snapshotResult) {
       for (const name in snapshotResult) {
         state.userData.walletList.push(name)
@@ -88,17 +95,17 @@ export default createStore({
     setHistoWalletDly: function (state, data) {
       state.historyWalletDly = data['tabCrypto']
       state.historyTimeDly = data['tabTime']
-      console.log(state.historyWalletDly)
+     /*  console.log(state.historyWalletDly) */
     },
     setHistoWalletWky: function (state, data) {
       state.historyWalletWky = data['tabCrypto']
       state.historyTimeWky = data['tabTime']
-      console.log(state.historyWalletWky)
+      /* console.log(state.historyWalletWky) */
     },
     setHistoWalletMth: function (state, data) {
       state.historyWalletMth = data['tabCrypto']
       state.historyTimeMth = data['tabTime']
-      console.log(state.historyWalletMth)
+     /*  console.log(state.historyWalletMth) */
     },
 
   },
@@ -216,10 +223,12 @@ export default createStore({
       return new Promise(Validated => {
         state.userData.deposit = 0
         getDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${state.userData.walletSelected}`,)).then((snapshot) => {
-          /*  console.log(snapshot.data()) */
-          commit('setUserDepositSelect', snapshot.data())
-        }).then(() => {
-          Validated(true)
+          if (typeof snapshot.data() == 'undefined') {
+            Validated(false)
+          } else {
+            commit('setUserDepositSelect', snapshot.data())
+            Validated(true)
+          }
         })
       })
     },
@@ -247,14 +256,16 @@ export default createStore({
     //requete recuperation price crypto
     loadCryptoPrice: ({ commit }, userCryptoList) => {
       return new Promise(Validated => {
-        let list = userCryptoList.toString()
-        var urlcourante = document.location.host;
+        var list = userCryptoList.toString()
+        list = list.split(',').join('%2C')
+        /* var urlcourante = document.location.host; */
         axios({
           method: 'GET',
-          url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=' + list
+         /*  url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=BTC,EGLD' */
+          url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + list + '&order=market_cap_desc&per_page=100&page=1&sparkline=false'
         }).then(result => {
           commit('setActuelPrice', {
-            resultRequest: result.data.data,
+            resultRequest: result.data,
           })
           Validated(true)
         },
@@ -304,6 +315,7 @@ export default createStore({
       return new Promise(Validated => {
         getDoc(doc(db, 'CryptoList', 'wpcNLNN9xWlI2bi6VvP9')).then((snapshot) => {
           commit('setCryptoList', snapshot.data().Crypto)
+          commit('setListTest', snapshot.data().CryptoName)
         }).then(() => {
           Validated(true)
         })
@@ -416,7 +428,7 @@ export default createStore({
               //faire correspondre la crypto de la requete avec crypto de l'user
               for (const cryptoUser in state.userData.dataCrypto) {
                 //si correspondance
-                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                if (state.userData.dataCrypto[cryptoUser].symbol == state.userData.listCryptoUser[token]) {
                   //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
                   for (const val in data) {
                     //si tableau est vide alors remplir la première fois
@@ -482,7 +494,7 @@ export default createStore({
               //faire correspondre la crypto de la requete avec crypto de l'user
               for (const cryptoUser in state.userData.dataCrypto) {
                 //si correspondance
-                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                if (state.userData.dataCrypto[cryptoUser].symbol == state.userData.listCryptoUser[token]) {
                   //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
                   for (const val in data) {
                     //si tableau est vide alors remplir la première fois
@@ -545,7 +557,7 @@ export default createStore({
               //faire correspondre la crypto de la requete avec crypto de l'user
               for (const cryptoUser in state.userData.dataCrypto) {
                 //si correspondance 
-                if (state.userData.dataCrypto[cryptoUser].crypto == state.userData.listCryptoUser[token]) {
+                if (state.userData.dataCrypto[cryptoUser].symbol == state.userData.listCryptoUser[token]) {
                   //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
                   for (const val in data) {
                     //si tableau est vide alors remplir la première fois

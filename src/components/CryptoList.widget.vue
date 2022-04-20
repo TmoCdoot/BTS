@@ -18,7 +18,7 @@
             Crypto
           </div>
           <div class="styleBold">
-            {{ value.crypto }}
+            {{ value.name }}
           </div>
         </div>
         <div class="column titleAlign mobileDisplay">
