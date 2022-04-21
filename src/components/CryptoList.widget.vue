@@ -94,7 +94,7 @@
       }
     },
     computed: {
-      ...mapState(['userData', 'actualPrice']),
+      ...mapState(['userData']),
       activeButtonMty: function () {
         if (this.graph == "mty") {
           return true
@@ -143,7 +143,7 @@
                           self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
                             self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
                               self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                                self.$store.state.ready = 3
+                                self.$store.state.readyForLoadGraph = 3
                               })
                             })
                           })
@@ -152,7 +152,7 @@
                     }
                   })
                 } else {
-                  self.$store.state.loadCryptoPrice = 0
+                  self.$store.state.readyForLoadGraph = 0
                   self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
                 }
               })

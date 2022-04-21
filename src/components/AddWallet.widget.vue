@@ -35,7 +35,6 @@
         },
         computed: {
             ...mapState(['error']),
-            ...mapState(['valuesList']),
             noEmptyField: function () {
                 if (this.walletName != '' && this.deposit != '') {
                     return true

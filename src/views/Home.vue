@@ -101,7 +101,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userData', 'actualPrice']),
+    ...mapState(['userData']),
     activeButtonHome: function () {
       if (this.page == 'home') {
         return true
@@ -232,15 +232,15 @@ export default {
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
                             //calcul graph dly
                             self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                              self.$store.state.ready = self.$store.state.ready+1
+                              self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
 
                               self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                self.$store.state.ready = self.$store.state.ready+1
+                                self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
 
                                 self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                                  self.$store.state.ready = self.$store.state.ready+1
+                                  self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
                                   
-                                  if (self.$store.state.ready == 3) {
+                                  if (self.$store.state.readyForLoadGraph == 3) {
                                     document.getElementById('loading_page').style.opacity = '0'
                                     document.getElementById('loading_page').style.pointerEvents = 'none'
                                     document.getElementById('logoBox_loading').style.opacity = '0'

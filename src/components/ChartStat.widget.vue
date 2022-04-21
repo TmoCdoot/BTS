@@ -3,7 +3,7 @@
       <div class="titlestat title">
         <h1 class="h1title">Line Chart</h1>
       </div>
-      <div class="grahContener" v-if="this.$store.state.ready == 3">
+      <div class="grahContener" v-if="this.$store.state.readyForLoadGraph == 3">
         <GraphBlock :graph="graph"/>
       </div>
       <div class="navStatContener">

@@ -34,7 +34,6 @@
         },
         computed: {
             ...mapState(['error']),
-            ...mapState(['valuesList']),
             noEmptyField: function () {
                 if (this.deposit != '') {
                     /* console.log("fe") */

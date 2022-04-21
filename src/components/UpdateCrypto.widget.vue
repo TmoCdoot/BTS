@@ -45,7 +45,6 @@
         },
         computed: {
             ...mapState(['error']),
-            ...mapState(['valuesList']),
             noEmptyField: function () {
                 if (this.quantity != '') {
                     /* console.log("fe") */

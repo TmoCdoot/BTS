@@ -10,7 +10,7 @@
                     <div>
                         <select class="input" v-model="crypto">
                             <option value="" selected disabled>Crypto</option>
-                            <option v-for="(listValue, index) in valuesList" :key="listValue" :value="listValue">{{ listTest[index] }}</option>
+                            <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue">{{ listCryptoForCryptoCompare[index] }}</option>
                         </select>
                     </div><br>
                     <div>
@@ -41,7 +41,7 @@
             }
         },
         computed: {
-            ...mapState(['valuesList', 'error', 'listTest']),
+            ...mapState(['listCryptoForGekoApi', 'error', 'listCryptoForCryptoCompare']),
             noEmptyField: function () {
                 if (this.quantity != '') {
                     /* console.log("fe") */
@@ -75,7 +75,7 @@
                                                     self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
                                                         self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
                                                             self.$emit('ChangeValueAddCrypto', true)
-                                                            self.$store.state.ready = 3
+                                                            self.$store.state.readyForLoadGraph = 3
                                                         })
                                                     })
                                                 })

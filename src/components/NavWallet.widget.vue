@@ -63,11 +63,22 @@
                             //load crypto price
                             self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
                             //calcul win loss user
-                            self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
-                            this.$emit('ChangeValueWalletNav', true)
+                            self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                                 //calcul graph
+                                 self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                    self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                        self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                            self.$store.state.readyForLoadGraph = 3
+                                            this.$emit('ChangeValueWalletNav', true)
+                                        })
+                                    })
+                                })
+                            })
+                            
                             })
                         } else {
                             self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto)
+                            self.$store.state.readyForLoadGraph = 0
                             this.$emit('ChangeValueWalletNav', true)
                         }            
                         })

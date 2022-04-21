@@ -25,7 +25,7 @@
                             {{ userData.depositList[name].deposit }} $
                         </div>       
                     </div>
-                    <div class="column titleAlign">
+                    <!-- <div class="column titleAlign">
                         <div class="titleData">
                             Win / Loss
                         </div>
@@ -49,7 +49,7 @@
                         <div class="superior" v-else>
                             +0 %
                         </div>   
-                    </div>
+                    </div> -->
                     <div class="column">
                         <button v-on:click="walletName = value" @click="deleteWalletUser"><img src="../assets/poubelle.png" alt="Delete" class="img"></button>
                     </div>
@@ -87,26 +87,27 @@ export default {
                       if (e != false) {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                          //calcul win loss user
-                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                              //calcul graph
-                              self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                                self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                    self.$store.state.ready = 1
+                            //calcul win loss user
+                            self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                                //calcul graph
+                                self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                    self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                        self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                            self.$store.state.readyForLoadGraph = 3
+                                        })
+                                    })
                                 })
-                              })
-                          })
+                            })
                         })
                       } else {
                         self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
                             //calcul graph
-                            self.$store.state.ready = 0
+                            self.$store.state.readyForLoadGraph = 0
                         })
                       }            
                     })
                 })
             })
-           /*  console.log(this.$store.state.userData.walletSelected) */
         },
         deleteWalletUser: function () {
             const self = this
@@ -154,10 +155,13 @@ export default {
         scroll-behavior: auto;
         height: 60%;
         overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .rowWallet {
         height: 60px;
-        width: 80%;
+        width: 70%;
         background-color: #29353e63;;
         border-radius: 20px;
         display: flex;
