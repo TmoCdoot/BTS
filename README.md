@@ -1,7 +1,9 @@
 # CryptoAnalyze
 Crypto Analize web site to manage your assets. You have posibility create a many wallets and add differents cryptomonnaies in your wallets
 
-To run app, you need NodeJs
+Pour utiliser l'application, vous devez avoir NodeJs d'installer sur votre pc
+Une fois NodeJs installer, ouvrer un terminal et aller dans le dossier ou est situé le code de l'application
+puis executer les commandes suivantes :
 
 Install all modules
 ```
