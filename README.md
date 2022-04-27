@@ -1,6 +1,8 @@
 # CryptoAnalyze
 Crypto Analize web site to manage your assets. You have posibility create a many wallets and add differents cryptomonnaies in your wallets
 
+To run app, you need NodeJs
+
 Install all modules
 ```
 npm install
