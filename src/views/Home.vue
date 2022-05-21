@@ -270,6 +270,7 @@ export default {
           })
         })
       })
+      this.$store.dispatch('test')
     }
 };
 </script>

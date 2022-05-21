@@ -633,6 +633,25 @@ export default createStore({
         })
       })
     },
+
+
+
+    //test api bourse
+    test: () => {
+      const finnhub = require('finnhub');
+
+      finnhub.ApiClient.instance.basePath = "http://localhost:8080"
+
+      console.log(finnhub.ApiClient.instance.basePath)
+
+      const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+      api_key.apiKey = "sandbox_c9rpevqad3i8g2romtgg"
+      const finnhubClient = new finnhub.DefaultApi()
+    
+      finnhubClient.quote("NFLX", (error, data) => {
+        console.log(data.c)
+      });
+    }
   },
   modules: {},
 });
