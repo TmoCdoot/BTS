@@ -70,7 +70,40 @@
 
 
 <template>
-  dz
+
+  <div class="ca-lft-container">
+
+    <div class="ca-container-logo">
+      <img src="../assets/logov2.png">
+    </div>
+
+    <div class="ca-container-sold">
+      <div class="ca-box-sold">
+        <span class="sold-title">Current balance</span>
+        <span class="sold-data">8 240 $</span>
+        <span class="sold-data-convert">7 856 $</span>
+      </div>
+
+      <div class="ca-box-sold">
+        <span class="sold-title">Current balance</span>
+        <span class="sold-data">+ 320 $</span>
+        <span class="sold-data-convert">+ 3.05 %</span>
+      </div>
+    </div>
+
+    <div class="ca-container-asset">
+
+    </div>
+
+    <div class="ca-container-data">
+
+    </div>
+
+  </div>
+
+  <div class="ca-ctr-container"></div>
+
+  <div class="ca-rht-container"></div>
 
 </template>
 
@@ -535,5 +568,61 @@ export default {
 </style> -->
 
 <style lang="scss">
-  
+  .ca-lft-container {
+    border: 1px solid blue;
+    height: 100vh;
+    width: 20%;
+    min-width: 300px;
+  }
+  .ca-ctr-container {
+    border: 1px solid rgb(255, 0, 0);
+    height: 100vh;
+    width: 55%;
+    min-width: 730px;
+  }
+  .ca-rht-container {
+    border: 1px solid rgb(0, 255, 94);
+    height: 100vh;
+    width: 25%;
+    min-width: 380px;
+  }
+
+  .ca-container-logo {
+    border: 1px solid green;
+    display: flex;
+    justify-content: center;
+    margin-top: 58px;
+  }
+
+  .ca-container-sold {
+    border: 1px solid green;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 41px;
+  }
+
+  .ca-box-sold {
+    background-color: #F7F7F7;
+    height: 93px;
+    width: 135px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    padding-left: 17px;
+  }
+  .sold-title {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .sold-data {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .sold-data-convert {
+    font-size: 12px;
+    font-weight: 400;
+    color: #686868;
+  }
 </style>

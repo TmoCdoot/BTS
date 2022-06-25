@@ -3,8 +3,15 @@
 </template>
 
 <style lang="scss">
+  @font-face {
+    font-family: Epilogue;
+    src: url(assets/fonts/epilogue.regular.ttf);
+  }
+
   #app {
-    border: 1px solid red;
+    /*background-color: red;*/
+    font-family: Epilogue;
+    display: flex;
     height: 100vh;
     width: 100vw;
   }
