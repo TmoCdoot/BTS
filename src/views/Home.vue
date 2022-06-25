@@ -1,22 +1,29 @@
-<template>  
+<!-- <template>  
+
   <div id="loading_page">
     <img alt="Logo" src="../assets/test.png" id="logoBox_loading"/>
   </div>
+
   <div v-if="addCrypto == true">
     <AddCrypto :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" id="add_crypto"/>
   </div>
+
   <div v-if="navWallet == true">
     <NavWallet :navWallet="navWallet" @ChangeValueWalletNav="ChangeValueWalletNav" @AddWallet="AddWallet" id="test"/>
   </div>
+
   <div v-if="updateCrypto == true">
     <UpdateCrypto :updateCryptoName="updateCryptoName" :updateCryptoBuy="updateCryptoBuy" :updateCryptoQtt="updateCryptoQtt" @UpdateValueCrypto="UpdateValueCrypto" id="update_crypto"/>
   </div>
+
   <div v-if="updateDeposit == true">
     <UpdateDeposit :updateDeposit="userData.depositSelect" @UpdateDeposit="UpdateDeposit" id="update_deposit"/>
   </div>
+
   <div v-if="addWallet == true">
     <AddWallet @AddWallet="AddWallet" id="add_wallet"/>
   </div>
+
   <div class="topContener">
     <div class="burgerNav">
       <img src="../assets/burger-bar.png" alt="Burger" class="burger" @click="closeNav">
@@ -25,7 +32,9 @@
       <img alt="Logo" src="../assets/test.png" class="logoBox"/>
     </div>
   </div>
+
   <div class="mainContener">
+
     <div class="leftHomeContener">
       <div class="assetsList">
         <CryptoList :addCrypto="addCrypto" @ChangeValueAddCrypto="ChangeValueAddCrypto" @UpdateValueCrypto="UpdateValueCrypto"/>
@@ -34,6 +43,7 @@
         <ListWallet @AddWallet="AddWallet"/>
       </div>
     </div>
+
     <div class="rightHomeContener">
       <div class="chartsLine">
         <ChartStat/>
@@ -53,12 +63,21 @@
         </div>
       </div>
     </div>
+
   </div>
+
+</template> -->
+
+
+<template>
+  dz
+
 </template>
+
 
 <script>
     // @ is an alias to /src
-import Deposit from "@/components/Deposit.widget.vue";
+/* import Deposit from "@/components/Deposit.widget.vue";
 import ChartStat from "@/components/ChartStat.widget.vue";
 import ListWallet from "@/components/ListWallet.widget.vue";
 import WinLost from "@/components/WinLost.widget.vue";
@@ -67,7 +86,7 @@ import AddCrypto from '@/components/AddCrypto.widget.vue'
 import NavWallet from '@/components/NavWallet.widget.vue'
 import UpdateCrypto from '@/components/UpdateCrypto.widget.vue'
 import UpdateDeposit from '@/components/UpdateDeposit.widget.vue'
-import AddWallet from '@/components/AddWallet.widget.vue'
+import AddWallet from '@/components/AddWallet.widget.vue' */
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -75,7 +94,7 @@ import { auth, signOut } from '../plug-in/firebase.js';
 export default {
   name: "Home",
   components: {
-    Deposit,
+    /* Deposit,
     ChartStat,
     WinLost,
     AddCrypto,
@@ -84,7 +103,7 @@ export default {
     NavWallet,
     UpdateCrypto,
     UpdateDeposit,
-    AddWallet
+    AddWallet */
   },
   data: function () {
     return {
@@ -274,7 +293,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<!-- <style lang="scss">
   .topContener {
     height: 10%;
     width: 100%;
@@ -513,4 +532,8 @@ export default {
           height: 815px;
       }
   }
+</style> -->
+
+<style lang="scss">
+  
 </style>
