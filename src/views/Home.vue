@@ -92,16 +92,77 @@
     </div>
 
     <div class="ca-container-asset">
+      <div class="ca-box-asset">
+        <span>Add new asset</span>
 
+        <div class="asset-switch">
+          <switch id="crypto" class="active-switch">Crypto</switch>
+          <switch id="etf">ETF</switch>
+          <switch id="forex">Forex</switch>
+        </div>
+
+        <div class="asset-input">
+          <label for="">Actif</label>
+          <select name="" id="">
+            <option value="">CHZ</option>
+          </select>
+        </div>
+
+        <div class="asset-input">
+          <label for="">Quantity</label>
+          <input type="text" name="" id="">
+        </div>
+
+        <div class="asset-input">
+          <label for="">Buy price</label>
+          <input type="text" name="" id="">
+        </div>
+
+        <button class="asset-button">Add asset</button>
+
+      </div>
     </div>
 
     <div class="ca-container-data">
+
+      <div class="box-data">
+        <div class="box-data-row">
+          <span class="box-data-title">Balance</span>
+          <span class="box-data-data">10 000 $</span>
+        </div>
+
+        <div class="box-data-row">
+          <span class="box-data-title">ETF number</span>
+          <span class="box-data-data">1</span>
+        </div>
+
+        <div class="box-data-row">
+          <span class="box-data-title">Crypto number</span>
+          <span class="box-data-data">2</span>
+        </div>
+
+        <div class="box-data-row">
+          <span class="box-data-title">FOREX number</span>
+          <span class="box-data-data">1</span>
+        </div>
+
+        <div class="box-data-row end">
+          <span class="box-data-title">Action number</span>
+          <span class="box-data-data">1</span>
+        </div>
+      </div>
+      
 
     </div>
 
   </div>
 
-  <div class="ca-ctr-container"></div>
+  <div class="ca-ctr-container">
+    <div class="ca-containe-asset-list">
+
+    </div>
+
+  </div>
 
   <div class="ca-rht-container"></div>
 
@@ -591,16 +652,14 @@ export default {
     border: 1px solid green;
     display: flex;
     justify-content: center;
-    margin-top: 58px;
+    margin-top: 15px;
   }
-
   .ca-container-sold {
     border: 1px solid green;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 41px;
+    margin-top: 20px;
   }
-
   .ca-box-sold {
     background-color: #F7F7F7;
     height: 93px;
@@ -624,5 +683,124 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #686868;
+  }
+  .ca-container-asset{
+    border: 1px solid green;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 15px;
+  }
+  .ca-box-asset {
+    padding-top: 21px;
+    padding-bottom: 21px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 276px;
+    border-radius: 15px;
+    background-color: #F7F7F7;
+  }
+  .ca-box-asset span {
+    font-size: 16px;
+    font-weight: 600;
+    width: 240px;
+  }
+  .asset-switch {
+    background-color: #e3e3e3;
+    width: 244px;
+    height: 47px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 19px;
+    margin-bottom: 29px;
+  }
+  switch {
+    border-radius: 10px;    
+    width: 75px;
+    height: 39px;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .active-switch {
+    background-color: #1157c0;
+    color: #ffffff;
+  }
+  .asset-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 29px;
+  }
+  .asset-input input {
+    border-radius: 10px;
+    margin-top: 6px;
+    border: 1px solid #DADADA;
+    width: 240px;
+    height: 40px;
+    box-sizing: border-box;
+  }
+  .asset-input label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #686868;
+  }
+  .asset-input select {
+    border-radius: 10px;
+    margin-top: 6px;
+    border: 1px solid #DADADA;
+    width: 240px;
+    height: 40px;
+    box-sizing: border-box;
+  }
+  .asset-button {
+    width: 240px;
+    height: 40px;
+    background-color: #5DB5AA;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .ca-container-data {
+    border: 1px solid green;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 15px;
+  }
+  .box-data {
+    width: 276px;
+    background-color: #f7f7f7;
+    border-radius: 15px;
+  }
+  .box-data-row {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-between;
+  }
+  .box-data-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #686868;
+  }
+  .box-data-data {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .end {
+    border: none;
+  }
+
+  .ca-containe-asset-list {
+    width: 700px;
+    height: 925px;
+    background-color: #f7f7f7;
+    border-radius: 15px;
   }
 </style>
