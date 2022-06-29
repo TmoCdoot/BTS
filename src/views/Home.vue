@@ -158,13 +158,140 @@
   </div>
 
   <div class="ca-ctr-container">
-    <div class="ca-containe-asset-list">
+    <div class="ca-container-asset-list">
+
+      <div class="ca-container-wallet">
+        <span>Wallet name</span>
+        <button>New wallet</button>
+      </div>
+
+      <div class="ca-container-top-list">
+        <span>Asset</span>
+        <span>Price</span>
+        <span>Buy price</span>
+        <span> Quantity</span>
+        <span>Profit / Loss</span>
+        <span>Edit</span>
+      </div>
+
+      <div class="ca-row-asset-data">
+        <div class="asset">
+          <img src="../../public/img/cardano.png">
+          <span>ADA</span>
+        </div>
+        
+        <span>0.34 $</span>
+
+        <span>0.24 $</span>
+
+        <span>10</span>
+
+        <span>+ 100 %</span>
+
+        <div class="center-img">
+          <img src="../assets/pencil.png">
+        </div>
+        
+      </div>
+
+      <div class="ca-row-asset-data">
+        <div class="asset">
+          <img src="../../public/img/DENT.png">
+          <span>DENT</span>
+        </div>
+        
+        <span>240 200 $</span>
+
+        <span>12.4 $</span>
+
+        <span>2 105 500</span>
+
+        <span>+ 120 200 %</span>
+
+        <div class="center-img">
+          <img src="../assets/pencil.png">
+        </div>
+        
+      </div>
 
     </div>
-
   </div>
 
-  <div class="ca-rht-container"></div>
+  <div class="ca-rht-container">
+    <div class="ca-container-user">
+      <span>test@gmail.com</span>
+      <button>Disconnect</button>
+    </div>
+
+    <div class="ca-container-wallet-data">
+      <div class="wallet-name">
+        <span>Wallet name</span>
+        <span class="number-asset">3 asset</span>
+      </div>
+
+      <!-- graphique -->
+
+      <div class="container-wallet-statistic">
+        <span class="container-wallet-title">Statistic</span>
+
+        <div class="box-statistic">
+          <div>
+            <span class="statistic-title">Max balance</span>
+            <span class="statistic-data">9 540 $</span>
+          </div>
+          <div>
+            <span class="statistic-title">Min balance</span>
+            <span class="statistic-data">7 240 $</span>
+          </div>
+        </div>
+
+        <div class="box-statistic end-box">
+          <div>
+            <span class="statistic-title">Mean balance</span>
+            <span class="statistic-data">8 450 $</span>
+          </div>
+          <div>
+            <span class="statistic-title">Risk</span>
+            <span class="statistic-data orange">45 %</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-wallet-statistic end-container-wallet">
+        <div class="container-top-row">
+          <div class="box-asset-select">
+            <img src="../../public/img/cardano.png" >
+            <span class="container-wallet-title">ADA</span>
+          </div>
+          <img src="../assets/pencil.png">
+        </div>
+        
+
+        <div class="box-statistic">
+          <div>
+            <span class="statistic-title">Price</span>
+            <span class="statistic-data">0.34 $</span>
+          </div>
+          <div>
+            <span class="statistic-title">Min balance</span>
+            <span class="statistic-data">0.24 $</span>
+          </div>
+        </div>
+
+        <div class="box-statistic end-box">
+          <div>
+            <span class="statistic-title">Quantity</span>
+            <span class="statistic-data">10</span>
+          </div>
+          <div>
+            <span class="statistic-title">Profit / Loss</span>
+            <span class="statistic-data green">+ 100 %</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </template>
 
@@ -640,12 +767,18 @@ export default {
     height: 100vh;
     width: 55%;
     min-width: 730px;
+    display: flex;
+    justify-content: center;
   }
   .ca-rht-container {
     border: 1px solid rgb(0, 255, 94);
     height: 100vh;
     width: 25%;
     min-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 0px;
   }
 
   .ca-container-logo {
@@ -797,10 +930,194 @@ export default {
     border: none;
   }
 
-  .ca-containe-asset-list {
+  .ca-container-asset-list {
     width: 700px;
-    height: 925px;
     background-color: #f7f7f7;
     border-radius: 15px;
+    margin: 20px 0px;
   }
+  .ca-container-wallet {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .ca-container-wallet span {
+    margin: 25px 0px 25px 21px;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: italic;
+  }
+  .ca-container-wallet button {
+    width: 100px;
+    height: 39px;
+    background-color: #1157c0;
+    border: none;
+    margin: 13px 21px 0px 0px;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .ca-container-top-list {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 16px 0px;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .ca-container-top-list span {
+    font-size: 12px;
+    font-weight: 500;
+    width: 115px;
+    text-align: center;
+  }
+  .ca-row-asset-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 15px 0px;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .ca-row-asset-data span, .asset, .center-img {
+    width: 115px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .ca-row-asset-data img {
+    width: 20px;
+  }
+  .asset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .asset span {
+    width: 0;
+    text-align: unset;
+    margin-left: 7px;
+    margin-right: 30px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .ca-container-user {
+    text-align: right;
+    padding: 0px 21px 12px;
+    width: 90%;
+  }
+  .ca-container-user button {
+    width: 100px;
+    height: 33px;
+    background-color: #ba3333;
+    border-radius: 10px;
+    border: none;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 17px;
+  }
+  .ca-container-user span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #686868;
+    font-style: italic;
+  }
+
+  .ca-container-wallet-data {
+    background-color: #f2f2f2;
+    width: 351px;
+    height: 925px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .wallet-name {
+    padding: 22px;
+    display: flex;
+  }
+  .wallet-name span {
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .number-asset {
+    width: 80px;
+    height: 17px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #686868;
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-wallet-statistic {
+    width: 275px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .container-wallet-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 5px;
+  }
+  .box-statistic {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 15px 0px;
+    border-top: 1px solid #e9e9e9;
+    padding: 15px 0px;
+    border-bottom: 1px solid #e9e9e9;
+  }
+  .box-statistic div {
+    display: flex;
+    flex-direction: column;
+  }
+  .box-statistic div .statistic-title {
+    color: #686868;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .end-box {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .statistic-data {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+  .container-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .box-asset-select {
+    display: flex;
+    align-items: center;
+  }
+  .container-top-row img {
+    width: 20px;
+    height: 20px;
+  }
+  .end-container-wallet {
+    margin-top: 24px;
+  }
+  .orange {
+    color: #C96203;
+  }
+  .green {
+    color: #09A706;
+  }
+  
 </style>
