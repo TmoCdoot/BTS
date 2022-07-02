@@ -1,0 +1,39 @@
+<template>
+    <div class="container-wallet-statistic">
+        <span class="container-wallet-title">Statistic</span>
+
+        <div class="box-statistic">
+          <div>
+            <span class="statistic-title">Max balance</span>
+            <span class="statistic-data">9 540 $</span>
+          </div>
+          <div>
+            <span class="statistic-title">Min balance</span>
+            <span class="statistic-data">7 240 $</span>
+          </div>
+        </div>
+
+        <div class="box-statistic end-box">
+          <div>
+            <span class="statistic-title">Mean balance</span>
+            <span class="statistic-data">8 450 $</span>
+          </div>
+          <div>
+            <span class="statistic-title">Risk</span>
+            <span class="statistic-data orange">45 %</span>
+          </div>
+        </div>
+    </div>
+</template>
+
+<script>
+
+</script>
+
+<style scoped type="scss">
+.container-wallet-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 5px;
+}
+</style>

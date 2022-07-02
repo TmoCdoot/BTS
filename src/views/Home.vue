@@ -70,7 +70,6 @@
 
 
 <template>
-
   <div class="ca-lft-container">
 
     <div class="ca-container-logo">
@@ -78,143 +77,33 @@
     </div>
 
     <div class="ca-container-sold">
-      <div class="ca-box-sold">
+      <CurrentBalance/>
+      <ProfitLoss/>
+      <!-- <div class="ca-box-sold">
         <span class="sold-title">Current balance</span>
         <span class="sold-data">8 240 $</span>
         <span class="sold-data-convert">7 856 $</span>
-      </div>
+      </div> -->
 
-      <div class="ca-box-sold">
+      <!-- <div class="ca-box-sold">
         <span class="sold-title">Current balance</span>
         <span class="sold-data">+ 320 $</span>
         <span class="sold-data-convert">+ 3.05 %</span>
-      </div>
+      </div> -->
     </div>
 
     <div class="ca-container-asset">
-      <div class="ca-box-asset">
-        <span>Add new asset</span>
-
-        <div class="asset-switch">
-          <switch id="crypto" class="active-switch">Crypto</switch>
-          <switch id="etf">ETF</switch>
-          <switch id="forex">Forex</switch>
-        </div>
-
-        <div class="asset-input">
-          <label for="">Actif</label>
-          <select name="" id="">
-            <option value="">CHZ</option>
-          </select>
-        </div>
-
-        <div class="asset-input">
-          <label for="">Quantity</label>
-          <input type="text" name="" id="">
-        </div>
-
-        <div class="asset-input">
-          <label for="">Buy price</label>
-          <input type="text" name="" id="">
-        </div>
-
-        <button class="asset-button">Add asset</button>
-
-      </div>
+      <AddNewAsset/>
     </div>
 
     <div class="ca-container-data">
-
-      <div class="box-data">
-        <div class="box-data-row">
-          <span class="box-data-title">Balance</span>
-          <span class="box-data-data">10 000 $</span>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">ETF number</span>
-          <span class="box-data-data">1</span>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">Crypto number</span>
-          <span class="box-data-data">2</span>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">FOREX number</span>
-          <span class="box-data-data">1</span>
-        </div>
-
-        <div class="box-data-row end">
-          <span class="box-data-title">Action number</span>
-          <span class="box-data-data">1</span>
-        </div>
-      </div>
-      
-
+      <UserData/>
     </div>
 
   </div>
 
   <div class="ca-ctr-container">
-    <div class="ca-container-asset-list">
-
-      <div class="ca-container-wallet">
-        <span>Wallet name</span>
-        <button>New wallet</button>
-      </div>
-
-      <div class="ca-container-top-list">
-        <span>Asset</span>
-        <span>Price</span>
-        <span>Buy price</span>
-        <span> Quantity</span>
-        <span>Profit / Loss</span>
-        <span>Edit</span>
-      </div>
-
-      <div class="ca-row-asset-data">
-        <div class="asset">
-          <img src="../../public/img/cardano.png">
-          <span>ADA</span>
-        </div>
-        
-        <span>0.34 $</span>
-
-        <span>0.24 $</span>
-
-        <span>10</span>
-
-        <span>+ 100 %</span>
-
-        <div class="center-img">
-          <img src="../assets/pencil.png">
-        </div>
-        
-      </div>
-
-      <div class="ca-row-asset-data">
-        <div class="asset">
-          <img src="../../public/img/DENT.png">
-          <span>DENT</span>
-        </div>
-        
-        <span>240 200 $</span>
-
-        <span>12.4 $</span>
-
-        <span>2 105 500</span>
-
-        <span>+ 120 200 %</span>
-
-        <div class="center-img">
-          <img src="../assets/pencil.png">
-        </div>
-        
-      </div>
-
-    </div>
+    <AssetList/>
   </div>
 
   <div class="ca-rht-container">
@@ -224,82 +113,35 @@
     </div>
 
     <div class="ca-container-wallet-data">
+
       <div class="wallet-name">
         <span>Wallet name</span>
         <span class="number-asset">3 asset</span>
       </div>
 
-      <!-- graphique -->
+      <WalletGraph/>
 
-      <div class="container-wallet-statistic">
-        <span class="container-wallet-title">Statistic</span>
+      <WalletStatistic/>
 
-        <div class="box-statistic">
-          <div>
-            <span class="statistic-title">Max balance</span>
-            <span class="statistic-data">9 540 $</span>
-          </div>
-          <div>
-            <span class="statistic-title">Min balance</span>
-            <span class="statistic-data">7 240 $</span>
-          </div>
-        </div>
-
-        <div class="box-statistic end-box">
-          <div>
-            <span class="statistic-title">Mean balance</span>
-            <span class="statistic-data">8 450 $</span>
-          </div>
-          <div>
-            <span class="statistic-title">Risk</span>
-            <span class="statistic-data orange">45 %</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="container-wallet-statistic end-container-wallet">
-        <div class="container-top-row">
-          <div class="box-asset-select">
-            <img src="../../public/img/cardano.png" >
-            <span class="container-wallet-title">ADA</span>
-          </div>
-          <img src="../assets/pencil.png">
-        </div>
-        
-
-        <div class="box-statistic">
-          <div>
-            <span class="statistic-title">Price</span>
-            <span class="statistic-data">0.34 $</span>
-          </div>
-          <div>
-            <span class="statistic-title">Min balance</span>
-            <span class="statistic-data">0.24 $</span>
-          </div>
-        </div>
-
-        <div class="box-statistic end-box">
-          <div>
-            <span class="statistic-title">Quantity</span>
-            <span class="statistic-data">10</span>
-          </div>
-          <div>
-            <span class="statistic-title">Profit / Loss</span>
-            <span class="statistic-data green">+ 100 %</span>
-          </div>
-        </div>
-      </div>
+      <AssetStatistic/>
 
     </div>
   </div>
-
 </template>
 
 
 <script>
     // @ is an alias to /src
-/* import Deposit from "@/components/Deposit.widget.vue";
-import ChartStat from "@/components/ChartStat.widget.vue";
+import CurrentBalance from "@/components/left-container/CurrentBalance.card.vue";
+import ProfitLoss from "@/components/left-container/ProfitLoss.card.vue";
+import AddNewAsset from "@/components/left-container/AddNewAsset.card.vue";
+import UserData from "@/components/left-container/UserData.card.vue";
+import AssetList from "@/components/middle-container/AssetList.card.vue";
+import WalletGraph from "@/components/right-container/WalletGraph.card.vue";
+import WalletStatistic from "@/components/right-container/WalletStatistic.card.vue";
+import AssetStatistic from "@/components/right-container/AssetStatistic.card.vue";
+
+/*import ChartStat from "@/components/ChartStat.widget.vue";
 import ListWallet from "@/components/ListWallet.widget.vue";
 import WinLost from "@/components/WinLost.widget.vue";
 import CryptoList from "@/components/CryptoList.widget.vue";
@@ -308,6 +150,7 @@ import NavWallet from '@/components/NavWallet.widget.vue'
 import UpdateCrypto from '@/components/UpdateCrypto.widget.vue'
 import UpdateDeposit from '@/components/UpdateDeposit.widget.vue'
 import AddWallet from '@/components/AddWallet.widget.vue' */
+
 import { mapState } from 'vuex'
 import { auth, signOut } from '../plug-in/firebase.js';
 
@@ -315,6 +158,15 @@ import { auth, signOut } from '../plug-in/firebase.js';
 export default {
   name: "Home",
   components: {
+    CurrentBalance,
+    ProfitLoss,
+    AddNewAsset,
+    UserData,
+    AssetList,
+    WalletGraph,
+    WalletStatistic,
+    AssetStatistic,
+
     /* Deposit,
     ChartStat,
     WinLost,
@@ -325,6 +177,7 @@ export default {
     UpdateCrypto,
     UpdateDeposit,
     AddWallet */
+    
   },
   data: function () {
     return {
@@ -337,7 +190,8 @@ export default {
       addWallet: false,
       updateCryptoName: '',
       updateCryptoBuy: 0,
-      updateCryptoQtt: 0
+      updateCryptoQtt: 0,
+      chartDataDly: [[10, 2], [20, 4]],
     }
   },
   computed: {
@@ -756,368 +610,211 @@ export default {
 </style> -->
 
 <style lang="scss">
-  .ca-lft-container {
-    border: 1px solid blue;
-    height: 100vh;
-    width: 20%;
-    min-width: 300px;
-  }
-  .ca-ctr-container {
-    border: 1px solid rgb(255, 0, 0);
-    height: 100vh;
-    width: 55%;
-    min-width: 730px;
-    display: flex;
-    justify-content: center;
-  }
-  .ca-rht-container {
-    border: 1px solid rgb(0, 255, 94);
-    height: 100vh;
-    width: 25%;
-    min-width: 380px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px 0px;
-  }
 
-  .ca-container-logo {
-    border: 1px solid green;
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-  }
-  .ca-container-sold {
-    border: 1px solid green;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 20px;
-  }
-  .ca-box-sold {
-    background-color: #F7F7F7;
-    height: 93px;
-    width: 135px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    padding-left: 17px;
-  }
-  .sold-title {
-    font-size: 12px;
-    font-weight: 500;
-  }
-  .sold-data {
-    font-size: 20px;
-    font-weight: 500;
-  }
-  .sold-data-convert {
-    font-size: 12px;
-    font-weight: 400;
-    color: #686868;
-  }
-  .ca-container-asset{
-    border: 1px solid green;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 15px;
-  }
-  .ca-box-asset {
-    padding-top: 21px;
-    padding-bottom: 21px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 276px;
-    border-radius: 15px;
-    background-color: #F7F7F7;
-  }
-  .ca-box-asset span {
-    font-size: 16px;
-    font-weight: 600;
-    width: 240px;
-  }
-  .asset-switch {
-    background-color: #e3e3e3;
-    width: 244px;
-    height: 47px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    margin-top: 19px;
-    margin-bottom: 29px;
-  }
-  switch {
-    border-radius: 10px;    
-    width: 75px;
-    height: 39px;
-    display: flex;
-    align-self: center;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .active-switch {
-    background-color: #1157c0;
-    color: #ffffff;
-  }
-  .asset-input {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 29px;
-  }
-  .asset-input input {
-    border-radius: 10px;
-    margin-top: 6px;
-    border: 1px solid #DADADA;
-    width: 240px;
-    height: 40px;
-    box-sizing: border-box;
-  }
-  .asset-input label {
-    font-size: 12px;
-    font-weight: 500;
-    color: #686868;
-  }
-  .asset-input select {
-    border-radius: 10px;
-    margin-top: 6px;
-    border: 1px solid #DADADA;
-    width: 240px;
-    height: 40px;
-    box-sizing: border-box;
-  }
-  .asset-button {
-    width: 240px;
-    height: 40px;
-    background-color: #5DB5AA;
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .ca-container-data {
-    border: 1px solid green;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 15px;
-  }
-  .box-data {
-    width: 276px;
-    background-color: #f7f7f7;
-    border-radius: 15px;
-  }
-  .box-data-row {
-    padding: 10px 20px;
-    border-bottom: 1px solid #e1e1e1;
-    display: flex;
-    justify-content: space-between;
-  }
-  .box-data-title {
-    font-size: 12px;
-    font-weight: 500;
-    color: #686868;
-  }
-  .box-data-data {
-    font-size: 12px;
-    font-weight: 500;
-  }
-  .end {
-    border: none;
-  }
+/* GLOBAL STYLE */
 
-  .ca-container-asset-list {
-    width: 700px;
-    background-color: #f7f7f7;
-    border-radius: 15px;
-    margin: 20px 0px;
-  }
-  .ca-container-wallet {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #d6d6d6;
-  }
-  .ca-container-wallet span {
-    margin: 25px 0px 25px 21px;
-    font-size: 14px;
-    font-weight: 500;
-    font-style: italic;
-  }
-  .ca-container-wallet button {
-    width: 100px;
-    height: 39px;
-    background-color: #1157c0;
-    border: none;
-    margin: 13px 21px 0px 0px;
-    border-radius: 10px;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .ca-container-top-list {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 16px 0px;
-    border-bottom: 1px solid #d6d6d6;
-  }
-  .ca-container-top-list span {
-    font-size: 12px;
-    font-weight: 500;
-    width: 115px;
-    text-align: center;
-  }
-  .ca-row-asset-data {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 15px 0px;
-    border-bottom: 1px solid #d6d6d6;
-  }
-  .ca-row-asset-data span, .asset, .center-img {
-    width: 115px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .ca-row-asset-data img {
-    width: 20px;
-  }
-  .asset {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .asset span {
-    width: 0;
-    text-align: unset;
-    margin-left: 7px;
-    margin-right: 30px;
-    font-size: 12px;
-    font-weight: 700;
-  }
+.ca-box-sold {
+  background-color: #F7F7F7;
+  height: 93px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0px 17px;
+  margin: 8px;
+  min-width: 100px;
+}
+.sold-title {
+  font-size: 12px;
+  font-weight: 500;
+}
+.sold-data {
+  font-size: 20px;
+  font-weight: 500;
+}
+.sold-data-convert {
+  font-size: 12px;
+  font-weight: 400;
+  color: #686868;
+}
+.container-wallet-statistic {
+  width: 275px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+}
+.box-statistic {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 15px 0px;
+  border-top: 1px solid #e9e9e9;
+  padding: 15px 0px;
+  border-bottom: 1px solid #e9e9e9;
+}
+.box-statistic div {
+  display: flex;
+  flex-direction: column;
+}
+.box-statistic div .statistic-title {
+  color: #686868;
+  font-size: 12px;
+  font-weight: 500;
+}
+.end-box {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.statistic-data {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.box-asset-select {
+  display: flex;
+  align-items: center;
+}
+.container-top-row img {
+  width: 20px;
+  height: 20px;
+}
+.end-container-wallet {
+  margin-top: 24px;
+}
+.orange {
+  color: #C96203;
+}
+.green {
+  color: #09A706;
+}
 
-  .ca-container-user {
-    text-align: right;
-    padding: 0px 21px 12px;
-    width: 90%;
-  }
-  .ca-container-user button {
-    width: 100px;
-    height: 33px;
-    background-color: #ba3333;
-    border-radius: 10px;
-    border: none;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 700;
-    margin-left: 17px;
-  }
-  .ca-container-user span {
-    font-size: 12px;
-    font-weight: 600;
-    color: #686868;
-    font-style: italic;
-  }
+/*--------------*/
 
-  .ca-container-wallet-data {
-    background-color: #f2f2f2;
-    width: 351px;
-    height: 925px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .wallet-name {
-    padding: 22px;
-    display: flex;
-  }
-  .wallet-name span {
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .number-asset {
-    width: 80px;
-    height: 17px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #686868;
-    background-color: #ffffff;
-    border-radius: 15px;
-    margin-left: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .container-wallet-statistic {
-    width: 275px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .container-wallet-title {
-    font-weight: 700;
-    font-size: 16px;
-    margin-left: 5px;
-  }
-  .box-statistic {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin: 15px 0px;
-    border-top: 1px solid #e9e9e9;
-    padding: 15px 0px;
-    border-bottom: 1px solid #e9e9e9;
-  }
-  .box-statistic div {
-    display: flex;
-    flex-direction: column;
-  }
-  .box-statistic div .statistic-title {
-    color: #686868;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  .end-box {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-  .statistic-data {
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 5px;
-  }
-  .container-top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .box-asset-select {
-    display: flex;
-    align-items: center;
-  }
-  .container-top-row img {
-    width: 20px;
-    height: 20px;
-  }
-  .end-container-wallet {
-    margin-top: 24px;
-  }
-  .orange {
-    color: #C96203;
-  }
-  .green {
-    color: #09A706;
-  }
-  
+
+/* CENTER CONTAINER */
+
+.ca-ctr-container {
+  /*border: 1px solid rgb(255, 0, 0);*/
+  width: 50%;
+  min-width: 730px;
+  display: flex;
+  justify-content: center;
+}
+
+/*---------------*/
+
+
+
+/* LEFT CONTAINER */
+
+.ca-lft-container {
+  /*border: 1px solid blue;*/
+  width: 25%;
+  min-width: 300px;
+  margin-left: 1%;
+}
+.ca-container-logo {
+  /*border: 1px solid green;*/
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.ca-container-sold {
+  /*border: 1px solid green;*/
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.ca-container-asset{
+  /*border: 1px solid green;*/
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 6px;
+}
+.ca-container-data {
+  /*border: 1px solid green;*/
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 15px;
+  padding-bottom: 10px;
+}
+
+/*--------------*/  
+
+
+
+/* RIGHT CONTAINER */
+
+.ca-rht-container {
+  /*border: 1px solid rgb(0, 255, 94);*/
+  width: 25%;
+  min-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0px;
+  margin-right: 1%;
+}
+.ca-container-user {
+  text-align: right;
+  padding: 0px 21px 12px;
+  width: 90%;
+}
+.ca-container-user button {
+  width: 100px;
+  height: 33px;
+  background-color: #ba3333;
+  border-radius: 10px;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 17px;
+}
+.ca-container-user span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #686868;
+  font-style: italic;
+}
+.ca-container-wallet-data {
+  background-color: #f2f2f2;
+  width: 351px;
+  height: 810px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-height: 810px;
+}
+.wallet-name {
+  padding: 22px 22px 0px 22px;
+  display: flex;
+  width: 90%;
+}
+.wallet-name span {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.number-asset {
+  width: 80px;
+  height: 17px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #686868;
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*--------------*/
 </style>
