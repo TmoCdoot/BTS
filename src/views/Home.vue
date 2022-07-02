@@ -109,7 +109,7 @@
   <div class="ca-rht-container">
     <div class="ca-container-user">
       <span>test@gmail.com</span>
-      <button>Disconnect</button>
+      <button @click="logOutUser">Disconnect</button>
     </div>
 
     <div class="ca-container-wallet-data">
@@ -676,6 +676,9 @@ export default {
   display: flex;
   align-items: center;
 }
+.box-asset-select span {
+  margin-left: 5px;
+}
 .container-top-row img {
   width: 20px;
   height: 20px;
@@ -688,6 +691,11 @@ export default {
 }
 .green {
   color: #09A706;
+}
+.graph canvas {
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
 }
 
 /*--------------*/
@@ -761,7 +769,7 @@ export default {
 .ca-container-user {
   text-align: right;
   padding: 0px 21px 12px;
-  width: 90%;
+  
 }
 .ca-container-user button {
   width: 100px;

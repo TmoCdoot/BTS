@@ -27,9 +27,4 @@ export default {
     width: 315px !important;
     margin: 20px;
 }
-.graph canvas {
-    padding: 10px;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
 </style>
