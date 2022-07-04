@@ -730,6 +730,9 @@ export default {
   justify-content: center;
   margin-top: 15px;
 }
+.ca-container-logo img {
+  width: 180px;
+}
 .ca-container-sold {
   /*border: 1px solid green;*/
   display: flex;
