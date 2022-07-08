@@ -15,7 +15,7 @@
             <span class="statistic-data">0.34 $</span>
           </div>
           <div>
-            <span class="statistic-title">Min balance</span>
+            <span class="statistic-title">Buy price</span>
             <span class="statistic-data">0.24 $</span>
           </div>
         </div>

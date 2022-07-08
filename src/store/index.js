@@ -17,6 +17,7 @@ export default createStore({
       listCryptoUserForCryptoCompare: [],
       walletList: [],
       walletSelected: '',
+      countAsset: 0,
     },
     historyWalletDly: '',
     historyTimeDly: '',
@@ -56,6 +57,7 @@ export default createStore({
           }
         }
       }
+      state.userData.countAsset = state.userData.dataCrypto.length
     },
     //definit le depot des wallets de l'utilisateur
     setUserDepositList: function (state, snapshotResult) {

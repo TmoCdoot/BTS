@@ -115,8 +115,8 @@
     <div class="ca-container-wallet-data">
 
       <div class="wallet-name">
-        <span>Wallet name</span>
-        <span class="number-asset">3 asset</span>
+        <span>{{ userData.walletSelected }}</span>
+        <span class="number-asset">{{userData.countAsset}} asset</span>
       </div>
 
       <WalletGraph/>
@@ -192,31 +192,12 @@ export default {
       updateCryptoBuy: 0,
       updateCryptoQtt: 0,
       chartDataDly: [[10, 2], [20, 4]],
+
+      countAsset: this.getUserDataCrypto,
     }
   },
   computed: {
     ...mapState(['userData']),
-    activeButtonHome: function () {
-      if (this.page == 'home') {
-        return true
-      } else {
-        return false
-      }
-    },
-    activeButtonTrade: function () {
-      if (this.page == 'trade') {
-        return true
-      } else {
-        return false
-      }
-    },
-    activeButtonSwap: function () {
-      if (this.page == 'swap') {
-        return true
-      } else {
-        return false
-      }
-    },
   },
   methods: {
     logOutUser: function () {
