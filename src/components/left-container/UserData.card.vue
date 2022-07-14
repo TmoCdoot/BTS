@@ -2,7 +2,7 @@
     <div class="box-data">
         <div class="box-data-row">
           <span class="box-data-title">Balance</span>
-          <span class="box-data-data">10 000 $</span>
+          <span class="box-data-data">{{ userData.depositSelect }} $</span>
         </div>
 
         <div class="box-data-row">
@@ -28,7 +28,19 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
 
+  export default {
+      name: "Deposit",
+      computed: {
+          ...mapState(['userData', 'eurPrice']),
+      },
+      methods: {
+          updateDeposit: function () {
+              this.$emit('UpdateDeposit', true);
+          }
+      },
+  }
 </script>
 
 <style scoped type="scss">

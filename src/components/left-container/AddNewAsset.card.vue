@@ -10,28 +10,89 @@
 
         <div class="asset-input">
           <label for="">Actif</label>
-          <select name="" id="">
-            <option value="">CHZ</option>
+          <select v-model="crypto">
+            <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue">
+                {{ listCryptoForCryptoCompare[index] }}
+            </option>
           </select>
         </div>
 
         <div class="asset-input">
           <label for="">Quantity</label>
-          <input type="text" name="" id="">
+          <input type="text" v-model="quantity" required>
         </div>
 
         <div class="asset-input">
           <label for="">Buy price</label>
-          <input type="text" name="" id="">
+          <input type="text" v-model="buyprice">
         </div>
 
-        <button class="asset-button">Add asset</button>
+        <button class="asset-button" @click="AddOnWallet" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Add asset</button>
 
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex'
 
+    export default {
+        name: "AddCrypto",
+        data: function () {
+            return {
+                crypto: 'BTC',
+                buyprice: '',
+                quantity: '',
+            }
+        },
+        computed: {
+            ...mapState(['listCryptoForGekoApi', 'listCryptoForCryptoCompare']),
+            noEmptyField: function () {
+                if (this.quantity != '' && this.crypto) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        },
+        methods: {
+            AddCrypto: function () {
+                this.$emit('ChangeValueAddCrypto', true);
+            },
+            AddOnWallet: function () {
+                const self = this;
+                this.$store.dispatch("addOnWallet", {
+                    crypto: this.crypto,
+                    buyprice: this.buyprice,
+                    quantity: this.quantity,
+                    uid: this.$store.getters.getUserUid
+                }).then((e) => {
+                    if (e) {
+                        self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                            if (e) {
+                                self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
+                                    if (e) {
+                                        self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                                            if (e) {
+                                                //calcul graph
+                                                self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                                                    self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                                                        self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                                            self.$emit('ChangeValueAddCrypto', true)
+                                                            self.$store.state.readyForLoadGraph = 3
+                                                        })
+                                                    })
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    }
 </script>
 
 <style scoped type="scss">
