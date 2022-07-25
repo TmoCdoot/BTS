@@ -635,6 +635,18 @@ export default createStore({
         })
       })
     },
+
+    /**
+     * -calculer price de balance maximun
+     * -calculer price de balance minimum
+     * -faire le graphique
+     * -faire actif cliquable et afficher les stats
+     * -compter etf
+     * -compter crypto
+     * -compter forex
+     * -compter action
+     * 
+     */
   },
   modules: {},
 });
