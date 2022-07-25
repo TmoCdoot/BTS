@@ -12,7 +12,7 @@
           <span>Buy price</span>
           <span> Quantity</span>
           <span>Profit / Loss</span>
-          <span>Edit</span>
+          <span>Delete</span>
         </div>
   
         <div v-if="userData.dataCrypto.length > 0">
@@ -45,7 +45,7 @@
     
             <div class="center-img">
               <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity" @click="updateCryptoUser">
-                <img src="../../assets/pencil.png" alt="Edit" class="img">
+                <img src="../../assets/poubelle.png" alt="Edit" class="img">
               </button>
             </div>
           </div>

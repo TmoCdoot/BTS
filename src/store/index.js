@@ -30,7 +30,40 @@ export default createStore({
 
     winLostValue: 0,
     eurPrice: 0,
-    readyForLoadGraph: 0
+    readyForLoadGraph: 0,
+
+
+    /*       New state        
+    userData: {
+      userEmail: '',
+      userUid: '',
+      userDepositSelected: 0,
+      userWalletSelected: '',
+      userAssetSelected: '',
+      userDepositList: [],
+      userWalletList: [],
+      userDataCrypto: [],
+      userAssetCounter: 0,
+      userEtfCounter: 0,
+      userCryptoCounter: 0,
+      userForexCounter: 0,
+      userActionCounter :0,
+      userWinLostValue: 0,
+      userMaxBalanceValue: 0,
+      userMinBalanceValue: 0,
+      userMeanBalanceValue: 0,
+    },
+
+    listCryptoForGekoApi: '',
+    listCryptoForCryptoCompare: '',
+
+    userCryptoIndexListGekoApi: [],
+    userCryptoIndexListCryptoCompareApi: [],
+
+    
+    eurPrice: 0,
+    readyForLoadGraph: 0,*/
+
   },
   mutations: {
     //definit les erreurs
@@ -645,6 +678,25 @@ export default createStore({
      * -compter crypto
      * -compter forex
      * -compter action
+     * 
+     */
+
+
+    /**
+     * 
+     * func 1 : connexion
+     * func 2: inscription
+     * func 3 : reperation des wallets de l'utilisateur
+     * func 4 : selection wallet et selection du premier actif
+     * func 5 : recuperation donner des crypto de l'utilisateur et donner user
+     * func 6 : recuperation des price des actifs (crypto, etf, action, forex, euro, usd, ...)
+     * func 7 : calcul win loss value
+     * func 8 : modifier le depot du wallet
+     * func 9 : modifier les données de l'actif selectionner
+     * func 10 : suppression de l'actif selectionner
+     * func 11 : suppression de wallet
+     * func 12 : selection d'un actif au click
+     * func 13 : calcul prix balance max et min et moyenne
      * 
      */
   },
