@@ -1,6 +1,6 @@
 <template>
-  <LogIn v-if="isUser" @ChangeIsUser="ChangeIsUser" />
-  <SignUp v-else @ChangeIsUser="ChangeIsUser" />
+  <LogIn v-if="isUser" @SwitchTypeForm="SwitchTypeForm" />
+  <SignUp v-else @SwitchTypeForm="SwitchTypeForm" />
 </template>
 
 <script>
@@ -20,7 +20,7 @@
       LogIn
     },
     methods: {
-      ChangeIsUser: function (data) {
+      SwitchTypeForm: function (data) {
         if (data == true) {
           if (this.isUser == true) {
             this.isUser = false

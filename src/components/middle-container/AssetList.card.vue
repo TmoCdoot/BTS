@@ -16,7 +16,7 @@
         </div>
   
         <div v-if="userData.dataCrypto.length > 0">
-          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.crypto">
+          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.crypto" @click="SelectAsset">
             <div class="asset">
               <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto">
               <span>{{ value.name }}</span>
@@ -157,6 +157,7 @@
     },
     computed: {
       ...mapState(['userData']),
+
     },
     methods: {
       AddCrypto: function () {
@@ -198,6 +199,9 @@
       },
       updateCryptoUser: function () {
         this.$emit('UpdateValueCrypto', {state: true, cryptoName: this.cryptoName, cryptoBuy: this.cryptoBuy, cryptoQtt: this.cryptoQtt});
+      },
+      SelectAsset: function (e) {
+        console.log(e)
       }
     },
   }

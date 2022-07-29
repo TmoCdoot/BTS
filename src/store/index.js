@@ -209,47 +209,62 @@ export default createStore({
   },
   actions: {
     //inscription au site
-    signUp: ({ commit }, userInfo) => {
+    UserSignUp: ({ commit }, userInfo) => {
       return new Promise(Validated => {
+
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
         var depositReg = new RegExp(/-+/);
-        if (emailReg.test(userInfo["email"])) {
-          if (userInfo["password"] == userInfo["confirm_pass"]) {
-            if (!depositReg.test(userInfo["deposit"])) {
-              createUserWithEmailAndPassword(auth, userInfo["email"], userInfo["password"]).then((userData) => {
+
+        if (emailReg.test(userInfo["userEmail"])) {
+          if (userInfo["userPassword"] == userInfo["userConfirm_pass"]) {
+            if (!depositReg.test(userInfo["userDeposit"])) {
+
+              createUserWithEmailAndPassword(auth, userInfo["userEmail"], userInfo["userPassword"]).then((userData) => {
                 const userUid = userData.user.uid;
-                setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${userInfo["account"]}`), {
-                  deposit: userInfo["deposit"],
+                setDoc(doc(db, `UserWallet/${userUid}/ListWallet/${userInfo["userAccount"]}`), {
+                  deposit: userInfo["userDeposit"],
                 }).then(() => {
                   Validated(true);
                 })
               }).catch((error) => {
                 commit('setError', error.code)
+                Validated(false)
               })
+
             } else {
               commit('setError', 'err_depo');
+              Validated(false)
             }
+            
           } else {
             commit('setError', 'err_pass');
+            Validated(false)
           }
+
         } else {
           commit('setError', 'err_mail');
+          Validated(false)
         }
+
       })
     },
     //connexion au site
-    signIn: ({ commit }, userInfo) => {
+    UserLogIn: ({ commit }, userInfo) => {
       return new Promise(Validated => {
+
         var emailReg = new RegExp(/^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/);
-        if (emailReg.test(userInfo["email"])) {
-          signInWithEmailAndPassword(auth, userInfo['email'], userInfo['password']).then(() => {
+        if (emailReg.test(userInfo["userEmail"])) {
+          signInWithEmailAndPassword(auth, userInfo['userEmail'], userInfo['userPassword']).then(() => {
             Validated(true)
           }).catch(() => {
             commit('setError', 'err_mail')
+            Validated(false)
           })
         } else {
           commit('setError', 'err_mail');
+          Validated(false)
         }
+
       })
     },
 
@@ -261,8 +276,10 @@ export default createStore({
           if (user) {
             commit('setUserEmail', user.email)
             commit('setUserUid', user.uid)
+            Validated(true)
+          } else {
+            Validated(false)
           }
-          Validated()
         });
       })
     },
@@ -408,17 +425,22 @@ export default createStore({
     //récuperation crypto du wallet de l'utilisateur
     loadUserWallet: ({ state, commit }) => {
       return new Promise(Validated => {
-        state.userData.walletList = []
-        state.userData.depositList = []
-        const tab = []
+        
+        state.userData.userWalletList = []
+        state.userData.userDepositList = []
+        const listWallet = []
         var isEmpty = 0
         getDocs(collection(db, `UserWallet/${state.userData.uid}/ListWallet`)).then((snapshot) => {
-          snapshot.forEach((doc) => tab[doc.id] = doc.data())
-          snapshot.forEach(() => isEmpty = 1)
+          snapshot.forEach(
+            (doc) => listWallet[doc.id] = doc.data()
+            )
+          snapshot.forEach(
+            () => isEmpty = 1
+            )
         }).then(() => {
           if (isEmpty != 0) {
-            commit('setWalletUser', tab)
-            commit('setUserDepositList', tab)
+            commit('setWalletUser', listWallet)
+            commit('setUserDepositList', listWallet)
             Validated(true)
           } else {
             Validated(false)
@@ -686,7 +708,8 @@ export default createStore({
      * 
      * func 1 : connexion
      * func 2: inscription
-     * func 3 : reperation des wallets de l'utilisateur
+     * func 2,5 : recup data user
+     * func 3 : recuperation des wallets de l'utilisateur
      * func 4 : selection wallet et selection du premier actif
      * func 5 : recuperation donner des crypto de l'utilisateur et donner user
      * func 6 : recuperation des price des actifs (crypto, etf, action, forex, euro, usd, ...)

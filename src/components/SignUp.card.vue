@@ -28,8 +28,8 @@
         <input type="text" v-model="account">
       </div>
 
-      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="SignUp">Sign Up</button>
-      <span>Already have an account, <colorButton @click="ChangeIsUser">Log In</colorButton></span>
+      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodSignUp">Sign Up</button>
+      <span>Already have an account, <colorButton @click="SwitchTypeForm">Log In</colorButton></span>
     </div>
 
     <div v-if="error == 'err_mail'" class="error">
@@ -76,20 +76,20 @@ export default {
     }
   },
   methods: {
-    SignUp: function () {
+    MethodSignUp: function () {
         const self = this
-        this.$store.dispatch("signUp", {
-            email: this.email,
-            password: this.password,
-            confirm_pass: this.confirm_pass,
-            deposit: this.deposit,
-            account: this.account,
+        this.$store.dispatch("UserSignUp", {
+            userEmail: this.email,
+            userPassword: this.password,
+            userConfirm_pass: this.confirm_pass,
+            userDeposit: this.deposit,
+            userAccount: this.account,
         }).then(() => {
-          self.$emit('ChangeIsUser', true);
+          self.$emit('SwitchTypeForm', true);
       })
     },
-    ChangeIsUser: function () {
-      this.$emit('ChangeIsUser', true);
+    SwitchTypeForm: function () {
+      this.$emit('SwitchTypeForm', true);
     },
   }
 };

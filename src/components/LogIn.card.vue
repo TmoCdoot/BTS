@@ -13,8 +13,8 @@
         <input type="password" v-model="password">
       </div>
 
-      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="LogIn">Log In</button>
-      <span>New to CryptoAnalyze, <colorButton @click="ChangeIsUser">Create account</colorButton></span>
+      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodLogIn">Log In</button>
+      <span>New to CryptoAnalyze, <colorButton @click="SwitchTypeForm">Create account</colorButton></span>
     </div>
 
     <div v-if="error == 'err_mail'" class="error">
@@ -29,9 +29,6 @@ import { mapState } from 'vuex'
 
 export default {
   name: "Connect",
-  props: {
-    msg: String,
-  },
   data: function () {
     return {
       email: '',
@@ -49,19 +46,19 @@ export default {
     }
   },
   methods: {
-      LogIn: function () {
+      MethodLogIn: function () {
         const self = this;
-        this.$store.dispatch("signIn", {
-            email: this.email,
-            password: this.password,
+        this.$store.dispatch("UserLogIn", {
+            userEmail: this.email,
+            userPassword: this.password,
         }).then((e) => {
           if (e) {
             self.$router.push('/home')
           }
         })
       },
-      ChangeIsUser: function () {
-        this.$emit('ChangeIsUser', true);
+      SwitchTypeForm: function () {
+        this.$emit('SwitchTypeForm', true);
       },
   }
 };
