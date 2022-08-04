@@ -16,9 +16,9 @@
         </div>
   
         <div v-if="userData.dataCrypto.length > 0">
-          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.crypto" @click="SelectAsset">
+          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.symbol" @click="SelectAsset">
             <div class="asset">
-              <img :src="'/img/' + value.crypto + '.png'" :alt="value.crypto">
+              <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
             </div>
             
@@ -31,8 +31,9 @@
               Not specified
             </span>
     
-            <span>{{ value.quantity }}</span>
-    
+            <span>{{ value.quantity }}</span>*
+            {{ value }}
+            {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}
             <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''">
               + {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
             </span>
@@ -201,7 +202,17 @@
         this.$emit('UpdateValueCrypto', {state: true, cryptoName: this.cryptoName, cryptoBuy: this.cryptoBuy, cryptoQtt: this.cryptoQtt});
       },
       SelectAsset: function (e) {
-        console.log(e)
+
+        if (e.path[0].id != "") {
+          this.$store.dispatch("UserSelectedAsset", e.path[0].id).then((e) => {console.log(e)})
+        } else if (e.path[1].id != "") {
+          this.$store.dispatch("UserSelectedAsset", e.path[1].id).then((e) => {console.log(e)})
+        } else if (e.path[2].id != "") {
+          this.$store.dispatch("UserSelectedAsset", e.path[2].id).then((e) => {console.log(e)})
+        } else if (e.path[3].id != "") {
+          this.$store.dispatch("UserSelectedAsset", e.path[3].id).then((e) => {console.log(e)})
+        }
+
       }
     },
   }

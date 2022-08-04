@@ -9,6 +9,7 @@ export default createStore({
     listCryptoForCryptoCompare: '',
     userData: {
       email: '',
+      userAssetSelected: [],
       uid: '',
       depositSelect: 0,
       depositList: [],
@@ -39,7 +40,7 @@ export default createStore({
       userUid: '',
       userDepositSelected: 0,
       userWalletSelected: '',
-      userAssetSelected: '',
+      userAssetSelected: [],
       userDepositList: [],
       userWalletList: [],
       userDataCrypto: [],
@@ -156,6 +157,13 @@ export default createStore({
       state.historyWalletMth = data['tabCrypto']
       state.historyTimeMth = data['tabTime']
     },
+    //definit l'asset selectionner
+    setUserAssetSelected: function (state, data) {
+      state.userData.userAssetSelected.symbol = data["symbol"]
+      state.userData.userAssetSelected.price = data["price"]
+      state.userData.userAssetSelected.buyPrice = data["buyPrice"]
+      state.userData.userAssetSelected.quantity = data["quantity"]
+    }
   },
   getters: {
     //recuperer l'email de l'utilisateur
@@ -690,6 +698,23 @@ export default createStore({
         })
       })
     },
+
+    //definit l'asset selectionner
+    UserSelectedAsset: ({state, commit}, data) => {
+      return new Promise(Valited => {
+        for(const test in state.userData.dataCrypto) {
+          if (state.userData.dataCrypto[test].symbol == data) {
+            commit('setUserAssetSelected', {
+              symbol: data,
+              price: state.userData.dataCrypto[test].priceNow,
+              buyPrice: state.userData.dataCrypto[test].buyPrice,
+              quantity: state.userData.dataCrypto[test].quantity,
+            })
+          }
+        }
+        Valited(true)
+      })
+    }
 
     /**
      * -calculer price de balance maximun

@@ -302,6 +302,8 @@ export default {
                       if (e != false) {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                          console.log(self.$store.state.userData.dataCrypto[0].symbol)
+                          self.$store.dispatch('UserSelectedAsset', self.$store.state.userData.dataCrypto[0].symbol)
                           //calcul win loss user
                           self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
