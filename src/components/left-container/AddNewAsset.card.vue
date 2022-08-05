@@ -11,6 +11,7 @@
         <div class="asset-input">
           <label for="">Actif</label>
           <select v-model="crypto">
+            <option value="ChooseAsset" disabled>Choose asset</option>
             <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue">
                 {{ listCryptoForCryptoCompare[index] }}
             </option>
@@ -39,7 +40,7 @@
         name: "AddCrypto",
         data: function () {
             return {
-                crypto: 'BTC',
+                crypto: 'ChooseAsset',
                 buyprice: '',
                 quantity: '',
             }
@@ -47,7 +48,7 @@
         computed: {
             ...mapState(['listCryptoForGekoApi', 'listCryptoForCryptoCompare']),
             noEmptyField: function () {
-                if (this.quantity != '' && this.crypto) {
+                if (this.quantity != '' && this.crypto != "ChooseAsset") {
                     return true
                 } else {
                     return false
@@ -79,6 +80,9 @@
                                                         self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
                                                             self.$emit('ChangeValueAddCrypto', true)
                                                             self.$store.state.readyForLoadGraph = 3
+                                                            this.crypto = "BTC"
+                                                            this.buyprice = ""
+                                                            this.quantity = ""
                                                         })
                                                     })
                                                 })

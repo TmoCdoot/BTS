@@ -2,27 +2,27 @@
     <div class="box-data">
         <div class="box-data-row">
           <span class="box-data-title">Balance</span>
-          <span class="box-data-data">{{ userData.depositSelect }} $</span>
+          <span class="box-data-data">{{ userData.userDepositSelected }} $</span>
         </div>
 
         <div class="box-data-row">
           <span class="box-data-title">ETF number</span>
-          <span class="box-data-data">1</span>
+          <span class="box-data-data">{{ userData.userEtfCounter }}</span>
         </div>
 
         <div class="box-data-row">
           <span class="box-data-title">Crypto number</span>
-          <span class="box-data-data">2</span>
+          <span class="box-data-data">{{ userData.userCryptoCounter }}</span>
         </div>
 
         <div class="box-data-row">
           <span class="box-data-title">FOREX number</span>
-          <span class="box-data-data">1</span>
+          <span class="box-data-data">{{ userData.userForexCounter }}</span>
         </div>
 
         <div class="box-data-row end">
           <span class="box-data-title">Action number</span>
-          <span class="box-data-data">1</span>
+          <span class="box-data-data">{{ userData.userActionCounter }}</span>
         </div>
     </div>
 </template>

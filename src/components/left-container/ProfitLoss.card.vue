@@ -2,23 +2,23 @@
     <div class="ca-box-sold">
         <span class="sold-title">Profit / Loss</span>
 
-        <span class="sold-data" v-if="winLostValue-userData.depositSelect <= 0 && winLostValue != 0">
-            {{ winLostValue-userData.depositSelect }} $
+        <span class="sold-data" v-if="userData.userWinLostValue-userData.userDepositSelected <= 0 && userData.userWinLostValue != 0">
+            {{ userData.userWinLostValue-userData.userDepositSelected }} $
         </span>
-        <span class="sold-data" v-else-if="winLostValue-userData.depositSelect >= 0 && winLostValue != 0">
-            + {{ winLostValue-userData.depositSelect }} $
+        <span class="sold-data" v-else-if="userData.userWinLostValue-userData.userDepositSelected >= 0 && userData.userWinLostValue != 0">
+            + {{ userData.userWinLostValue-userData.userDepositSelected }} $
         </span>
         <span class="sold-data" v-else>
             0 $
         </span>
 
-        <span class="sold-data-convert inferior"
-            v-if="(((winLostValue/userData.depositSelect)-1)*100).toFixed(2) <= 0 && winLostValue != 0">
-            {{ (((winLostValue/userData.depositSelect)-1)*100).toFixed(2) }} %
+        <span class="sold-data-convert orange"
+            v-if="(((userData.userWinLostValue/userData.userDepositSelected)-1)*100).toFixed(2) <= 0 && userData.userWinLostValue != 0">
+            {{ (((userData.userWinLostValue/userData.userDepositSelected)-1)*100).toFixed(2) }} %
         </span>
-        <span class="sold-data-convert superior"
-            v-else-if="(((winLostValue/userData.depositSelect)-1)*100).toFixed(2) >= 0 && winLostValue != 0">
-            + {{ (((winLostValue/userData.depositSelect)-1)*100).toFixed(2) }} %
+        <span class="sold-data-convert green"
+            v-else-if="(((userData.userWinLostValue/userData.userDepositSelected)-1)*100).toFixed(2) >= 0 && userData.userWinLostValue != 0">
+            + {{ (((userData.userWinLostValue/userData.userDepositSelected)-1)*100).toFixed(2) }} %
         </span>
         <span class="sold-data-convert" v-else>
             0 %
@@ -32,7 +32,7 @@ import { mapState } from 'vuex'
 export default {
     name: "ProfitLoss",
     computed: {
-        ...mapState(['winLostValue', 'userData']),
+        ...mapState(['userData']),
     }
 }
 </script>

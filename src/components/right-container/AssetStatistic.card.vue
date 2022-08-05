@@ -3,7 +3,7 @@
         <div class="container-top-row">
           <div class="box-asset-select">
             <img :src="'/img/' + userData.userAssetSelected.symbol + '.png'" :alt="userData.userAssetSelected.symbol ">
-            <span class="container-wallet-title">{{ (userData.userAssetSelected.symbol ).toUpperCase() }}</span>
+            <span class="container-wallet-title">{{ (userData.userAssetSelected.symbol).toUpperCase() }}</span>
           </div>
           <img src="../../assets/pencil.png">
         </div>

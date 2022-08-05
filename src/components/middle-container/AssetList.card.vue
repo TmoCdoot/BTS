@@ -2,7 +2,7 @@
     <div class="ca-container-asset-list">
 
         <div class="ca-container-wallet">
-          <span>{{ userData.walletSelected}}</span>
+          <span>{{ userData.userWalletSelected }}</span>
           <button>New wallet</button>
         </div>
   
@@ -15,8 +15,8 @@
           <span>Delete</span>
         </div>
   
-        <div v-if="userData.dataCrypto.length > 0">
-          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol" @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
+        <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3">
+          <div class="ca-row-asset-data" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol" @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
             <div class="asset">
               <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
@@ -44,7 +44,7 @@
             </span>
     
             <div class="center-img">
-              <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity" @click="updateCryptoUser">
+              <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity" @click="deleteCryptoUser">
                 <img src="../../assets/poubelle.png" alt="Edit" class="img">
               </button>
             </div>
@@ -129,7 +129,7 @@
     data: function () {
       return {
         url: '../assets/',
-        cryptoName: "",
+        cryptoName: this.$store.state.userData.userDataCrypto[0].symbol,
         cryptoBuy: 0,
         cryptoQtt: 0
       }
@@ -146,6 +146,8 @@
         this.$store.dispatch("deleteCryptoUser", {
           cryptoName: this.cryptoName
         }).then((e) => {
+          this.cryptoName = self.$store.state.userData.userDataCrypto[0].symbol
+          this.$store.dispatch("UserSelectedAsset", this.cryptoName)
           if (e) {
             document.getElementById(this.cryptoName).style.opacity = "0%"
             setTimeout(()=> {
@@ -234,6 +236,7 @@
     justify-content: space-evenly;
     padding: 15px 0px;
     border-bottom: 1px solid #d6d6d6;
+    cursor: pointer;
 }
 .ca-row-asset-data span, .asset, .center-img {
     width: 115px;
@@ -241,12 +244,25 @@
     font-size: 12px;
     font-weight: 600;
 }
+.ca-row-asset-data .center-img {
+  display: flex;
+  justify-content: center;
+}
 .center-img button {
-  border: none;
-  background: none;
+  border-radius: 100px;
+    border: 1px solid red;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center-img img {
+  border-radius: 100px;
 }
 .ca-row-asset-data img {
     width: 20px;
+    cursor: pointer;
 }
 .asset {
     display: flex;

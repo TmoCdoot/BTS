@@ -104,10 +104,4 @@ colorButton {
   background-color: #5d6d6b !important;
   cursor: none;
 }
-.superior {
-  color: #e25454 !important;
-}
-.inferior {
-  color: #34ab52 !important;
-}
 </style>

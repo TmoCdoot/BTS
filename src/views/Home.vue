@@ -103,7 +103,7 @@
   </div>
 
   <div class="ca-ctr-container">
-    <AssetList/>
+    <AssetList v-if="this.$store.state.readyForLoadGraph == 3"/>
   </div>
 
   <div class="ca-rht-container">
@@ -115,8 +115,8 @@
     <div class="ca-container-wallet-data">
 
       <div class="wallet-name">
-        <span>{{ userData.walletSelected }}</span>
-        <span class="number-asset">{{userData.countAsset}} asset</span>
+        <span>{{ userData.userWalletSelected }}</span>
+        <span class="number-asset">{{userData.userAssetCounter}} asset</span>
       </div>
 
       <WalletGraph/>
@@ -302,8 +302,7 @@ export default {
                       if (e != false) {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                          console.log(self.$store.state.userData.dataCrypto[0].symbol)
-                          self.$store.dispatch('UserSelectedAsset', self.$store.state.userData.dataCrypto[0].symbol)
+                          self.$store.dispatch('UserSelectedAsset', self.$store.state.userData.userDataCrypto[0].symbol)
                           //calcul win loss user
                           self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
@@ -317,27 +316,31 @@ export default {
                                 self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
                                   self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
                                   
-                                  if (self.$store.state.readyForLoadGraph == 3) {
+                                  self.$store.dispatch('loadMeanPriceWallet')
+                                  self.$store.dispatch('loadMinPriceWallet')
+                                  self.$store.dispatch('loadMaxPriceWallet')
+
+                                  /* if (self.$store.state.readyForLoadGraph == 3) {
                                     document.getElementById('loading_page').style.opacity = '0'
                                     document.getElementById('loading_page').style.pointerEvents = 'none'
                                     document.getElementById('logoBox_loading').style.opacity = '0'
                                     document.getElementById('logoBox_loading').style.pointerEvents = 'none'
                                     document.getElementById('logoBox_loading').style.width = '400px'
                                     document.getElementById('app').style.overflow = 'initial'
-                                  }
+                                  } */
                                 })
-                              })                            
+                              })                           
                             })
                           })
                         })
                       } else {
                         self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
-                        document.getElementById('loading_page').style.opacity = '0'
+                        /* document.getElementById('loading_page').style.opacity = '0'
                         document.getElementById('loading_page').style.pointerEvents = 'none'
                         document.getElementById('logoBox_loading').style.opacity = '0'
                         document.getElementById('logoBox_loading').style.pointerEvents = 'none'
                         document.getElementById('logoBox_loading').style.width = '400px'
-                        document.getElementById('app').style.overflow = 'initial'
+                        document.getElementById('app').style.overflow = 'initial' */
                       }            
                     })
                   })
@@ -613,7 +616,7 @@ export default {
   font-weight: 500;
 }
 .sold-data {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
 }
 .sold-data-convert {
@@ -675,6 +678,9 @@ export default {
 }
 .green {
   color: #09A706;
+}
+.red {
+  color: #e25454 !important;
 }
 .graph canvas {
   padding: 10px;
