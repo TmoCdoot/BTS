@@ -639,6 +639,7 @@ export default {
 .box-statistic div {
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 .box-statistic div .statistic-title {
   color: #686868;

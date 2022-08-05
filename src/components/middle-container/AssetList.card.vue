@@ -16,7 +16,7 @@
         </div>
   
         <div v-if="userData.dataCrypto.length > 0">
-          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.symbol" @click="SelectAsset">
+          <div class="ca-row-asset-data" v-for="value in userData.dataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol" @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
             <div class="asset">
               <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
@@ -31,14 +31,13 @@
               Not specified
             </span>
     
-            <span>{{ value.quantity }}</span>*
-            {{ value }}
-            {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }}
-            <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''">
-              + {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
-            </span>
-            <span v-else-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) >= 0 && value.buyPrice != ''">
+            <span>{{ value.quantity }}</span>
+            
+            <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''" class="orange">
               {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
+            </span>
+            <span v-else-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) >= 0 && value.buyPrice != ''" class="green">
+              + {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
             </span>
             <span v-else>
               Not specified
@@ -50,27 +49,6 @@
               </button>
             </div>
           </div>
-        </div>
-       
-  
-        <div class="ca-row-asset-data">
-          <div class="asset">
-            <img src="../../../public/img/DENT.png">
-            <span>DENT</span>
-          </div>
-          
-          <span>240 200 $</span>
-  
-          <span>12.4 $</span>
-  
-          <span>2 105 500</span>
-  
-          <span>+ 120 200 %</span>
-  
-          <div class="center-img">
-            <img src="../../assets/pencil.png">
-          </div>
-          
         </div>
 
         <!-- <div class="cryptoContener" v-if="userData.dataCrypto.length > 0">
@@ -151,14 +129,13 @@
     data: function () {
       return {
         url: '../assets/',
-        cryptoName: '',
+        cryptoName: "",
         cryptoBuy: 0,
         cryptoQtt: 0
       }
     },
     computed: {
       ...mapState(['userData']),
-
     },
     methods: {
       AddCrypto: function () {
@@ -201,18 +178,8 @@
       updateCryptoUser: function () {
         this.$emit('UpdateValueCrypto', {state: true, cryptoName: this.cryptoName, cryptoBuy: this.cryptoBuy, cryptoQtt: this.cryptoQtt});
       },
-      SelectAsset: function (e) {
-
-        if (e.path[0].id != "") {
-          this.$store.dispatch("UserSelectedAsset", e.path[0].id).then((e) => {console.log(e)})
-        } else if (e.path[1].id != "") {
-          this.$store.dispatch("UserSelectedAsset", e.path[1].id).then((e) => {console.log(e)})
-        } else if (e.path[2].id != "") {
-          this.$store.dispatch("UserSelectedAsset", e.path[2].id).then((e) => {console.log(e)})
-        } else if (e.path[3].id != "") {
-          this.$store.dispatch("UserSelectedAsset", e.path[3].id).then((e) => {console.log(e)})
-        }
-
+      SelectAsset: function () {
+        this.$store.dispatch("UserSelectedAsset", this.cryptoName)
       }
     },
   }
@@ -293,5 +260,8 @@
     margin-right: 30px;
     font-size: 12px;
     font-weight: 700;
+}
+.selected {
+  background-color: #e3e3e3;
 }
 </style>

@@ -30,11 +30,11 @@
             <span class="statistic-title">Profit / Loss</span>
            <!--  <span class="statistic-data green">+ 100 %</span> -->
 
-            <span v-if="(((userData.userAssetSelected.priceNow-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) <= 0 && userData.userAssetSelected.buyPrice != ''">
-              + {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
+            <span v-if="(((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) <= 0 && userData.userAssetSelected.buyPrice != ''" class="orange">
+              {{ (((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) }} %
             </span>
-            <span v-else-if="(((userData.userAssetSelected.priceNow-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) >= 0 && userData.userAssetSelected.buyPrice != ''">
-              {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
+            <span v-else-if="(((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) >= 0 && userData.userAssetSelected.buyPrice != ''" class="green">
+              + {{ (((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) }} %
             </span>
             <span v-else>
               0 %
