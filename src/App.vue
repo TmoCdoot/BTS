@@ -9,13 +9,13 @@
   }
 
   #app {
-    /*background-color: red;*/
     font-family: Epilogue;
     display: flex;
     height: 100vh;
     width: 100vw;
   }
   html, body {
+    background-color: var(--background-color);
     height: 100vh;
     width: 100vw;
     margin: 0;

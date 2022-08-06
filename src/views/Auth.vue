@@ -49,7 +49,7 @@
 .ca-container-form {
   width: 332px;
   height: 322px;
-  background-color: #f7f7f7;
+  background-color: var(--background-color-card);
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -71,15 +71,17 @@
 .asset-input input {
   border-radius: 10px;
   margin-top: 2px;
-  border: 1px solid #DADADA;
+  border: var(--delete-border);
   width: 240px;
   height: 40px;
   box-sizing: border-box;
+  background-color: var(--background-input);
+  color: var(--color-font);
 }
 .asset-input label {
   font-size: 16px;
   font-weight: 500;
-  color: #000000;
+  color: var(--color-font);
 }
 .asset-button {
   width: 240px;

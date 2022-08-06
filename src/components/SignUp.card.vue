@@ -1,6 +1,7 @@
 <template>
   <div class="ca-account-container" >
-    <img src="../assets/logov2.png">
+    <img src="../assets/logov2.png" v-if="userTheme == 'light'">
+    <img src="../assets/logov1.png" v-if="userTheme == 'dark'">
 
     <div class="ca-container-form create-account">
       <div class="asset-input">
@@ -91,6 +92,10 @@ export default {
     SwitchTypeForm: function () {
       this.$emit('SwitchTypeForm', true);
     },
+  },
+  beforeMount() {
+    this.userTheme = localStorage.getItem("user-theme")
+    document.documentElement.className = this.userTheme;
   }
 };
 </script>

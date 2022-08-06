@@ -102,7 +102,7 @@ export default createStore({
           }
         }
       }
-      state.userData.userAssetCounter = state.userData.userAssetCounter + state.userData.userDataCrypto.length
+      state.userData.userAssetCounter = state.userData.userDataCrypto.length
       state.userData.userCryptoCounter = state.userData.userDataCrypto.length
     },
     //definit le depot des wallets de l'utilisateur

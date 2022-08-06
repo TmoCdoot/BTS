@@ -191,15 +191,17 @@
 .ca-container-asset-list {
     width: 800px;
     min-height: 850px;
-    background-color: #f7f7f7;
+    background-color: var(--background-color-card);
     border-radius: 15px;
     margin: 20px 0px;
+    height: 700px;
 }
 .ca-container-wallet {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 1px solid var(--colo-row-asset-list);
+    color: var(--color-font);
 }
 .ca-container-wallet span {
     margin: 25px 0px 25px 21px;
@@ -222,7 +224,8 @@
     display: flex;
     justify-content: space-evenly;
     padding: 16px 0px;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 1px solid var(--colo-row-asset-list);
+    color: var(--color-font);
 }
 .ca-container-top-list span {
     font-size: 12px;
@@ -235,8 +238,9 @@
     align-items: center;
     justify-content: space-evenly;
     padding: 15px 0px;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 1px solid var( --colo-row-asset-list);
     cursor: pointer;
+    color: var(--color-font);
 }
 .ca-row-asset-data span, .asset, .center-img {
     width: 115px;
@@ -278,6 +282,6 @@
     font-weight: 700;
 }
 .selected {
-  background-color: #e3e3e3;
+  background-color: var(--background-selected);
 }
 </style>

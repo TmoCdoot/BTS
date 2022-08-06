@@ -73,7 +73,8 @@
   <div class="ca-lft-container">
 
     <div class="ca-container-logo">
-      <img src="../assets/logov2.png">
+      <img src="../assets/logov2.png" v-if="userTheme == 'light'">
+      <img src="../assets/logov1.png" v-if="userTheme == 'dark'">
     </div>
 
     <div class="ca-container-sold">
@@ -110,6 +111,8 @@
     <div class="ca-container-user">
       <span>test@gmail.com</span>
       <button @click="logOutUser">Disconnect</button>
+      <img src="../assets/moon.png" @click="test" v-if="userTheme == 'light'">
+      <img src="../assets/sun.png" @click="test" v-if="userTheme == 'dark'">
     </div>
 
     <div class="ca-container-wallet-data">
@@ -127,6 +130,7 @@
 
     </div>
   </div>
+
 </template>
 
 
@@ -191,9 +195,8 @@ export default {
       updateCryptoName: '',
       updateCryptoBuy: 0,
       updateCryptoQtt: 0,
-      chartDataDly: [[10, 2], [20, 4]],
 
-      countAsset: this.getUserDataCrypto,
+      userTheme: "light"
     }
   },
   computed: {
@@ -281,9 +284,24 @@ export default {
     closeNav: function () {
       this.navWallet = true;  
       document.getElementById('app').style.overflow = "hidden";
+    },
+
+    test: function() {
+      if (this.userTheme == "light") {
+        this.userTheme = "dark"
+        document.documentElement.className = this.userTheme;
+        localStorage.setItem("user-theme", this.userTheme)
+      } else {
+        this.userTheme = "light"
+        document.documentElement.className = this.userTheme;
+        localStorage.setItem("user-theme", this.userTheme)
+      }
     }
   },
   beforeMount() {
+    this.userTheme = localStorage.getItem("user-theme")
+    document.documentElement.className = this.userTheme;
+
       const self = this;
       //load uid email
       this.$store.dispatch('loadUserData').then(() => {
@@ -350,7 +368,7 @@ export default {
           })
         })
       })
-    }
+  },
 };
 </script>
 
@@ -597,10 +615,45 @@ export default {
 
 <style lang="scss">
 
+:root {
+  --background-color: white;
+  --background-color-card: #f7f7f7;
+  --background-color-card-statistic: #ffffff;
+  --background-input: #ffffff;
+  --background-switch: #E3E3E3;
+  --color-font: #000000;
+  --delete-border: 1px solid #DADADA;
+  --color-label: #686868;
+  --border-bottom: 1px solid #e1e1e1;
+  --background-selected: #e3e3e3;
+  --colo-row-asset-list: #d6d6d6;
+}
+:root.dark {
+  --background-color: #222222;
+  --background-color-card: #2A2B31;
+  --background-color-card-statistic: #36383F;
+  --background-input: #4C4E56;
+  --color-font: #ffffff;
+  --delete-border: 1px solid #414141;
+  --color-label: #AFAFAF;
+  --border-bottom: none;
+  --background-switch: #4C4E56;
+  --background-selected: #3A3B42;
+  --colo-row-asset-list: #424242;
+}
+
+#app {
+  background-color: var(--background-color);
+}
+
+* {
+  transition: 0.3s;
+}
+
 /* GLOBAL STYLE */
 
 .ca-box-sold {
-  background-color: #F7F7F7;
+  background-color: var(--background-color-card);
   height: 93px;
   border-radius: 15px;
   display: flex;
@@ -614,10 +667,12 @@ export default {
 .sold-title {
   font-size: 12px;
   font-weight: 500;
+  color: var(--color-font);
 }
 .sold-data {
   font-size: 18px;
   font-weight: 500;
+  color: var(--color-font);
 }
 .sold-data-convert {
   font-size: 12px;
@@ -626,9 +681,10 @@ export default {
 }
 .container-wallet-statistic {
   width: 275px;
-  background-color: #ffffff;
+  background-color: var(--background-color-card-statistic);
   border-radius: 10px;
   padding: 20px;
+  color: var(--color-font);
 }
 .box-statistic {
   display: flex;
@@ -645,7 +701,7 @@ export default {
   width: 50%;
 }
 .box-statistic div .statistic-title {
-  color: #686868;
+  color: var(--color-label);
   font-size: 12px;
   font-weight: 500;
 }
@@ -684,7 +740,7 @@ export default {
 }
 .graph canvas {
   padding: 10px;
-  background-color: #ffffff;
+  background-color: var(--background-color-card-statistic);
   border-radius: 10px;
 }
 
@@ -718,7 +774,7 @@ export default {
   /*border: 1px solid green;*/
   display: flex;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 27px;
 }
 .ca-container-logo img {
   width: 180px;
@@ -762,7 +818,8 @@ export default {
 .ca-container-user {
   text-align: right;
   padding: 0px 21px 12px;
-  
+  display: flex;
+  align-items: center;
 }
 .ca-container-user button {
   width: 100px;
@@ -781,8 +838,12 @@ export default {
   color: #686868;
   font-style: italic;
 }
+.ca-container-user img {
+  width: 30px;
+  margin-left: 20px;
+}
 .ca-container-wallet-data {
-  background-color: #f2f2f2;
+  background-color: var(--background-color-card);
   width: 351px;
   height: 810px;
   border-radius: 15px;
@@ -802,14 +863,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--color-font);
 }
 .number-asset {
   width: 80px;
   height: 17px;
-  font-size: 10px;
+  font-size: 10px !important;
   font-weight: 600;
   color: #686868;
-  background-color: #ffffff;
+  background-color: var(--background-color-card-statistic);
   border-radius: 15px;
   margin-left: 10px;
   display: flex;

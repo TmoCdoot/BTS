@@ -46,23 +46,24 @@
 <style scoped type="scss">
 .box-data {
     width: 276px;
-    background-color: #f7f7f7;
+    background-color: var(--background-color-card);
     border-radius: 15px;
 }
 .box-data-row {
     padding: 10px 20px;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: var(--border-bottom);
     display: flex;
     justify-content: space-between;
 }
 .box-data-title {
     font-size: 12px;
     font-weight: 500;
-    color: #686868;
+    color: var(--color-label);
 }
 .box-data-data {
     font-size: 12px;
     font-weight: 500;
+    color: var(--color-font);
 }
 .end {
     border: none;

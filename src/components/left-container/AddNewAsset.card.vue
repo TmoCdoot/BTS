@@ -108,7 +108,10 @@
     align-items: center;
     width: 276px;
     border-radius: 15px;
-    background-color: #F7F7F7;
+    background-color: var(--background-color-card);
+}
+.ca-box-asset span {
+    color: var(--color-font);
 }
 .ca-box-asset span {
     font-size: 16px;
@@ -116,7 +119,7 @@
     width: 240px;
 }
 .asset-switch {
-    background-color: #e3e3e3;
+    background-color: var(--background-switch);
     width: 244px;
     height: 47px;
     border-radius: 10px;
@@ -125,6 +128,7 @@
     justify-content: space-evenly;
     margin-top: 19px;
     margin-bottom: 29px;
+    color: var(--color-font);
 }
 switch {
     border-radius: 10px;    
@@ -145,6 +149,12 @@ switch {
     display: flex;
     flex-direction: column;
     margin-bottom: 29px;
+    
+}
+.asset-input input, .asset-input select {
+    background-color: var(--background-input);
+    color: var(--color-font);
+    border: var(--delete-border) !important;
 }
 .asset-input input {
     border-radius: 10px;
@@ -157,7 +167,7 @@ switch {
 .asset-input label {
     font-size: 12px;
     font-weight: 500;
-    color: #686868;
+    color: var(--color-label);
 }
 .asset-input select {
     border-radius: 10px;
