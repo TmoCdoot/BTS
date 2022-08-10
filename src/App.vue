@@ -7,10 +7,6 @@
     font-family: Epilogue;
     src: url(assets/fonts/epilogue.regular.ttf);
   }
-  @font-face {
-    font-family: EpilogueBold;
-    src: url(assets/fonts/Epilogue-Bold.ttf);
-  }
 
   #app {
     font-family: Epilogue;

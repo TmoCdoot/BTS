@@ -171,10 +171,8 @@ export default createStore({
     },
     //definit l'asset selectionner
     setUserAssetSelected: function (state, data) {
-      
       state.userData.userAssetSelected.symbol = data["symbol"]
       state.userData.userAssetSelected.price = data["price"]
-      state.userData.userAssetSelected.nameForEdit = data["nameForEdit"]
       state.userData.userAssetSelected.buyPrice = data["buyPrice"]
       state.userData.userAssetSelected.quantity = data["quantity"]
     },
@@ -425,12 +423,10 @@ export default createStore({
     //definit l'asset selectionner
     UserSelectedAsset: ({state, commit}, data) => {
       return new Promise(Valited => {
-        state.userData.userAssetSelected = []
         for(const test in state.userData.userDataCrypto) {
-          if (state.userData.userDataCrypto[test].symbol == data["symbol"]) {
+          if (state.userData.userDataCrypto[test].symbol == data) {
             commit('setUserAssetSelected', {
-              symbol: data["symbol"],
-              nameForEdit: data["nameForEdit"],
+              symbol: data,
               price: state.userData.userDataCrypto[test].priceNow,
               buyPrice: state.userData.userDataCrypto[test].buyPrice,
               quantity: state.userData.userDataCrypto[test].quantity,
@@ -703,11 +699,9 @@ export default createStore({
     //mise a jour des info de la crypto (quantité, prix d'achat)
     updateCryptoUser: ({ state }, data) => {
       return new Promise(Validated => {
-        var buyPriceReplace = data['buyprice'].replace(',', '.')
-        var quantityReplace = data['quantity'].replace(',', '.')
-        updateDoc(doc(db, `UserCrypto/${state.userData.userUid}/${state.userData.userWalletSelected}/${data['cryptoName']}`), {
-          buyPrice: buyPriceReplace,
-          quantity: quantityReplace
+        updateDoc(doc(db, `UserCrypto/${state.userData.uid}/${state.userData.walletSelected}/${data['cryptoName']}`), {
+          buyPrice: data['buyprice'],
+          quantity: data['quantity']
         }).then(() => {
           Validated(true)
         })

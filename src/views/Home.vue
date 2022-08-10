@@ -104,15 +104,15 @@
   </div>
 
   <div class="ca-ctr-container">
-    <AssetList />
+    <AssetList v-if="this.$store.state.readyForLoadGraph == 3"/>
   </div>
 
   <div class="ca-rht-container">
     <div class="ca-container-user">
-      <span>{{ userData.userEmail }}</span>
+      <span>test@gmail.com</span>
       <button @click="logOutUser">Disconnect</button>
-      <img src="../assets/moon.png" @click="switchTheme" v-if="userTheme == 'light'">
-      <img src="../assets/sun.png" @click="switchTheme" v-if="userTheme == 'dark'">
+      <img src="../assets/moon.png" @click="test" v-if="userTheme == 'light'">
+      <img src="../assets/sun.png" @click="test" v-if="userTheme == 'dark'">
     </div>
 
     <div class="ca-container-wallet-data">
@@ -286,7 +286,7 @@ export default {
       document.getElementById('app').style.overflow = "hidden";
     },
 
-    switchTheme: function() {
+    test: function() {
       if (this.userTheme == "light") {
         this.userTheme = "dark"
         document.documentElement.className = this.userTheme;
@@ -301,7 +301,7 @@ export default {
   beforeMount() {
     this.userTheme = localStorage.getItem("user-theme")
     document.documentElement.className = this.userTheme;
-        
+
       const self = this;
       //load uid email
       this.$store.dispatch('loadUserData').then(() => {
@@ -320,10 +320,7 @@ export default {
                       if (e != false) {
                         //load crypto price
                         self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                          self.$store.dispatch('UserSelectedAsset', {
-                            symbol: self.$store.state.userData.userDataCrypto[0].symbol,
-                            nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
-                          })
+                          self.$store.dispatch('UserSelectedAsset', self.$store.state.userData.userDataCrypto[0].symbol)
                           //calcul win loss user
                           self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
@@ -356,7 +353,6 @@ export default {
                         })
                       } else {
                         self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
-                        self.$store.state.readyForLoadGraph = 3
                         /* document.getElementById('loading_page').style.opacity = '0'
                         document.getElementById('loading_page').style.pointerEvents = 'none'
                         document.getElementById('logoBox_loading').style.opacity = '0'
@@ -708,17 +704,6 @@ export default {
   color: var(--color-label);
   font-size: 12px;
   font-weight: 500;
-}
-.box-statistic input {
-  border-radius: 10px;
-    margin-top: 6px;
-    border: 1px solid #DADADA;
-    width: 120px;
-    height: 26px;
-    box-sizing: border-box;
-    background-color: var(--background-input);
-    border: var(--delete-border) !important;
-    color: var(--color-font);
 }
 .end-box {
   border: none;

@@ -64,10 +64,6 @@ export default {
   },
   beforeMount() {
     this.userTheme = localStorage.getItem("user-theme")
-    if (this.userTheme == null) {
-      this.userTheme = "light"
-      localStorage.setItem("user-theme", this.userTheme)
-    }
     document.documentElement.className = this.userTheme;
   }
 }
