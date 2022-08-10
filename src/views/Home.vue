@@ -402,6 +402,7 @@ export default {
   margin-left: 5px;
 }
 .container-top-row img {
+  cursor: pointer;
   width: 20px;
   height: 20px;
 }

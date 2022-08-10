@@ -4,38 +4,6 @@ import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, getDo
 
 export default createStore({
   state: {
-    /*error: '',
-    listCryptoForGekoApi: '',
-    listCryptoForCryptoCompare: '',
-    userData: {
-      email: '',
-      userAssetSelected: [],
-      uid: '',
-      depositSelect: 0,
-      depositList: [],
-      dataCrypto: [],
-      listCryptoUserForGekoApi: [],
-      listCryptoUserForCryptoCompare: [],
-      walletList: [],
-      walletSelected: '',
-      countAsset: 0,
-    },
-    historyWalletDly: '',
-    historyTimeDly: '',
-
-    historyWalletWky: '',
-    historyTimeWky: '',
-
-    historyWalletMth: '',
-    historyTimeMth: '',
-
-    winLostValue: 0,
-    eurPrice: 0,
-    readyForLoadGraph: 0,*/
-
-
-    //New state     
-
     userData: {
       userEmail: '',
       userUid: '',
@@ -171,7 +139,6 @@ export default createStore({
     },
     //definit l'asset selectionner
     setUserAssetSelected: function (state, data) {
-      
       state.userData.userAssetSelected.symbol = data["symbol"]
       state.userData.userAssetSelected.price = data["price"]
       state.userData.userAssetSelected.nameForEdit = data["nameForEdit"]
