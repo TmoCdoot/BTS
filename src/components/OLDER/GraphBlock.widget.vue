@@ -20,7 +20,7 @@
         },
         data() {
             return {
-                /* chartDataDly: [
+                chartDataDly: [
                     [this.$store.getters.getHistoTimeDly[0], this.$store.getters.getHistoWalletDly[0]],
                     [this.$store.getters.getHistoTimeDly[1], this.$store.getters.getHistoWalletDly[1]],
                     [this.$store.getters.getHistoTimeDly[2], this.$store.getters.getHistoWalletDly[2]],
@@ -88,7 +88,7 @@
                     [this.$store.getters.getHistoTimeMth[28], this.$store.getters.getHistoWalletMth[28]],
                     [this.$store.getters.getHistoTimeMth[29], this.$store.getters.getHistoWalletMth[29]],
                     [this.$store.getters.getHistoTimeMth[30], this.$store.getters.getHistoWalletMth[30]],
-                ] */
+                ]
             }
         },
         computed: {
