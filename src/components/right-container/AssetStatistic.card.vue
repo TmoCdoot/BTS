@@ -1,10 +1,12 @@
 <template>
     <div class="container-wallet-statistic end-container-wallet"  v-if="this.$store.state.readyForLoadGraph == 3 && userData.userDataCrypto.length > 0">
+
         <div class="container-top-row">
           <div class="box-asset-select">
             <img :src="'/img/' + userData.userAssetSelected.symbol + '.png'" :alt="userData.userAssetSelected.symbol">
             <span class="container-wallet-title">{{ (userData.userAssetSelected.symbol).toUpperCase() }}</span>
           </div>
+          
           <img src="../../assets/pencil.png"  @click="editAsset" v-if="onEdit == false">
           <img src="../../assets/validate.png"  @click="SubmitUpdateCrypto" v-if="onEdit == true">
         </div>
@@ -14,6 +16,7 @@
             <span class="statistic-title">Price</span>
             <span class="statistic-data">{{ userData.userAssetSelected.price }} $</span>
           </div>
+
           <div v-if="onEdit == false">
             <span class="statistic-title">Buy price</span>
             <span class="statistic-data" v-if="userData.userAssetSelected.buyPrice != ''">{{ userData.userAssetSelected.buyPrice }} $</span>
@@ -34,10 +37,9 @@
             <span class="statistic-title">Quantity</span>
             <input type="text" v-model="quantity" required>
           </div>
+
           <div>
             <span class="statistic-title">Profit / Loss</span>
-           <!--  <span class="statistic-data green">+ 100 %</span> -->
-
             <span v-if="(((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) <= 0 && userData.userAssetSelected.buyPrice != ''" class="orange">
               {{ (((userData.userAssetSelected.price-userData.userAssetSelected.buyPrice)/userData.userAssetSelected.buyPrice)*100).toFixed(2) }} %
             </span>
@@ -49,6 +51,7 @@
             </span>
           </div>
         </div>
+        
     </div>
 </template>
 
