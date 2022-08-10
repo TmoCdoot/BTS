@@ -14,9 +14,9 @@
           <span>Profit / Loss</span>
           <span>Delete</span>
         </div>
-  
+
         <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3">
-          <div class="ca-row-asset-data" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol" @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
+          <div class="ca-row-asset-data" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
             <div class="asset">
               <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
@@ -49,6 +49,10 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <div v-if="userData.userDataCrypto.length == 0" class="no-asset">
+         NO ASSET
         </div>
 
         <!-- <div class="cryptoContener" v-if="userData.dataCrypto.length > 0">
@@ -129,7 +133,8 @@
     data: function () {
       return {
         url: '../assets/',
-        cryptoName: this.$store.state.userData.userDataCrypto[0].symbol,
+        cryptoName: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].symbol : "",
+        assetNameForEdit: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].crypto : "",
         cryptoBuy: 0,
         cryptoQtt: 0
       }
@@ -181,7 +186,10 @@
         this.$emit('UpdateValueCrypto', {state: true, cryptoName: this.cryptoName, cryptoBuy: this.cryptoBuy, cryptoQtt: this.cryptoQtt});
       },
       SelectAsset: function () {
-        this.$store.dispatch("UserSelectedAsset", this.cryptoName)
+        this.$store.dispatch("UserSelectedAsset", { 
+          symbol : this.cryptoName,
+          nameForEdit : this.assetNameForEdit
+        })
       }
     },
   }
@@ -280,6 +288,17 @@
     margin-right: 30px;
     font-size: 12px;
     font-weight: 700;
+}
+.no-asset {
+  font-family: "EpilogueBold";
+  font-weight: 700;
+    font-size: 20px;
+    color: #383737;
+    display: flex;
+    height: 100%;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 .selected {
   background-color: var(--background-selected);

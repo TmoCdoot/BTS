@@ -35,7 +35,7 @@
 
 <style lang="scss">
 .ca-account-container {
-  border: 1px solid green;
+  /*border: 1px solid green;*/
   width: 100%;
   display: flex;
   flex-direction: column;
