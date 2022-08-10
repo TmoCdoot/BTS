@@ -195,7 +195,6 @@
 }
 .center-img button {
   border-radius: 100px;
-    border: 1px solid red;
     width: 20px;
     height: 20px;
     display: flex;
