@@ -15,7 +15,7 @@
       </div>
 
       <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodLogIn">Log In</button>
-      <span>New to CryptoAnalyze, <colorButton @click="SwitchTypeForm">Create account</colorButton></span>
+      <span>New to CryptoAnalyze, <text @click="SwitchTypeForm">Create account</text></span>
     </div>
 
     <div v-if="error == 'err_mail'" class="error">

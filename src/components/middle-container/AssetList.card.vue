@@ -15,13 +15,13 @@
           <span>Delete</span>
         </div>
 
-        <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3">
-          <div class="ca-row-asset-data" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset" :class="{'selected' : cryptoName == value.symbol}">
+        <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3 && this.$store.state.userData.userAssetSelected != []">
+          <div class="ca-row-asset-data" :class="{'selected' : cryptoName == value.symbol}" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset">
             <div class="asset">
               <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
             </div>
-            
+
             <span>{{ value.priceNow }} $</span>
     
             <span v-if="value.buyPrice != ''">
@@ -65,11 +65,10 @@
     name: "CryptoList",
     data: function () {
       return {
-        url: '../assets/',
         cryptoName: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].symbol : "",
         assetNameForEdit: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].crypto : "",
         cryptoBuy: 0,
-        cryptoQtt: 0
+        cryptoQtt: 0,
       }
     },
     computed: {

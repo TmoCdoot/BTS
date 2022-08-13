@@ -94,7 +94,7 @@
   font-weight: 700;
   cursor: pointer;
 }
-colorButton {
+text {
   color: #5DB5AA;
   font-size: 12px;
   font-weight: 700;

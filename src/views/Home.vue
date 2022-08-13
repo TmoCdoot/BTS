@@ -33,7 +33,7 @@
   </div>
 
   <div class="ca-ctr-container">
-    <AssetList />
+    <AssetList v-if="userData.userDataCrypto.length > 0"/>
   </div>
 
   <div class="ca-rht-container">
@@ -110,7 +110,8 @@ export default {
   methods: {
     logOutUser: function () {
       signOut(auth);
-      this.$router.push({name: "Auth"})
+      location.reload()
+      //this.$router.push({name: "Auth"})
     },
     changePage: function (pageLoad) {
       if (this.page != pageLoad) {
@@ -229,6 +230,7 @@ export default {
                             symbol: self.$store.state.userData.userDataCrypto[0].symbol,
                             nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
                           })
+                          console.log(self.$store.state.userData.userAssetSelected)
                           //calcul win loss user
                           self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
                           self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {

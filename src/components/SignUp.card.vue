@@ -30,7 +30,7 @@
       </div>
 
       <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodSignUp">Sign Up</button>
-      <span>Already have an account, <colorButton @click="SwitchTypeForm">Log In</colorButton></span>
+      <span>Already have an account, <text @click="SwitchTypeForm">Log In</text></span>
     </div>
 
     <div v-if="error == 'err_mail'" class="error">

@@ -162,7 +162,7 @@ export default createStore({
   getters: {
     //recuperer l'email de l'utilisateur
     getUserEmail: state => {
-      return state.userData.email
+      return state.userData.userEmail
     },
     //recuperer l'uid de l'utilisateur
     getUserUid: state => {
@@ -207,6 +207,10 @@ export default createStore({
     //recuperer les dates pour le graphique
     getHistoTimeMth: state => {
       return state.historyTimeMth
+    },
+    //recuperer les dates pour le graphique
+    getAssetSelected: state => {
+      return state.userData.userAssetSelected
     },
   },
 
