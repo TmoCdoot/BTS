@@ -38,7 +38,7 @@ export default createStore({
     historyWalletMth: '',
     historyTimeMth: '',
 
-
+    userTheme: 'light',
     
     eurPrice: 0,
     readyForLoadGraph: 0,
@@ -147,14 +147,17 @@ export default createStore({
     },
     //definit moyen price
     setMeanPriceWallet: function (state, data) {
+      state.userData.userMeanBalanceValue = 0 
       state.userData.userMeanBalanceValue = data
     },
     //definit min price wallet
     setMinPriceWallet: function (state, data) {
+      state.userData.userMinBalanceValue = 0
       state.userData.userMinBalanceValue = data
     },
     //definit max price wallet
     setMaxPriceWallet: function (state, data) {
+      state.userData.userMaxBalanceValue = 0
       state.userData.userMaxBalanceValue = data
     }
   },
@@ -212,6 +215,9 @@ export default createStore({
     getAssetSelected: state => {
       return state.userData.userAssetSelected
     },
+    getUserData: state => {
+      return state.userData
+    }
   },
 
   actions: {
@@ -397,6 +403,7 @@ export default createStore({
     UserSelectedAsset: ({state, commit}, data) => {
       return new Promise(Valited => {
         state.userData.userAssetSelected = []
+        
         for(const test in state.userData.userDataCrypto) {
           if (state.userData.userDataCrypto[test].symbol == data["symbol"]) {
             commit('setUserAssetSelected', {
@@ -576,18 +583,18 @@ export default createStore({
         }
       })
     },
-    loadCryptoPriceHistoryMth: ({ commit, state }) => {
+    loadCryptoPriceHistoryMth: ({ commit, state }, valUserData) => {
       return new Promise(Validated => {
         //compteur du nombre de fois qu'il y a la boucle for
         var countMth = 1
-        for (const token in state.userData.userCryptoIndexListCryptoCompareApi) {
+        for (const token in valUserData.userCryptoIndexListCryptoCompareApi) {
           //tableau liste price crypto et date
           var tabCryptoMth = []
           var tabTimeMth = []
           //requete pour recuperer les prix
           axios({
             method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + state.userData.userCryptoIndexListCryptoCompareApi[token] + '&tsym=USD&limit=30'
+            url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + valUserData.userCryptoIndexListCryptoCompareApi[token] + '&tsym=USD&limit=30'
           }).then(result => {
             //parse resultat
             var data = result.data.Data.Data
@@ -596,16 +603,16 @@ export default createStore({
               //faire correspondre la crypto de la requete avec crypto de l'user
               for (const cryptoUser in state.userData.userDataCrypto) {
                 //si correspondance 
-                if (state.userData.userDataCrypto[cryptoUser].symbol == state.userData.userCryptoIndexListCryptoCompareApi[token]) {
+                if (state.userData.userDataCrypto[cryptoUser].symbol == valUserData.userCryptoIndexListCryptoCompareApi[token]) {
                   //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
                   for (const val in data) {
                     //si tableau est vide alors remplir la première fois
                     if (tabCryptoMth[val] == null) {
-                      tabCryptoMth[val] = Math.round(data[val].open * state.userData.userDataCrypto[cryptoUser].quantity)
+                      tabCryptoMth[val] = Math.round(data[val].open * parseFloat(valUserData.userDataCrypto[cryptoUser].quantity))
                       tabTimeMth[val] = timeConverter(data[val].time)
                     } else {
                       //si tableau contient 1 valeurs alors continuer à remplir
-                      tabCryptoMth[val] = Math.round(tabCryptoMth[val] + (data[val].open * state.userData.userDataCrypto[cryptoUser].quantity))
+                      tabCryptoMth[val] = Math.round(tabCryptoMth[val] + (data[val].open * parseFloat(valUserData.userDataCrypto[cryptoUser].quantity)))
                       tabTimeMth[val] = timeConverter(data[val].time)
                     }
                   }
@@ -616,7 +623,7 @@ export default createStore({
               countMth++
             } 
             //si la boucle for arrive à la fin alors envoyer au commit
-            if (countMth == (state.userData.userCryptoIndexListCryptoCompareApi.length + 1)) {
+            if (countMth == (valUserData.userCryptoIndexListCryptoCompareApi.length + 1)) {
               commit('setHistoWalletMth', {
                 tabCrypto: tabCryptoMth,
                 tabTime: tabTimeMth
@@ -712,7 +719,7 @@ export default createStore({
     AddNewWallet: ({ state }, data) => {
       return new Promise(Validated => {
         if (data['walletName']) {
-          setDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${data['walletName']}`), {
+          setDoc(doc(db, `UserWallet/${state.userData.userUid}/ListWallet/${data['walletName']}`), {
             deposit: data['deposit'],
           })
           Validated(true)
@@ -722,9 +729,9 @@ export default createStore({
     //suppression du wallet ainsi que les crypto contenue dedans
     deleteWalletUser: ({ state }, value) => {
       return new Promise(Validated => {
-        deleteDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${value['walletName']}`)).then(() => {
-          getDocs(collection(db, `UserCrypto/${state.userData.uid}/${value['walletName']}`)).then((snapshot) => {
-            snapshot.forEach((docu) => deleteDoc(doc(db, `UserCrypto/${state.userData.uid}/${value['walletName']}/${docu.id}`)).then(() => {
+        deleteDoc(doc(db, `UserWallet/${state.userData.userUid}/ListWallet/${value['walletName']}`)).then(() => {
+          getDocs(collection(db, `UserCrypto/${state.userData.userUid}/${value['walletName']}`)).then((snapshot) => {
+            snapshot.forEach((docu) => deleteDoc(doc(db, `UserCrypto/${state.userData.userUid}/${value['walletName']}/${docu.id}`)).then(() => {
               Validated(false)
             }))
           })
@@ -736,7 +743,7 @@ export default createStore({
     //mise a jour depot du wallet
     updateDeposit: ({ state }, data) => {
       return new Promise(Validated => {
-        updateDoc(doc(db, `UserWallet/${state.userData.uid}/ListWallet/${state.userData.walletSelected}`), {
+        updateDoc(doc(db, `UserWallet/${state.userData.userUid}/ListWallet/${state.userData.userWalletSelected}`), {
           deposit: data['deposit']
         }).then(() => {
           Validated(true)

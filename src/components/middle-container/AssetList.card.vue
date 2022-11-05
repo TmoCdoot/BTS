@@ -2,8 +2,31 @@
     <div class="ca-container-asset-list">
 
         <div class="ca-container-wallet">
-          <span>{{ userData.userWalletSelected }}</span>
-          <button>New wallet</button>
+          <span v-if="createNewWallet == false">
+            <select name="wallet" v-model="wallet" @change="changeWallet()" > 
+              <option v-for="(listValue) in userData.userWalletList" :key="listValue" :value="listValue">
+                  {{listValue}}
+              </option>
+            </select>
+          </span>
+  
+          <div v-else class="ca-container-wallet-input">
+            <div class="ca-container-input-new-wallet">
+              <label for="">Name</label>
+              <input class="inputWalletName" type="text" v-model="walletName" required>
+            </div>
+            <div class="ca-container-input-new-wallet">
+              <label for="">Balance</label>
+              <input class="inputWalletName" type="text" v-model="walletBalance" required>
+            </div>     
+          </div>
+
+          <button @click="addWallet" v-if="createNewWallet == false">New wallet</button>
+
+          <div v-else class="ca-container-box-img">
+            <img src="../../assets/validate.png" @click="SubmitNewWallet">
+            <img src="../../assets/close2.png"  @click="addWallet">
+          </div>
         </div>
   
         <div class="ca-container-top-list">
@@ -11,19 +34,18 @@
           <span>Price</span>
           <span>Buy price</span>
           <span> Quantity</span>
-          <span>Profit / Loss</span>
+          <span>Value</span>
           <span>Delete</span>
         </div>
-
+        
         <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3 && this.$store.state.userData.userAssetSelected != []">
-          <div class="ca-row-asset-data" :class="{'selected' : cryptoName == value.symbol}" v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset">
+          <div class="ca-row-asset-data" :class="{'selected' : userData.userAssetSelected.symbol == value.symbol}" v-for="value in userData.userDataCrypto" :key="value"  :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset">
             <div class="asset">
               <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
               <span>{{ value.name }}</span>
             </div>
-
             <span>{{ value.priceNow }} $</span>
-    
+
             <span v-if="value.buyPrice != ''">
               {{ value.buyPrice }} $
             </span>
@@ -33,7 +55,7 @@
     
             <span>{{ value.quantity }}</span>
             
-            <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''" class="orange">
+            <!-- <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''" class="orange">
               {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
             </span>
             <span v-else-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) >= 0 && value.buyPrice != ''" class="green">
@@ -41,7 +63,9 @@
             </span>
             <span v-else>
               Not specified
-            </span>
+            </span> -->
+
+            <span>{{ (value.priceNow * parseFloat(value.quantity)).toFixed(2) }} $</span>
     
             <div class="center-img">
               <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity" @click="deleteCryptoUser">
@@ -65,26 +89,47 @@
     name: "CryptoList",
     data: function () {
       return {
-        cryptoName: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].symbol : "",
-        assetNameForEdit: this.$store.state.userData.userDataCrypto.length != 0 ? this.$store.state.userData.userDataCrypto[0].crypto : "",
+        cryptoName: this.$store.state.userData.userAssetSelected.symbol,
+        assetNameForEdit: this.$store.state.userData.userAssetSelected.nameForEdit,
         cryptoBuy: 0,
         cryptoQtt: 0,
+        createNewWallet: false,
+        walletName: "",
+        walletBalance:"",
+        wallet: "",
       }
     },
     computed: {
-      ...mapState(['userData']),
+      ...mapState(['userData']),      
     },
     methods: {
-      AddCrypto: function () {
-        this.$emit('ChangeValueAddCrypto', true);
+      addWallet: function () {
+        if (this.createNewWallet == false) {
+          this.createNewWallet = true
+        } else {
+          this.createNewWallet = false
+        }
+      },
+      SubmitNewWallet: function () {
+        this.$store.dispatch("AddNewWallet", {
+          walletName: this.walletName,
+          deposit: this.walletBalance
+        }).then(() => {
+          this.createNewWallet = false
+          this.walletName = ""
+          this.walletBalance = ""
+          this.$store.dispatch('loadUserWallet')
+        })
       },
       deleteCryptoUser: function () {
         const self = this
+
         this.$store.dispatch("deleteCryptoUser", {
           cryptoName: this.cryptoName
         }).then((e) => {
           this.cryptoName = self.$store.state.userData.userDataCrypto[0].symbol
           this.$store.dispatch("UserSelectedAsset", this.cryptoName)
+          
           if (e) {
             document.getElementById(this.cryptoName).style.opacity = "0%"
             setTimeout(()=> {
@@ -92,14 +137,14 @@
                 if (e != false) {
                   self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                     if (e) {
+                      self.$store.dispatch('UserSelectedAsset', {
+                        symbol: self.$store.state.userData.userDataCrypto[0].symbol,
+                        nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
+                      })
                       self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
                         if (e) {
-                          self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                            self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                              self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                                self.$store.state.readyForLoadGraph = 3
-                              })
-                            })
+                          self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
+                            self.$store.state.readyForLoadGraph = 3
                           })
                         }
                       })
@@ -114,14 +159,46 @@
           }
         })
       },
-      updateCryptoUser: function () {
-        this.$emit('UpdateValueCrypto', {state: true, cryptoName: this.cryptoName, cryptoBuy: this.cryptoBuy, cryptoQtt: this.cryptoQtt});
-      },
       SelectAsset: function () {
         this.$store.dispatch("UserSelectedAsset", { 
           symbol : this.cryptoName,
           nameForEdit : this.assetNameForEdit
         })
+      },
+      changeWallet: function () {
+        if(this.$store.state.userData.userWalletSelected != this.wallet) {
+          const self = this
+          this.$store.dispatch('selectWallet', this.wallet).then(() => {
+              self.$store.dispatch('loadUserDeposit').then(() => {
+                  self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
+                    if (e != false) {
+                      //load crypto price
+                      self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                        self.$store.dispatch('UserSelectedAsset', {
+                          symbol: self.$store.state.userData.userDataCrypto[0].symbol,
+                          nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
+                        })
+                          //calcul win loss user
+                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                            //calcul graph
+                            self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
+                              self.$store.state.readyForLoadGraph = 3
+                              self.$store.dispatch('loadMeanPriceWallet')
+                              self.$store.dispatch('loadMinPriceWallet')
+                              self.$store.dispatch('loadMaxPriceWallet')
+                            })
+                          })
+                      })
+                    } else {
+                      self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                        //calcul graph
+                        self.$store.state.readyForLoadGraph = 0
+                      })
+                    }            
+                  })
+              })
+          })
+        }
       }
     },
   }
@@ -139,12 +216,13 @@
 .ca-container-wallet {
     width: 100%;
     display: flex;
+    padding: 10px 0px;
     justify-content: space-between;
     border-bottom: 1px solid var(--colo-row-asset-list);
     color: var(--color-font);
 }
 .ca-container-wallet span {
-    margin: 25px 0px 25px 21px;
+    margin-left: 10px;
     font-size: 14px;
     font-weight: 500;
     font-style: italic;
@@ -154,7 +232,7 @@
     height: 39px;
     background-color: #1157c0;
     border: none;
-    margin: 13px 21px 0px 0px;
+    margin-right: 10px;
     border-radius: 10px;
     color: #ffffff;
     font-size: 12px;
@@ -234,4 +312,54 @@
 .selected {
   background-color: var(--background-selected);
 }
+.ca-container-wallet img {
+  width: 15px;
+  margin: 10px;
+}
+.ca-container-box-img {
+  display: flex;
+    align-items: center;
+    /* margin-right: 10px; */
+}
+.inputWalletName {
+  border-radius: 10px;
+    /*margin: 15px;*/
+    border: 1px solid #DADADA;
+    width: 120px;
+    height: 26px;
+    box-sizing: border-box;
+    background-color: var(--background-input);
+    border: var(--delete-border) !important;
+    color: var(--color-font);
+}
+.ca-container-wallet label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-label);
+}
+.ca-container-wallet-input {
+  display: flex;
+}
+.ca-container-input-new-wallet {
+  display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 5px 15px;
+}
+.ca-container-input-new-wallet label  {
+  margin-bottom: 5px;
+}
+.ca-container-wallet select {
+  border-radius: 10px;
+    /* margin-top: 6px; */
+    /* border: 1px solid #DADADA; */
+    width: 240px;
+    height: 40px;
+    box-sizing: border-box;
+    background-color: var(--background-input);
+    color: var(--color-font);
+    border: var(--delete-border) !important;
+}
+
+
 </style>

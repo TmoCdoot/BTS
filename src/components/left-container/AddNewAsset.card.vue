@@ -77,7 +77,7 @@
                                                 //calcul graph
                                                 self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
                                                     self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                                        self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
+                                                        self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
                                                             self.$emit('ChangeValueAddCrypto', true)
                                                             self.$store.state.readyForLoadGraph = 3
                                                             this.crypto = "BTC"

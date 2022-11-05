@@ -2,24 +2,13 @@
   <div class="ca-lft-container">
 
     <div class="ca-container-logo">
-      <img src="../assets/logov2.png" v-if="userTheme == 'light'">
-      <img src="../assets/logov1.png" v-if="userTheme == 'dark'">
+      <img src="../assets/logov2.png" v-if="this.$store.state.userTheme == 'light'">
+      <img src="../assets/logov1.png" v-if="this.$store.state.userTheme == 'dark'">
     </div>
 
     <div class="ca-container-sold">
       <CurrentBalance/>
       <ProfitLoss/>
-      <!-- <div class="ca-box-sold">
-        <span class="sold-title">Current balance</span>
-        <span class="sold-data">8 240 $</span>
-        <span class="sold-data-convert">7 856 $</span>
-      </div> -->
-
-      <!-- <div class="ca-box-sold">
-        <span class="sold-title">Current balance</span>
-        <span class="sold-data">+ 320 $</span>
-        <span class="sold-data-convert">+ 3.05 %</span>
-      </div> -->
     </div>
 
     <div class="ca-container-asset">
@@ -33,22 +22,26 @@
   </div>
 
   <div class="ca-ctr-container">
-    <AssetList v-if="userData.userDataCrypto.length > 0"/>
+    <AssetList v-if="userData.userAssetSelected.length >= 0 || userData.userDataCrypto.length >= 0"/>
   </div>
 
   <div class="ca-rht-container">
     <div class="ca-container-user">
       <span>{{ userData.userEmail }}</span>
       <button @click="logOutUser">Disconnect</button>
-      <img src="../assets/moon.png" @click="switchTheme" v-if="userTheme == 'light'">
-      <img src="../assets/sun.png" @click="switchTheme" v-if="userTheme == 'dark'">
+      <img src="../assets/moon.png" @click="switchTheme" v-if="this.$store.state.userTheme == 'light'">
+      <img src="../assets/sun.png" @click="switchTheme" v-if="this.$store.state.userTheme == 'dark'">
     </div>
 
     <div class="ca-container-wallet-data">
 
       <div class="wallet-name">
-        <span>{{ userData.userWalletSelected }}</span>
-        <span class="number-asset">{{userData.userAssetCounter}} asset</span>
+        <div>
+          <span>{{ userData.userWalletSelected }}</span>
+          <span class="number-asset">{{userData.userAssetCounter}} asset</span> 
+        </div>
+        
+        <button @click="deleteWalletUser()">Delete wallet</button>
       </div>
 
       <WalletGraph/>
@@ -100,8 +93,6 @@ export default {
       updateCryptoName: '',
       updateCryptoBuy: 0,
       updateCryptoQtt: 0,
-
-      userTheme: "light"
     }
   },
   computed: {
@@ -191,94 +182,95 @@ export default {
       this.navWallet = true;  
       document.getElementById('app').style.overflow = "hidden";
     },
-
+    deleteWalletUser: function () {
+      const self = this
+      this.$store.dispatch("deleteWalletUser", {
+        walletName: this.$store.state.userData.userWalletSelected
+      }).then(() => {
+          self.$store.dispatch('loadUserWallet').then((e) => {
+              if (e) {
+              //select wallet 
+                  self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
+                      if (e) {
+                      //load deposit user
+                          self.$store.dispatch('loadUserDeposit').then(() => {
+                              self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                                  if (e != false) {
+                                      self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then(() => {
+                                          self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                                      })
+                                  } else {
+                                      self.$store.state.loadCryptoPrice = 0
+                                      self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto)
+                                  }
+                              })
+                          })
+                      }
+                  })
+              }
+          })
+      })
+    },
     switchTheme: function() {
-      if (this.userTheme == "light") {
-        this.userTheme = "dark"
-        document.documentElement.className = this.userTheme;
-        localStorage.setItem("user-theme", this.userTheme)
+      if (this.$store.state.userTheme == "light") {
+        this.$store.state.userTheme = "dark"
+        document.documentElement.className = this.$store.state.userTheme;
+        localStorage.setItem("user-theme", this.$store.state.userTheme)
       } else {
-        this.userTheme = "light"
-        document.documentElement.className = this.userTheme;
-        localStorage.setItem("user-theme", this.userTheme)
+        this.$store.state.userTheme = "light"
+        document.documentElement.className = this.$store.state.userTheme;
+        localStorage.setItem("user-theme", this.$store.state.userTheme)
       }
     }
   },
   beforeMount() {
-    this.userTheme = localStorage.getItem("user-theme")
-    document.documentElement.className = this.userTheme;
-        
-      const self = this;
-      //load uid email
-      this.$store.dispatch('loadUserData').then(() => {
-        //load crypto list server
-        self.$store.dispatch('loadCryptoList').then(() => {
-          //load wallet user
-          self.$store.dispatch('loadUserWallet').then((e) => {
-            if (e) {
-              //select wallet 
-              self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
-                if (e) {
-                  //load deposit user
-                  self.$store.dispatch('loadUserDeposit').then(() => {
-                    //load crypto user
-                    self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
-                      if (e != false) {
-                        //load crypto price
-                        self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                          self.$store.dispatch('UserSelectedAsset', {
-                            symbol: self.$store.state.userData.userDataCrypto[0].symbol,
-                            nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
-                          })
-                          console.log(self.$store.state.userData.userAssetSelected)
-                          //calcul win loss user
-                          self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
-                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                            //calcul graph dly
-                            self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                              self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
-
-                              self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
-
-                                self.$store.dispatch('loadCryptoPriceHistoryMth').then(() => {
-                                  self.$store.state.readyForLoadGraph = self.$store.state.readyForLoadGraph+1
-                                  
-                                  self.$store.dispatch('loadMeanPriceWallet')
-                                  self.$store.dispatch('loadMinPriceWallet')
-                                  self.$store.dispatch('loadMaxPriceWallet')
-
-                                  /* if (self.$store.state.readyForLoadGraph == 3) {
-                                    document.getElementById('loading_page').style.opacity = '0'
-                                    document.getElementById('loading_page').style.pointerEvents = 'none'
-                                    document.getElementById('logoBox_loading').style.opacity = '0'
-                                    document.getElementById('logoBox_loading').style.pointerEvents = 'none'
-                                    document.getElementById('logoBox_loading').style.width = '400px'
-                                    document.getElementById('app').style.overflow = 'initial'
-                                  } */
-                                })
-                              })                           
-                            })
+    this.$store.state.userTheme = localStorage.getItem("user-theme")
+    document.documentElement.className = this.$store.state.userTheme
+    const self = this;
+    //load uid email
+    this.$store.dispatch('loadUserData').then(() => {
+      //load crypto list server
+      self.$store.dispatch('loadCryptoList').then(() => {
+        //load wallet user
+        self.$store.dispatch('loadUserWallet').then((e) => {
+          if (e) {
+            //select wallet 
+            self.$store.dispatch('selectWallet', this.$store.getters.getUserWalletList[0]).then((e) => {
+              if (e) {
+                //load deposit user
+                self.$store.dispatch('loadUserDeposit').then(() => {
+                  //load crypto user
+                  self.$store.dispatch('loadUserCrypto', this.$store.getters.getUserUid).then((e) => {
+                    if (e != false) {
+                      //load crypto price
+                      self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                        self.$store.dispatch('UserSelectedAsset', {
+                          symbol: self.$store.state.userData.userDataCrypto[0].symbol,
+                          nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
+                        })
+                        //calcul win loss user
+                        self.$store.dispatch('loadEurPrice').then((e) => { if (!e) { self.$store.state.eurPrice = 0.90 } })
+                        self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                          self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
+                            self.$store.state.readyForLoadGraph = 3
+                            self.$store.dispatch('loadMeanPriceWallet')
+                            self.$store.dispatch('loadMinPriceWallet')
+                            self.$store.dispatch('loadMaxPriceWallet')
                           })
                         })
-                      } else {
-                        self.$store.dispatch('loadEurPrice').then((e) => { if(!e) {self.$store.state.eurPrice = 0.90} })
-                        self.$store.state.readyForLoadGraph = 3
-                        /* document.getElementById('loading_page').style.opacity = '0'
-                        document.getElementById('loading_page').style.pointerEvents = 'none'
-                        document.getElementById('logoBox_loading').style.opacity = '0'
-                        document.getElementById('logoBox_loading').style.pointerEvents = 'none'
-                        document.getElementById('logoBox_loading').style.width = '400px'
-                        document.getElementById('app').style.overflow = 'initial' */
-                      }            
-                    })
+                      })
+                    } else {
+                      self.$store.dispatch('loadEurPrice').then((e) => { if (!e) { self.$store.state.eurPrice = 0.90 } })
+                      self.$store.state.readyForLoadGraph = 3
+                    }
                   })
-                }
-              })
-            }
-          })
+                })
+              }
+            })
+          }
         })
       })
+    })
   },
 };
 </script>
@@ -537,15 +529,28 @@ export default {
 .wallet-name {
   padding: 22px 22px 0px 22px;
   display: flex;
+  justify-content: space-between;
   width: 90%;
 }
-.wallet-name span {
+.wallet-name div  {
   font-size: 12px;
   font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
   color: var(--color-font);
+}
+.wallet-name button {
+  width: 110px;
+    height: 25px;
+    background-color: #ba3333;
+    border-radius: 10px;
+    border: none;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    /* margin-left: 17px; */
 }
 .number-asset {
   width: 80px;
