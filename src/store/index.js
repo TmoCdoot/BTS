@@ -28,6 +28,7 @@ export default createStore({
 
     listCryptoForGekoApi: '',
     listCryptoForCryptoCompare: '',
+    ListCryptoFullName: '',
 
     historyWalletDly: '',
     historyTimeDly: '',
@@ -111,6 +112,9 @@ export default createStore({
     //definit la liste des crypto du site pour l'api cryptocompare
     setlistCryptoForCryptoCompare: function (state, snapshotResult) {
       state.listCryptoForCryptoCompare = snapshotResult
+    },
+    setListCryptoFullName: function (state, snapshotResult) {
+      state.ListCryptoFullName = snapshotResult
     },
     //definit tout les wallets de l'utilisateur
     setWalletUser: function (state, snapshotResult) {
@@ -302,6 +306,7 @@ export default createStore({
         getDoc(doc(db, 'CryptoList', 'wpcNLNN9xWlI2bi6VvP9')).then((snapshot) => {
           commit('setCryptoList', snapshot.data().Crypto)
           commit('setlistCryptoForCryptoCompare', snapshot.data().CryptoName)
+          commit('setListCryptoFullName', snapshot.data().CryptoFullName)
         }).then(() => {
           Validated(true)
         })
@@ -706,7 +711,8 @@ export default createStore({
           var buyPriceReplace = cryptoInfo['buyprice'].replace(',', '.')
           setDoc(doc(db, `UserCrypto/${cryptoInfo['uid']}/${state.userData.userWalletSelected}/${cryptoInfo['crypto']}`), {
             buyPrice: buyPriceReplace,
-            quantity: cryptoInfo['quantity']
+            quantity: cryptoInfo['quantity'],
+            Name: cryptoInfo['Name']
           }).catch(() => {
             commit('setError', 'err_addCrypto')
           })

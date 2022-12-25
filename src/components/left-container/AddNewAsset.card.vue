@@ -12,7 +12,7 @@
           <label for="">Actif</label>
           <select v-model="crypto">
             <option value="ChooseAsset" disabled>Choose asset</option>
-            <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue">
+            <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue" >
                 {{ listCryptoForCryptoCompare[index] }}
             </option>
           </select>
@@ -46,7 +46,7 @@
             }
         },
         computed: {
-            ...mapState(['listCryptoForGekoApi', 'listCryptoForCryptoCompare']),
+            ...mapState(['listCryptoForGekoApi', 'listCryptoForCryptoCompare', 'ListCryptoFullName']),
             noEmptyField: function () {
                 if (this.quantity != '' && this.crypto != "ChooseAsset") {
                     return true
@@ -61,10 +61,15 @@
             },
             AddOnWallet: function () {
                 const self = this;
+                var index = this.$store.state.listCryptoForGekoApi.findIndex(element => element == this.crypto)
+                //console.log(this.crypto)
+                index = this.$store.state.ListCryptoFullName[index]
+                //this.cryptoFullName = this.$store.state.ListCryptoFullName[index]
                 this.$store.dispatch("addOnWallet", {
                     crypto: this.crypto,
                     buyprice: this.buyprice,
                     quantity: this.quantity,
+                    Name: index,
                     uid: this.$store.getters.getUserUid
                 }).then((e) => {
                     if (e) {
@@ -94,7 +99,7 @@
                         })
                     }
                 })
-            }
+            },
         }
     }
 </script>
