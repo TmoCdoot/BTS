@@ -1,97 +1,89 @@
 <template>
-    <div class="box-data">
-        <div class="box-data-row" v-if="onEdit == false">
-          <div>
-            <span class="box-data-title">Balance</span>
-            <img src="../../assets/param-dark.png" @click="editBalance" v-if="this.$store.state.userTheme == 'light'">
-            <img src="../../assets/param.png" @click="editBalance" v-if="this.$store.state.userTheme == 'dark'">
-          </div>
-          <span class="box-data-data">{{ userData.userDepositSelected }} $</span>
-        </div>
-        <div class="box-data-row" v-else>
-          <div>
-            <span class="box-data-title">Balance</span>
-            <img src="../../assets/validate.png" @click="SubmitUpdateBalance">
-          </div>
-          <input class="inputBalance" type="text" v-model="balance" required>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">ETF number</span>
-          <span class="box-data-data">{{ userData.userEtfCounter }}</span>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">Crypto number</span>
-          <span class="box-data-data">{{ userData.userCryptoCounter }}</span>
-        </div>
-
-        <div class="box-data-row">
-          <span class="box-data-title">FOREX number</span>
-          <span class="box-data-data">{{ userData.userForexCounter }}</span>
-        </div>
-        
-        <div class="box-data-row end">
-          <span class="box-data-title">Action number</span>
-          <span class="box-data-data">{{ userData.userActionCounter }}</span>
-        </div>
+  <div class="box-data">
+    <div class="box-data-row" v-if="onEdit == false">
+      <div>
+        <span class="box-data-title">Balance</span>
+        <img src="../../assets/param-dark.png" @click="editBalance" v-if="this.$store.state.userTheme == 'light'">
+        <img src="../../assets/param.png" @click="editBalance" v-if="this.$store.state.userTheme == 'dark'">
+      </div>
+      <span class="box-data-data">{{ userData.userDepositSelected }} $</span>
     </div>
+    <div class="box-data-row" v-else>
+      <div>
+        <span class="box-data-title">Balance</span>
+        <img src="../../assets/validate.png" @click="SubmitUpdateBalance">
+      </div>
+      <input class="inputBalance" type="text" v-model="balance" required>
+    </div>
+
+    <div class="box-data-row">
+      <span class="box-data-title">ETF number</span>
+      <span class="box-data-data">{{ userData.userEtfCounter }}</span>
+    </div>
+
+    <div class="box-data-row">
+      <span class="box-data-title">Crypto number</span>
+      <span class="box-data-data">{{ userData.userCryptoCounter }}</span>
+    </div>
+
+    <div class="box-data-row">
+      <span class="box-data-title">FOREX number</span>
+      <span class="box-data-data">{{ userData.userForexCounter }}</span>
+    </div>
+
+    <div class="box-data-row end">
+      <span class="box-data-title">Action number</span>
+      <span class="box-data-data">{{ userData.userActionCounter }}</span>
+    </div>
+  </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
 
   export default {
-      name: "Deposit",
-      props: ['theme'],
-      data: function () {
-        return {
-          onEdit: false,
-          balance: "",
+    name: "Deposit",
+    props: ['theme'],
+    data: function () {
+      return {
+        onEdit: false,
+        balance: "",
+      }
+    },
+    computed: {
+      ...mapState(['userData', 'eurPrice']),
+    },
+    methods: {
+      editBalance: function () {
+        if (this.onEdit == false) {
+          this.onEdit = true
+          this.balance = this.$store.state.userData.userDepositSelected
+        } else {
+          this.onEdit = false
         }
       },
-      computed: {
-          ...mapState(['userData', 'eurPrice']),
-      },
-      methods: {
-          editBalance: function () {
-            if (this.onEdit == false) {
-              this.onEdit = true
-              this.balance = this.$store.state.userData.userDepositSelected
-            } else {
-              this.onEdit = false
-            }
-          },
-          SubmitUpdateBalance: function () {
-            const self = this
-            this.$store.dispatch("updateDeposit", {
-              deposit: this.balance
-            }).then((e) => {
-              if (e) {
-                self.onEdit = false
-                self.$store.dispatch('loadUserDeposit').then(() => {
-                  self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
-                    if (e != false) {
-                      self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
-                        if (e) {
-                          self.$store.dispatch('UserSelectedAsset', {
-                            symbol: self.$store.state.userData.userDataCrypto[0].symbol,
-                            nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
-                          })
-                          self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
-                            if (e) {
-                              //calcul graph
-                              self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
-                                self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
-                                  self.$emit('UpdateValueCrypto', { state: true })
-                                })
-                              })
-                            }
-                          })
-                        }
+      SubmitUpdateBalance: function () {
+        const self = this
+
+        this.$store.dispatch("updateDeposit", {
+          deposit: this.balance
+        }).then((e) => {
+          if (e) {
+            self.onEdit = false
+            //load user deposit
+            self.$store.dispatch('loadUserDeposit').then(() => {
+              //load user crypto
+              self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
+                if (e != false) {
+                  //load crypto price
+                  self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
+                    if (e) {
+                      //select asset
+                      self.$store.dispatch('UserSelectedAsset', {
+                        symbol: self.$store.state.userData.userDataCrypto[0].symbol,
+                        nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
                       })
-                    } else {
-                      self.$store.state.loadCryptoPrice = 0
+                      //load win loss value
                       self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
                         if (e) {
                           //calcul graph
@@ -104,16 +96,31 @@
                       })
                     }
                   })
-                })
-              }
+                } else {
+                  self.$store.state.loadCryptoPrice = 0
+                  //load win loss value
+                  self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
+                    if (e) {
+                      //calcul graph
+                      self.$store.dispatch('loadCryptoPriceHistoryHour').then(() => {
+                        self.$store.dispatch('loadCryptoPriceHistoryWly').then(() => {
+                          self.$emit('UpdateValueCrypto', { state: true })
+                        })
+                      })
+                    }
+                  })
+                }
+              })
             })
           }
-      },
+        })
+      }
+    },
   }
 </script>
 
 <style scoped type="scss">
-.box-data {
+  .box-data {
     width: 276px;
     background-color: var(--background-color-card);
     border-radius: 15px;

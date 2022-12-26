@@ -19,22 +19,22 @@ const routes = [
 ];
 
 //probleme avec la fonction revoir celle-ci pour plus propre probleme callback
-function isLogin (to, from, next) {
-  onAuthStateChanged(auth, user => { 
+function isLogin(to, from, next) {
+  onAuthStateChanged(auth, user => {
     /* console.log(user)  */
     if (user != null) {
       next()
     } else {
-      next({name: 'Auth'})
+      next({ name: 'Auth' })
     }
   })
 }
 
 function noLogin(to, from, next) {
-  onAuthStateChanged(auth, user => { 
+  onAuthStateChanged(auth, user => {
     /* console.log(user)  */
     if (user != null) {
-      next({name: 'Home'})
+      next({ name: 'Home' })
     } else {
       next()
     }

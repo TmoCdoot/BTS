@@ -7,19 +7,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
-export default {
-    name: "Deposit",
-    computed: {
-        ...mapState(['userData', 'eurPrice']),
-    },
-    methods: {
-        updateDeposit: function () {
-            this.$emit('UpdateDeposit', true);
-        }
-    },
-}
+    export default {
+        name: "Deposit",
+        computed: {
+            ...mapState(['userData', 'eurPrice']),
+        },
+    }
 </script>
 
 <style scoped lang="scss">

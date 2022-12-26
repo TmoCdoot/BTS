@@ -2,10 +2,12 @@
     <div class="ca-box-sold">
         <span class="sold-title">Profit / Loss</span>
 
-        <span class="sold-data" v-if="userData.userWinLostValue-userData.userDepositSelected <= 0 && userData.userWinLostValue != 0">
+        <span class="sold-data"
+            v-if="userData.userWinLostValue-userData.userDepositSelected <= 0 && userData.userWinLostValue != 0">
             {{ userData.userWinLostValue-userData.userDepositSelected }} $
         </span>
-        <span class="sold-data" v-else-if="userData.userWinLostValue-userData.userDepositSelected >= 0 && userData.userWinLostValue != 0">
+        <span class="sold-data"
+            v-else-if="userData.userWinLostValue-userData.userDepositSelected >= 0 && userData.userWinLostValue != 0">
             + {{ userData.userWinLostValue-userData.userDepositSelected }} $
         </span>
         <span class="sold-data" v-else>
@@ -27,14 +29,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
-export default {
-    name: "ProfitLoss",
-    computed: {
-        ...mapState(['userData']),
+    export default {
+        name: "ProfitLoss",
+        computed: {
+            ...mapState(['userData']),
+        }
     }
-}
 </script>
 
 <style scoped type="scss">

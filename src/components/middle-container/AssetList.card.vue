@@ -1,85 +1,79 @@
 <template>
-    <div class="ca-container-asset-list">
+  <div class="ca-container-asset-list">
 
-        <div class="ca-container-wallet">
-          <span v-if="createNewWallet == false">
-            <select name="wallet" v-model="wallet" @change="changeWallet()" > 
-              <option v-for="(listValue) in userData.userWalletList" :key="listValue" :value="listValue">
-                  {{listValue}}
-              </option>
-            </select>
-          </span>
-  
-          <div v-else class="ca-container-wallet-input">
-            <div class="ca-container-input-new-wallet">
-              <label for="">Name</label>
-              <input class="inputWalletName" type="text" v-model="walletName" required>
-            </div>
-            <div class="ca-container-input-new-wallet">
-              <label for="">Balance</label>
-              <input class="inputWalletName" type="text" v-model="walletBalance" required>
-            </div>     
-          </div>
+    <div class="ca-container-wallet">
+      <span v-if="createNewWallet == false">
+        <select name="wallet" v-model="wallet" @change="changeWallet()">
+          <option v-for="(listValue) in userData.userWalletList" :key="listValue" :value="listValue">
+            {{listValue}}
+          </option>
+        </select>
+      </span>
 
-          <button @click="addWallet" v-if="createNewWallet == false">New wallet</button>
-
-          <div v-else class="ca-container-box-img">
-            <img src="../../assets/validate.png" @click="SubmitNewWallet">
-            <img src="../../assets/close2.png"  @click="addWallet">
-          </div>
+      <div v-else class="ca-container-wallet-input">
+        <div class="ca-container-input-new-wallet">
+          <label for="">Name</label>
+          <input class="inputWalletName" type="text" v-model="walletName" required>
         </div>
-  
-        <div class="ca-container-top-list">
-          <span>Asset</span>
-          <span>Price</span>
-          <span>Buy price</span>
-          <span> Quantity</span>
-          <span>Value</span>
-          <span>Delete</span>
+        <div class="ca-container-input-new-wallet">
+          <label for="">Balance</label>
+          <input class="inputWalletName" type="text" v-model="walletBalance" required>
         </div>
-        
-        <div v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3 && this.$store.state.userData.userAssetSelected != []">
-          <div class="ca-row-asset-data" :class="{'selected' : userData.userAssetSelected.symbol == value.symbol}" v-for="value in userData.userDataCrypto" :key="value"  :id="value.symbol" v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto"  @click="SelectAsset">
-            <div class="asset">
-              <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
-              <span>{{ value.name }}</span>
-            </div>
-            <span>{{ value.priceNow }} $</span>
+      </div>
 
-            <span v-if="value.buyPrice != ''">
-              {{ value.buyPrice }} $
-            </span>
-            <span v-else>
-              Not specified
-            </span>
-    
-            <span>{{ value.quantity }}</span>
-            
-            <!-- <span v-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) <= 0 && value.buyPrice != ''" class="orange">
-              {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
-            </span>
-            <span v-else-if="(((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) >= 0 && value.buyPrice != ''" class="green">
-              + {{ (((value.priceNow-value.buyPrice)/value.buyPrice)*100).toFixed(2) }} %
-            </span>
-            <span v-else>
-              Not specified
-            </span> -->
+      <button @click="addWallet" v-if="createNewWallet == false">New wallet</button>
 
-            <span>{{ (value.priceNow * parseFloat(value.quantity)).toFixed(2) }} $</span>
-    
-            <div class="center-img">
-              <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity" @click="deleteCryptoUser">
-                <img src="../../assets/poubelle.png" alt="Edit" class="img">
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="userData.userDataCrypto.length == 0" class="no-asset">
-         NO ASSET
-        </div>
-
+      <div v-else class="ca-container-box-img">
+        <img src="../../assets/validate.png" @click="SubmitNewWallet">
+        <img src="../../assets/close2.png" @click="addWallet">
+      </div>
     </div>
+
+    <div class="ca-container-top-list">
+      <span>Asset</span>
+      <span>Price</span>
+      <span>Buy price</span>
+      <span> Quantity</span>
+      <span>Value</span>
+      <span>Delete</span>
+    </div>
+
+    <div
+      v-if="userData.userDataCrypto.length > 0 && this.$store.state.readyForLoadGraph == 3 && this.$store.state.userData.userAssetSelected != []">
+      <div class="ca-row-asset-data" :class="{'selected' : userData.userAssetSelected.symbol == value.symbol}"
+        v-for="value in userData.userDataCrypto" :key="value" :id="value.symbol"
+        v-on:click="cryptoName = value.symbol ; assetNameForEdit = value.crypto" @click="SelectAsset">
+        <div class="asset">
+          <img :src="'/img/' + value.symbol + '.png'" :alt="value.name">
+          <span>{{ value.name }}</span>
+        </div>
+        <span>{{ value.priceNow }} $</span>
+
+        <span v-if="value.buyPrice != ''">
+          {{ value.buyPrice }} $
+        </span>
+        <span v-else>
+          Not specified
+        </span>
+
+        <span>{{ value.quantity }}</span>
+
+        <span>{{ (value.priceNow * parseFloat(value.quantity)).toFixed(2) }} $</span>
+
+        <div class="center-img">
+          <button v-on:click="cryptoName = value.crypto; cryptoBuy = value.buyPrice; cryptoQtt = value.quantity"
+            @click="deleteCryptoUser">
+            <img src="../../assets/poubelle.png" alt="Edit" class="img">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="userData.userDataCrypto.length == 0" class="no-asset">
+      NO ASSET
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -95,12 +89,12 @@
         cryptoQtt: 0,
         createNewWallet: false,
         walletName: "",
-        walletBalance:"",
+        walletBalance: "",
         wallet: "",
       }
     },
     computed: {
-      ...mapState(['userData']),      
+      ...mapState(['userData']),
     },
     methods: {
       addWallet: function () {
@@ -128,19 +122,23 @@
           cryptoName: this.cryptoName
         }).then((e) => {
           this.cryptoName = self.$store.state.userData.userDataCrypto[0].symbol
+          //select asset
           this.$store.dispatch("UserSelectedAsset", this.cryptoName)
-          
           if (e) {
             document.getElementById(this.cryptoName).style.opacity = "0%"
-            setTimeout(()=> {
+            setTimeout(() => {
+              //load user crypto
               self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
                 if (e != false) {
+                  //loas crypto price
                   self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                     if (e) {
+                      //select asset
                       self.$store.dispatch('UserSelectedAsset', {
                         symbol: self.$store.state.userData.userDataCrypto[0].symbol,
                         nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
                       })
+                      //load win loss 
                       self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
                         if (e) {
                           self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
@@ -160,43 +158,47 @@
         })
       },
       SelectAsset: function () {
-        this.$store.dispatch("UserSelectedAsset", { 
-          symbol : this.cryptoName,
-          nameForEdit : this.assetNameForEdit
+        this.$store.dispatch("UserSelectedAsset", {
+          symbol: this.cryptoName,
+          nameForEdit: this.assetNameForEdit
         })
       },
       changeWallet: function () {
-        if(this.$store.state.userData.userWalletSelected != this.wallet) {
+        if (this.$store.state.userData.userWalletSelected != this.wallet) {
           const self = this
+          //select walelt
           this.$store.dispatch('selectWallet', this.wallet).then(() => {
-              self.$store.dispatch('loadUserDeposit').then(() => {
-                  self.$store.dispatch('loadUserCrypto',this.$store.getters.getUserUid).then((e) => {
-                    if (e != false) {
-                      //load crypto price
-                      self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
-                        self.$store.dispatch('UserSelectedAsset', {
-                          symbol: self.$store.state.userData.userDataCrypto[0].symbol,
-                          nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
-                        })
-                          //calcul win loss user
-                          self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                            //calcul graph
-                            self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
-                              self.$store.state.readyForLoadGraph = 3
-                              self.$store.dispatch('loadMeanPriceWallet')
-                              self.$store.dispatch('loadMinPriceWallet')
-                              self.$store.dispatch('loadMaxPriceWallet')
-                            })
-                          })
+            //loas user deposit
+            self.$store.dispatch('loadUserDeposit').then(() => {
+              //load user crypto
+              self.$store.dispatch('loadUserCrypto', this.$store.getters.getUserUid).then((e) => {
+                if (e != false) {
+                  //load crypto price
+                  self.$store.dispatch('loadCryptoPrice', this.$store.getters.getUserListCrypto).then(() => {
+                    //select asset
+                    self.$store.dispatch('UserSelectedAsset', {
+                      symbol: self.$store.state.userData.userDataCrypto[0].symbol,
+                      nameForEdit: self.$store.state.userData.userDataCrypto[0].crypto,
+                    })
+                    //calcul win loss user
+                    self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                      //calcul graph
+                      self.$store.dispatch('loadCryptoPriceHistoryMth', this.$store.getters.getUserData).then(() => {
+                        self.$store.state.readyForLoadGraph = 3
+                        self.$store.dispatch('loadMeanPriceWallet')
+                        self.$store.dispatch('loadMinPriceWallet')
+                        self.$store.dispatch('loadMaxPriceWallet')
                       })
-                    } else {
-                      self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
-                        //calcul graph
-                        self.$store.state.readyForLoadGraph = 0
-                      })
-                    }            
+                    })
                   })
+                } else {
+                  self.$store.dispatch('loadWinLostValue', this.$store.getters.getUserDataCrypto).then(() => {
+                    //calcul graph
+                    self.$store.state.readyForLoadGraph = 0
+                  })
+                }
               })
+            })
           })
         }
       }
@@ -205,7 +207,7 @@
 </script>
 
 <style scoped type="scss">
-.ca-container-asset-list {
+  .ca-container-asset-list {
     width: 800px;
     min-height: 850px;
     background-color: var(--background-color-card);

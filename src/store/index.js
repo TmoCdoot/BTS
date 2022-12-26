@@ -17,7 +17,7 @@ export default createStore({
       userEtfCounter: 0,
       userCryptoCounter: 0,
       userForexCounter: 0,
-      userActionCounter :0,
+      userActionCounter: 0,
       userWinLostValue: 0,
       userMaxBalanceValue: 0,
       userMinBalanceValue: 0,
@@ -40,7 +40,7 @@ export default createStore({
     historyTimeMth: '',
 
     userTheme: 'light',
-    
+
     eurPrice: 0,
     readyForLoadGraph: 0,
 
@@ -92,7 +92,7 @@ export default createStore({
             state.userData.userDataCrypto[name].priceNow = (returnApi['resultRequest'][result].current_price).toFixed(3)
             state.userData.userDataCrypto[name].name = returnApi['resultRequest'][result].name
             state.userData.userDataCrypto[name].symbol = returnApi['resultRequest'][result].symbol
-          }         
+          }
         }
       }
     },
@@ -127,16 +127,6 @@ export default createStore({
       state.userData.userWalletSelected = value
     },
     //definit les dates et le prix du grpahique 
-    setHistoWalletDly: function (state, data) {
-      state.historyWalletDly = data['tabCrypto']
-      state.historyTimeDly = data['tabTime']
-    },
-    //definit les dates et le prix du grpahique 
-    setHistoWalletWky: function (state, data) {
-      state.historyWalletWky = data['tabCrypto']
-      state.historyTimeWky = data['tabTime']
-    },
-    //definit les dates et le prix du grpahique 
     setHistoWalletMth: function (state, data) {
       state.historyWalletMth = data['tabCrypto']
       state.historyTimeMth = data['tabTime']
@@ -151,7 +141,7 @@ export default createStore({
     },
     //definit moyen price
     setMeanPriceWallet: function (state, data) {
-      state.userData.userMeanBalanceValue = 0 
+      state.userData.userMeanBalanceValue = 0
       state.userData.userMeanBalanceValue = data
     },
     //definit min price wallet
@@ -252,7 +242,7 @@ export default createStore({
               commit('setError', 'err_depo');
               Validated(false)
             }
-            
+
           } else {
             commit('setError', 'err_pass');
             Validated(false)
@@ -285,7 +275,7 @@ export default createStore({
       })
     },
 
-    
+
     //recuperation donner utilisateur
     loadUserData: ({ commit }) => {
       return new Promise(Validated => {
@@ -315,7 +305,7 @@ export default createStore({
     //récuperation crypto du wallet de l'utilisateur
     loadUserWallet: ({ state, commit }) => {
       return new Promise(Validated => {
-        
+
         state.userData.userWalletList = []
         state.userData.userDepositList = []
         const listWallet = []
@@ -323,10 +313,10 @@ export default createStore({
         getDocs(collection(db, `UserWallet/${state.userData.userUid}/ListWallet`)).then((snapshot) => {
           snapshot.forEach(
             (doc) => listWallet[doc.id] = doc.data()
-            )
+          )
           snapshot.forEach(
             () => isEmpty = 1
-            )
+          )
         }).then(() => {
           if (isEmpty != 0) {
             commit('setWalletUser', listWallet)
@@ -345,7 +335,7 @@ export default createStore({
         commit('setSelectedWallet', value)
         Validated(true)
       })
-    },    
+    },
     //recuperation depot du wallet selectionner
     loadUserDeposit: ({ commit, state }) => {
       return new Promise(Validated => {
@@ -386,13 +376,11 @@ export default createStore({
       return new Promise(Validated => {
         var list = userCryptoList.toString()
         list = list.split(',').join('%2C')
-        /* var urlcourante = document.location.host; */
+        
         axios({
           method: 'GET',
-         /*  url: 'http://' + urlcourante + '/v1/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=3c532d3a-c0d1-415e-8d48-f15d64497835&symbol=BTC,EGLD' */
           url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + list + '&order=market_cap_desc&per_page=100&page=1&sparkline=false'
         }).then(result => {
-          //console.log(result)
           commit('setActuelPrice', {
             resultRequest: result.data,
           })
@@ -401,15 +389,15 @@ export default createStore({
           error => {
             Validated(error)
           }
-        )   
+        )
       })
     },
     //definit l'asset selectionner
-    UserSelectedAsset: ({state, commit}, data) => {
+    UserSelectedAsset: ({ state, commit }, data) => {
       return new Promise(Valited => {
         state.userData.userAssetSelected = []
-        
-        for(const test in state.userData.userDataCrypto) {
+
+        for (const test in state.userData.userDataCrypto) {
           if (state.userData.userDataCrypto[test].symbol == data["symbol"]) {
             commit('setUserAssetSelected', {
               symbol: data["symbol"],
@@ -424,7 +412,7 @@ export default createStore({
       })
     },
     //recuperation du prix de euro par rapport au dollar
-    loadEurPrice: ({commit}) => {
+    loadEurPrice: ({ commit }) => {
       return new Promise(Validated => {
         axios({
           method: 'GET',
@@ -436,11 +424,11 @@ export default createStore({
           Validated(true)
         },
           error => {
-            if(error) {
+            if (error) {
               Validated(false)
             }
           }
-        )    
+        )
       })
     },
     //calcul winloss du wallet selectionner
@@ -459,135 +447,8 @@ export default createStore({
         commit('setWinLostValue', resultSum)
         Validated(true)
       })
-    },    
+    },
     //recuperation prix des crypto pour le graph
-    loadCryptoPriceHistoryHour: ({ commit, state }) => {
-      return new Promise(Validated => {
-        //compteur du nombre de fois qu'il y a la boucle for
-        var countDly = 1
-        for (const token in state.userData.userCryptoIndexListCryptoCompareApi) {
-          //tableau liste price crypto et date
-          var tabCryptoDly = []
-          var tabTimeDly = []
-          //requete pour recuperer les prix
-          axios({
-            method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + state.userData.userCryptoIndexListCryptoCompareApi[token] + '&tsym=USD&limit=23'
-          }).then(result => {
-            //parse resultat
-            var data = result.data.Data.Data
-            //si pas de donnée sur la crypto alors skip
-            if (typeof data != 'undefined') {
-              //faire correspondre la crypto de la requete avec crypto de l'user
-              for (const cryptoUser in state.userData.userDataCrypto) {
-                //si correspondance
-                if (state.userData.userDataCrypto[cryptoUser].symbol == state.userData.userCryptoIndexListCryptoCompareApi[token]) {
-                  //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
-                  for (const val in data) {
-                    //si tableau est vide alors remplir la première fois
-                    if (tabCryptoDly[val] == null) {
-                      tabCryptoDly[val] = Math.round(data[val].open * state.userData.userDataCrypto[cryptoUser].quantity)
-                      tabTimeDly[val] = timeConverter(data[val].time)
-                    } else {
-                      //si tableau contient 1 valeurs alors continuer à remplir
-                      tabCryptoDly[val] = Math.round(tabCryptoDly[val] + (data[val].open * state.userData.userDataCrypto[cryptoUser].quantity))
-                      tabTimeDly[val] = timeConverter(data[val].time)
-                    }
-                  }
-                }
-              }
-              countDly++
-            } else {
-              countDly++
-            }
-            //si la boucle for arrive à la fin alors envoyer au commit
-            if (countDly == (state.userData.userCryptoIndexListCryptoCompareApi.length + 1)) {
-              commit('setHistoWalletDly', {
-                tabCrypto: tabCryptoDly,
-                tabTime: tabTimeDly
-              })
-              //renvoie true pour dire que la function est terminé
-              Validated(true)
-            }
-          })
-        }
-        //permet de convertir Unix en date
-        function timeConverter(UNIX_timestamp) {
-          var a = new Date(UNIX_timestamp * 1000);
-          var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          var year = a.getFullYear();
-          var month = months[a.getMonth()];
-          var date = a.getDate();
-          var hour = a.getHours();
-          var min = a.getMinutes();
-          var sec = a.getSeconds();
-          var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-          return time;
-        }
-      })
-    },
-    loadCryptoPriceHistoryWly: ({ commit, state }) => {
-      return new Promise(Validated => {
-        //compteur du nombre de fois qu'il y a la boucle for
-        var countWky = 1
-        for (const token in state.userData.userCryptoIndexListCryptoCompareApi) {
-          //tableau liste price crypto et date
-          var tabCryptoWky = []
-          var tabTimeWky = []
-          //requete pour recuperer les prix
-          axios({
-            method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + state.userData.userCryptoIndexListCryptoCompareApi[token] + '&tsym=USD&limit=6'
-          }).then(result => {
-            //parse resultat
-            var data = result.data.Data.Data
-            //si pas de donnée sur la crypto alors skip
-            if (typeof data != 'undefined') {
-              //faire correspondre la crypto de la requete avec crypto de l'user
-              for (const cryptoUser in state.userData.userDataCrypto) {
-                //si correspondance
-                if (state.userData.userDataCrypto[cryptoUser].symbol == state.userData.userCryptoIndexListCryptoCompareApi[token]) {
-                  //alors parse les donner puis ajouter dans tableau en multipliant par le nombre de crypto de l'user
-                  for (const val in data) {
-                    //si tableau est vide alors remplir la première fois
-                    if (tabCryptoWky[val] == null) {
-                      tabCryptoWky[val] = Math.round(data[val].open * state.userData.userDataCrypto[cryptoUser].quantity)
-                      tabTimeWky[val] = timeConverter(data[val].time)
-                    } else {
-                      //si tableau contient 1 valeurs alors continuer à remplir
-                      tabCryptoWky[val] = Math.round(tabCryptoWky[val] + (data[val].open * state.userData.userDataCrypto[cryptoUser].quantity))
-                      tabTimeWky[val] = timeConverter(data[val].time)
-                    }
-                  }
-                }
-              }
-              countWky++
-            } else {
-              countWky++
-            }
-            //si la boucle for arrive à la fin alors envoyer au commit
-            if (countWky == (state.userData.userCryptoIndexListCryptoCompareApi.length + 1)) {
-              commit('setHistoWalletWky', {
-                tabCrypto: tabCryptoWky,
-                tabTime: tabTimeWky
-              })
-              //renvoie true pour dire que la function est terminé
-              Validated(true)
-            }
-          })
-        }
-        //permet de convertir Unix en date
-        function timeConverter(UNIX_timestamp) {
-          var a = new Date(UNIX_timestamp * 1000);
-          var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          var year = a.getFullYear();
-          var month = months[a.getMonth()];
-          var date = a.getDate();
-          var time = date + ' ' + month + ' ' + year + ' ';
-          return time;
-        }
-      })
-    },
     loadCryptoPriceHistoryMth: ({ commit, state }, valUserData) => {
       return new Promise(Validated => {
         //compteur du nombre de fois qu'il y a la boucle for
@@ -626,7 +487,7 @@ export default createStore({
               countMth++
             } else {
               countMth++
-            } 
+            }
             //si la boucle for arrive à la fin alors envoyer au commit
             if (countMth == (valUserData.userCryptoIndexListCryptoCompareApi.length + 1)) {
               commit('setHistoWalletMth', {
@@ -651,7 +512,7 @@ export default createStore({
       })
     },
     //calcul moyen prix
-    loadMeanPriceWallet: ({commit, state}) => {
+    loadMeanPriceWallet: ({ commit, state }) => {
       return new Promise(Validated => {
         var tab = state.historyWalletMth.length
         var i = 0, sum = 0
@@ -663,7 +524,7 @@ export default createStore({
       })
     },
     //calcul min prix wallet
-    loadMinPriceWallet: ({commit, state}) => {
+    loadMinPriceWallet: ({ commit, state }) => {
       return new Promise(Validated => {
         var tab = state.historyWalletMth
         var min = Math.min(...tab)
@@ -671,7 +532,7 @@ export default createStore({
         Validated(true)
       })
     },
-    loadMaxPriceWallet: ({commit, state}) => {
+    loadMaxPriceWallet: ({ commit, state }) => {
       return new Promise(Validated => {
         var tab = state.historyWalletMth
         var min = Math.max(...tab)
@@ -679,7 +540,7 @@ export default createStore({
         Validated(true)
       })
     },
-    
+
 
 
 

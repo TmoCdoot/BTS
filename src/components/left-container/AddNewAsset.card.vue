@@ -3,32 +3,33 @@
         <span>Add new asset</span>
 
         <div class="asset-switch">
-          <switch id="crypto" class="active-switch">Crypto</switch>
-          <switch id="etf">ETF</switch>
-          <switch id="forex">Forex</switch>
+            <switch id="crypto" class="active-switch">Crypto</switch>
+            <switch id="etf">ETF</switch>
+            <switch id="forex">Forex</switch>
         </div>
 
         <div class="asset-input">
-          <label for="">Actif</label>
-          <select v-model="crypto">
-            <option value="ChooseAsset" disabled>Choose asset</option>
-            <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue" >
-                {{ listCryptoForCryptoCompare[index] }}
-            </option>
-          </select>
+            <label for="">Actif</label>
+            <select v-model="crypto">
+                <option value="ChooseAsset" disabled>Choose asset</option>
+                <option v-for="(listValue, index) in listCryptoForGekoApi" :key="listValue" :value="listValue">
+                    {{ listCryptoForCryptoCompare[index] }}
+                </option>
+            </select>
         </div>
 
         <div class="asset-input">
-          <label for="">Quantity</label>
-          <input type="text" v-model="quantity" required>
+            <label for="">Quantity</label>
+            <input type="text" v-model="quantity" required>
         </div>
 
         <div class="asset-input">
-          <label for="">Buy price</label>
-          <input type="text" v-model="buyprice">
+            <label for="">Buy price</label>
+            <input type="text" v-model="buyprice">
         </div>
 
-        <button class="asset-button" @click="AddOnWallet" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}">Add asset</button>
+        <button class="asset-button" @click="AddOnWallet" :="{'disabled' : !noEmptyField}"
+            :class="{'unactive' : !noEmptyField}">Add asset</button>
 
     </div>
 </template>
@@ -62,9 +63,8 @@
             AddOnWallet: function () {
                 const self = this;
                 var index = this.$store.state.listCryptoForGekoApi.findIndex(element => element == this.crypto)
-                //console.log(this.crypto)
                 index = this.$store.state.ListCryptoFullName[index]
-                //this.cryptoFullName = this.$store.state.ListCryptoFullName[index]
+
                 this.$store.dispatch("addOnWallet", {
                     crypto: this.crypto,
                     buyprice: this.buyprice,
@@ -73,10 +73,13 @@
                     uid: this.$store.getters.getUserUid
                 }).then((e) => {
                     if (e) {
+                        //load user crypto
                         self.$store.dispatch("loadUserCrypto", this.$store.getters.getUserUid).then((e) => {
                             if (e) {
+                                //load crypto price
                                 self.$store.dispatch("loadCryptoPrice", this.$store.getters.getUserListCrypto).then((e) => {
                                     if (e) {
+                                        //load win loss value
                                         self.$store.dispatch("loadWinLostValue", this.$store.getters.getUserDataCrypto).then((e) => {
                                             if (e) {
                                                 //calcul graph
@@ -105,7 +108,7 @@
 </script>
 
 <style scoped type="scss">
-.ca-box-asset {
+    .ca-box-asset {
     padding-top: 21px;
     padding-bottom: 21px;
     display: flex;

@@ -14,44 +14,45 @@
         <input type="password" v-model="password">
       </div>
 
-      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodLogIn">Log In</button>
+      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}"
+        @click="MethodLogIn">Log In</button>
       <span>New to CryptoAnalyze, <text @click="SwitchTypeForm">Create account</text></span>
     </div>
 
     <div v-if="error == 'err_mail'" class="error">
       Password or Email incorrect
     </div>
-    
+
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
-export default {
-  name: "Connect",
-  data: function () {
-    return {
-      email: '',
-      password: '',
-    }
-  },
-  computed: {
-    ...mapState(['error']),
-    noEmptyField: function () {
-      if (this.email != '' && this.password != '') {
-        return true
-      } else {
-        return false
+  export default {
+    name: "Connect",
+    data: function () {
+      return {
+        email: '',
+        password: '',
       }
-    }
-  },
-  methods: {
+    },
+    computed: {
+      ...mapState(['error']),
+      noEmptyField: function () {
+        if (this.email != '' && this.password != '') {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    methods: {
       MethodLogIn: function () {
         const self = this;
         this.$store.dispatch("UserLogIn", {
-            userEmail: this.email,
-            userPassword: this.password,
+          userEmail: this.email,
+          userPassword: this.password,
         }).then((e) => {
           if (e) {
             self.$router.push('/home')
@@ -61,19 +62,14 @@ export default {
       SwitchTypeForm: function () {
         this.$emit('SwitchTypeForm', true);
       },
-  },
-  beforeMount() {
-    this.userTheme = localStorage.getItem("user-theme")
-    if (this.userTheme == null) {
-      this.userTheme = "light"
-      localStorage.setItem("user-theme", this.userTheme)
+    },
+    beforeMount() {
+      this.userTheme = localStorage.getItem("user-theme")
+      if (this.userTheme == null) {
+        this.userTheme = "light"
+        localStorage.setItem("user-theme", this.userTheme)
+      }
+      document.documentElement.className = this.userTheme;
     }
-    document.documentElement.className = this.userTheme;
   }
-}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only / css unique au composent -->
-<style scoped lang="scss">
-
-</style>

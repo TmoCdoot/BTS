@@ -1,5 +1,5 @@
 <template>
-  <div class="ca-account-container" >
+  <div class="ca-account-container">
     <img src="../assets/logov2.png" v-if="userTheme == 'light'">
     <img src="../assets/logov1.png" v-if="userTheme == 'dark'">
 
@@ -29,7 +29,8 @@
         <input type="text" v-model="account">
       </div>
 
-      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}" @click="MethodSignUp">Sign Up</button>
+      <button class="asset-button" :="{'disabled' : !noEmptyField}" :class="{'unactive' : !noEmptyField}"
+        @click="MethodSignUp">Sign Up</button>
       <span>Already have an account, <text @click="SwitchTypeForm">Log In</text></span>
     </div>
 
@@ -53,51 +54,51 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
-export default {
-  name: "SignUp",
-  data: function () {
-    return {
-      email: '',
-      password: '',
-      confirm_pass: '',
-      deposit: '',
-      account: '',
-    }
-  },
-  computed: {
-    ...mapState(['error']),
-    noEmptyField: function () {
-      if (this.email != '' && this.password != '' && this.confirm_pass != '' && this.deposit != '' && this.account != '') {
-        return true
-      } else {
-        return false
+  export default {
+    name: "SignUp",
+    data: function () {
+      return {
+        email: '',
+        password: '',
+        confirm_pass: '',
+        deposit: '',
+        account: '',
       }
-    }
-  },
-  methods: {
-    MethodSignUp: function () {
+    },
+    computed: {
+      ...mapState(['error']),
+      noEmptyField: function () {
+        if (this.email != '' && this.password != '' && this.confirm_pass != '' && this.deposit != '' && this.account != '') {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
+    methods: {
+      MethodSignUp: function () {
         const self = this
         this.$store.dispatch("UserSignUp", {
-            userEmail: this.email,
-            userPassword: this.password,
-            userConfirm_pass: this.confirm_pass,
-            userDeposit: this.deposit,
-            userAccount: this.account,
+          userEmail: this.email,
+          userPassword: this.password,
+          userConfirm_pass: this.confirm_pass,
+          userDeposit: this.deposit,
+          userAccount: this.account,
         }).then(() => {
           self.$emit('SwitchTypeForm', true);
-      })
+        })
+      },
+      SwitchTypeForm: function () {
+        this.$emit('SwitchTypeForm', true);
+      },
     },
-    SwitchTypeForm: function () {
-      this.$emit('SwitchTypeForm', true);
-    },
-  },
-  beforeMount() {
-    this.userTheme = localStorage.getItem("user-theme")
-    document.documentElement.className = this.userTheme;
-  }
-};
+    beforeMount() {
+      this.userTheme = localStorage.getItem("user-theme")
+      document.documentElement.className = this.userTheme;
+    }
+  };
 </script>
 
 <style scoped lang="scss">
