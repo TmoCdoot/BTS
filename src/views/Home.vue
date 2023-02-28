@@ -187,6 +187,9 @@
           })
         })
       })
+
+      //this.$store.dispatch('test')
+
     },
   };
 </script>

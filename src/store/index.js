@@ -618,7 +618,22 @@ export default createStore({
       })
     },
 
+    test: () => {
+      const finnhub = require('finnhub');
 
+      finnhub.ApiClient.instance.basePath = "http://localhost:8080"
+
+      console.log(finnhub.ApiClient.instance.basePath)
+
+      const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+      api_key.apiKey = "c9rpevqad3i8g2romtg0"
+
+      const finnhubClient = new finnhub.DefaultApi()
+    
+      finnhubClient.quote("NFLX", (error, data) => {
+        console.log(data.c)
+      });
+    }
 
     /**
      * -calculer price de balance maximun
@@ -649,6 +664,35 @@ export default createStore({
      * func 11 : suppression de wallet
      * func 12 : selection d'un actif au click
      * func 13 : calcul prix balance max et min et moyenne
+     * 
+     */
+
+
+
+
+
+    /** POUR AJOUT DES ETF
+     * 
+     * TABLEAU QUI EST UTILISER POUR AFFICHER LES ACTIF : 
+     * 0: 
+        Name: "Axelar"
+        buyPrice: ""
+        crypto: "axelar"
+        name: "Axelar"
+        priceNow: "0.578"
+        quantity: "128,295"
+        symbol: "axl"
+     * 
+        EXEMPLE POUR UN OBJET ETF
+        1:
+          Name: "Netflix"
+          buyPrice: ""
+          etf: "NFLX"
+          name: "Netflix"
+          priceNow: "294"
+          quantity: "2"
+          symbol: "NFLX"
+     * 
      * 
      */
   },
