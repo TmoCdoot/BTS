@@ -53,6 +53,45 @@
     </div>
   </div>
 
+
+  <div class="ca-mobile-container">
+    <!-- top de la page -->
+    <div class="ca-mobile-container-top">
+
+      <div class="mbl-container-wallet-name">
+        <span>Binance wallet</span>
+        <img src="../assets/menu.png">
+      </div>
+
+      <div class="mbl-container-balance">
+        <span>Current balance</span>
+        <span class="balance">$ 23,909.34</span>
+
+        <div class="ratio">
+          <span>+ 5.78%</span>
+          <span class="cut">|</span>
+          <span>+ $23.87</span>
+        </div>
+      </div>
+
+      <div class="mbl-container-button">
+        <div>
+          <img src="../assets/plus2.png">
+          Add
+        </div>
+
+        <div>
+          <img src="../assets/pencil2.png">
+          Edit
+        </div>
+      </div>
+
+    </div>
+
+    <!-- list crypto dans autre comopnent -->
+    bite
+  </div>
+
 </template>
 
 
@@ -515,4 +554,93 @@
   }
 
   /*--------------*/
+
+
+
+
+
+  @media screen and (max-width: 450px) {
+    .ca-lft-container, .ca-rht-container, .ca-ctr-container {
+      display: none;
+    }
+
+    .ca-mobile-container-top {
+      border: 1px solid red;
+      height: 300px;
+      width: 100vw;
+    }
+    .mbl-container-wallet-name {
+      /* border: 1px solid pink; */
+      display: flex;
+      padding: 20px 20px 0px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .mbl-container-wallet-name span {
+      color: var(--color-font);
+    }
+    .mbl-container-wallet-name img {
+      width: 20px;
+      margin-left: 10px;
+    }
+
+    .mbl-container-balance {
+     /*  border: 1px solid green; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 35px 0px 15px 0px;
+    }
+    .mbl-container-balance span {
+      color: var(--color-font);
+    }
+
+    .mbl-container-balance .balance {
+      font-size: 40px;
+      font-weight: 700;
+      margin-top: 15px;
+    }
+
+    .mbl-container-balance .ratio {
+      background-color: #85B9A0;
+      border-radius: 20px;
+      padding: 7px 15px;
+      margin: 10px 0px 0px;
+    }
+
+    .mbl-container-balance .ratio span {
+      color: black;
+    }
+
+    .mbl-container-balance .ratio .cut {
+      margin: 0px 10px 0px 15px;
+      color: black;
+      font-weight: 700;
+    }
+
+    .mbl-container-button{
+      display: flex;
+      justify-content: center;
+    }
+    .mbl-container-button img {
+      background-color: #E3E3E3;
+      margin: 8px;
+      padding: 15px;
+      border-radius: 20px;
+    }
+    .mbl-container-button div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--color-font);
+    }
+
+
+  }
+  @media screen and (min-width: 451px) {
+    .ca-mobile-container {
+      display: none;
+    }
+    
+  }
 </style>
